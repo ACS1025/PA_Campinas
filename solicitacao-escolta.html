@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação e Confirmação de Escolta - PA-Campinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('src/img/Registro\ de\ Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 50px; /* Adiciona espaço para o header */
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 120px 20px; /* Adiciona espaço para a navbar e header fixos */
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Define 5 colunas */
+            grid-auto-rows: minmax(100px, auto); /* Define altura mínima das linhas */
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px; /* Reduzido */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.875rem; /* Reduzido */
+            font-weight: bold;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+    <body>
+    
+        <div class="header">
+            <h1>PA-Campinas</h1>
+        </div>
+    
+        <div class="navbar">
+            <a href="index.html">Home</a>
+            <a href="registro-saidas.html">Registro de Saídas</a>
+            <a href="solicitacao-escolta.html" class="active">Solicitação de Escolta</a>
+        </div>
+    
+        <div class="content">
+            <div class="container">
+                <h2>Solicitação de Escolta</h2>
+                <form>
+    
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label for="filial">Filial</label>
+                            <select id="filial">
+                                <option>Selecione a filial</option>
+                                <option value="opcao1">CAMPINAS/ SP</option>
+                                <option value="opcao2">BELÉM/ PA</option>
+                                <option value="opcao3">MANAUS/ AM</option>
+                            </select>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="equipe">Programar equipe</label>
+                            <select id="filial">
+                                <option>Selecione</option>
+                                <option value="opcao1">01</option>
+                                <option value="opcao2">02</option>
+                                <option value="opcao3">03</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="equipe">Distância:</label>
+                            <select id="filial">
+                                <option>Selecione</option>
+                                <option value="opcao1">Origem</option>
+                                <option value="opcao2">100 Km</option>
+                                <option value="opcao3">150 Km</option>
+                                <option value="opcao3">200 Km</option>
+                                <option value="opcao3">250 Km</option>
+                                <option value="opcao3">300 Km</option>
+                            </select>
+                        </div>
+    
+    
+                        <div class="form-group">
+                            <label for="saida">Saída:</label>
+                            <input type="date" id="saida" name="saida">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="origem">Origem:</label>
+                            <select id="origem">
+                                <option>Selecione a cidade</option>
+                                <option value="ABAETETUBA/ PA">ABAETETUBA/ PA</option>
+                                <option value="ABADIA DE GOIÁS/ GO">ABADIA DE GOIÁS/ GO</option>
+                                <option value="ABADIA DOS DOURADOS/ MG">ABADIA DOS DOURADOS/ MG</option>
+                                <option value="ABADIÂNIA/ GO">ABADIÂNIA/ GO</option>
+                                <option value="ABAETÉ/ MG">ABAETÉ/ MG</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="destino">Destino:</label>
+                            <select id="destino">
+                                <option>Selecione a cidade</option>
+                                <option value="ABAETETUBA/ PA">ABAETETUBA/ PA</option>
+                                <option value="ABADIA DE GOIÁS/ GO">ABADIA DE GOIÁS/ GO</option>
+                                <option value="ABADIA DOS DOURADOS/ MG">ABADIA DOS DOURADOS/ MG</option>
+                                <option value="ABADIÂNIA/ GO">ABADIÂNIA/ GO</option>
+                                <option value="ABAETÉ/ MG">ABAETÉ/ MG</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ponto_encontro" style="font-weight: bold;">Ponto de encontro:</label>
+                        <input type="text" id="ponto_encontro" name="ponto_encontro" value="" placeholder="Digite o nome o local">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cliente">Cliente:</label>
+                            <input type="text" id="cliente" name="cliente" value="" placeholder="Digite o nome do cliente">
+                        </div>
+                                                 
+                        <div class="form-group">
+                            <label for="placa">Placa</label>
+                            <select id="placa">
+                                <option>Selecione a placa</option>
+                                <option value="1">JXA-6C50</option>
+                                <option value="2">NDI-0G34</option>
+                                <option value="3">NDI-0G79</option>
+                                <option value="4">NDT-6E79</option>
+    
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="frota">Frota</label>
+                            <input type="text" id="frota">
+                        </div>
+                        <div class="form-group">
+                            <label for="carreta">Carreta</label>
+                            <select id="carreta">
+                                <option>Selecione a carreta</option>
+                                <option value="1">JXA-6C50</option>
+                                <option value="2">NDI-0G34</option>
+                                <option value="3">NDI-0G79</option>
+                                <option value="4">NDT-6E79</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="motorista">Motorista</label>
+                            <select id="motorista">
+                                <option>Selecione o motorista</option>
+                                    <option value="ABIMAEL GOMES FILHO">ABIMAEL GOMES FILHO</option>
+                                    <option value="ABNER PEREIRA SOUZA DE SOUSA">ABNER PEREIRA SOUZA DE SOUSA</option>
+                                    <option value="ABRAAO MARINHO CARNEIRO">ABRAAO MARINHO CARNEIRO</option>
+                                    <option value="ACIR FELICIO NETO">ACIR FELICIO NETO</option>
+                                    <option value="ADAO BRITO DA CRUZ">ADAO BRITO DA CRUZ</option>
+                                    <option value="ADAUTO DE SOUZA RODRIGUES">ADAUTO DE SOUZA RODRIGUES</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fone">Fone:</label>
+                            <input type="text" id="fone" name="fone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="manifesto">Manifesto:</label>
+                            <input type="text" id="manifesto" name="manifesto"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Enviar Solicitação">
+                    </div>
+                </form>
+            </div>
+    
+            <div class="container">
+                <h2>Grupo escolta - Confirmação</h2>
+                <form>
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label for="km_conf">km x Destino:</label>
+                            <input type="text" id="km_conf" name="km_conf">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="manifesto">Manifesto:</label>
+                            <input type="text" id="manifesto" name="Manifesto:">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="ponto_encontro">Ponto de encontro:</label>
+                            <input type="text" id="ponto_encontro" name="ponto_encontro" placeholder="Digite o nome o local">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="cliente">Cliente:</label>
+                            <input type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="data_conf">Início de operação:</label>
+                            <input type="date" id="data_conf" name="data_conf">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="hora_conf">Hora:</label>
+                            <input type="time" id="hora_conf" name="hora_conf">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="placa_conf">Placa:</label>
+                            <input type="text" id="placa_conf" name="placa_conf" placeholder="Digite a placa escolta">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="motorista_conf">Agente escolta:</label>
+                            <input type="text" id="motorista_conf" name="motorista_conf" placeholder="Digite nome dos Agentes">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="tel_conf">Tel:</label>
+                            <input type="text" id="tel_conf" name="tel_conf" placeholder="Digite telefone">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="obs_conf">Observações:</label>
+                            <textarea id="obs_conf" name="obs_conf"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Enviar Confirmação">
+                    </div>
+                </form>
+            </div>
+
+            <script>
+                function handleFormSubmit(formId) {
+                    document.getElementById(formId).addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        var formData = new FormData(this);
+                        var data = {};
+                        formData.forEach(function(value, key) {
+                            data[key] = value;
+                        });
+        
+                        fetch('1VFYSnAfgsRb1oFRwYIpNK-X8fm9BAA-oSdHvuazTUtqAqEuVCTnTxsAM', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(response => response.text())
+                          .then(result => alert('Dados enviados com sucesso'))
+                          .catch(error => console.error('Erro:', error));
+                    });
+                }
+        
+                handleFormSubmit('solicitacao-form');
+                handleFormSubmit('confirmacao-form');
+            </script>
+    </body>
+    </html>
+    

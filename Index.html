@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PA-Campinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('src/img/Registro\ de\ Saidas.png');
+            background-size: cover; /* Ajusta a imagem para cobrir a tela sem distorção */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Imagem fixa ao fundo durante o scroll */
+            height: 100vh; /* Ocupa a altura total da tela */
+            overflow: hidden; /* Evita barras de rolagem horizontais */
+        }
+
+        .header {
+            color: rgb(247, 243, 243);
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 50px;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 0%; /* Adiciona espaço para o header */
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: rgb(252, 254, 255);
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 120px 20px; /* Adiciona espaço para a navbar e header fixos */
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #847d7d;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #f9f6f6;
+            padding: 10px 0;
+            background-color: #9b9a9a;
+            border-top: 1px solid #9b9a9a
+            ;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Adiciona a sombra no rodapé */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>PA-Campinas</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="index.html" class="active">Home</a>
+        <a href="registro-saidas.html">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    </div>
+    
+
+    <div class="content">
+        <div id="home" class="section">
+            <h2></h2>
+            <p>Bem-vindo à nossa página de monitoramento PA-Campinas. Utilize o menu para acessar as funcionalidades disponíveis.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

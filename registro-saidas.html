@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Saídas - PA-Campinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('src/img/Registro\ de\ Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .header {
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 60px; /* Ajusta o topo para criar mais espaço abaixo da navbar */
+            z-index: 1000;
+        }
+     
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 0px; /* Adiciona espaço para o header */
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 120px 20px; /* Adiciona espaço para a navbar e header fixos */
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"], select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        button {
+            grid-column: span 2;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #388E3C;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1></h1>
+    </div>
+
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="registro-saidas.html" class="active">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    </div>
+    
+
+    <div class="content">
+        
+        <div id="registro-saidas" class="section">
+            <h2></h2>
+            <div class="container">
+                <form id="registroSaidas">
+                    <div class="form-group">
+                        <label for="responsavel">Responsável pelo registro</label>
+                        <select id="responsavel">
+                            <option>Selecione o responsável</option>
+                            <option value="ANA CLAUDIA">ANA CLAUDIA</option>
+                            <option value="DANIEL">DANIEL</option>
+                            <option value="JOEL">JOEL</option>
+                            <option value="MIRTISSON">MIRTISSON</option>
+                            <option value="NOELE">NOELE</option>
+                            <option value="THAMARA">THAMARA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataEmissao">Data da emissão</label>
+                        <input type="date" id="dataEmissao">
+                    </div>
+                    <div class="input-box">
+                    <label for="doc_saida" style="font-weight: bold;">Doc. saída:</label>
+                    <select id="doc_saida" name="doc_saida">
+                        <option value="Selecione tipo de saída">Selecione tipo de saída</option>
+                        <option value="ORDEM DE COLETA">ORDEM DE COLETA</option>
+                        <option value="AUT. SAÍDA">AUT. SAÍDA</option>
+                        <option value="AUTORIZAÇÃO DE SAÍDA">AUTORIZAÇÃO DE SAÍDA</option>
+                        <option value="MANIFESTO">MANIFESTO</option>
+                        <option value="MANUTENÇÃO">MANUTENÇÃO</option>
+                    </select>
+                </div>
+                    <div class="form-group">
+                        <label for="ordem">Ordem</label>
+                        <input type="text" id="ordem">
+                    </div>
+                    <div class="form-group">
+                        <label for="placa">Placa</label>
+                        <select id="placa">
+                            <option>Selecione a placa</option>
+                            <option value="1">JXA-6C50</option>
+                            <option value="2">NDI-0G34</option>
+                            <option value="3">NDI-0G79</option>
+                            <option value="4">NDT-6E79</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="frota">Frota</label>
+                        <input type="text" id="frota">
+                    </div>
+                    <div class="form-group">
+                        <label for="carreta">Carreta</label>
+                        <select id="carreta">
+                            <option>Selecione a carreta</option>
+                            <option value="1">JXA-6C50</option>
+                            <option value="2">NDI-0G34</option>
+                            <option value="3">NDI-0G79</option>
+                            <option value="4">NDT-6E79</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motorista">Motorista</label>
+                        <select id="motorista">
+                            <option>Selecione o motorista</option>
+                                <option value="ABIMAEL GOMES FILHO">ABIMAEL GOMES FILHO</option>
+                                <option value="ABNER PEREIRA SOUZA DE SOUSA">ABNER PEREIRA SOUZA DE SOUSA</option>
+                                <option value="ABRAAO MARINHO CARNEIRO">ABRAAO MARINHO CARNEIRO</option>
+                                <option value="ACIR FELICIO NETO">ACIR FELICIO NETO</option>
+                                <option value="ADAO BRITO DA CRUZ">ADAO BRITO DA CRUZ</option>
+                                <option value="ADAUTO DE SOUZA RODRIGUES">ADAUTO DE SOUZA RODRIGUES</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <select id="cliente">
+                            <option>Selecione o cliente ou OUTROS</option>
+                            <option value="3M">3M</option>
+                            <option value="A C RODRIGUES">A C RODRIGUES</option>
+                            <option value="A M DAS RODRIGUES">A M DAS RODRIGUES</option>
+                            <option value="ABASTECER">ABASTECER</option>
+                            <option value="ADATA">ADATA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filial">Filial</label>
+                        <select id="filial">
+                            <option>Selecione a filial</option>
+                            <option value="opcao1">CAMPINAS/ SP</option>
+                            <option value="opcao2">BELÉM/ PA</option>
+                            <option value="opcao3">MANAUS/ AM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="origem">Origem</label>
+                        <select id="origem">
+                            <option>Selecione a cidade</option>
+                            <option value="ABAETETUBA/ PA">ABAETETUBA/ PA</option>
+                            <option value="ABADIA DE GOIÁS/ GO">ABADIA DE GOIÁS/ GO</option>
+                            <option value="ABADIA DOS DOURADOS/ MG">ABADIA DOS DOURADOS/ MG</option>
+                            <option value="ABADIÂNIA/ GO">ABADIÂNIA/ GO</option>
+                            <option value="ABAETÉ/ MG">ABAETÉ/ MG</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="destino">Destino</label>
+                        <select id="destino">
+                            <option>Selecione a cidade</option>
+                            <option value="ABAETETUBA/ PA">ABAETETUBA/ PA</option>
+                            <option value="ABADIA DE GOIÁS/ GO">ABADIA DE GOIÁS/ GO</option>
+                            <option value="ABADIA DOS DOURADOS/ MG">ABADIA DOS DOURADOS/ MG</option>
+                            <option value="ABADIÂNIA/ GO">ABADIÂNIA/ GO</option>
+                            <option value="ABAETÉ/ MG">ABAETÉ/ MG</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rota" style="font-weight: bold;">Rota:</label>
+                    <input type="text" id="rota" name="rota" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="gr">Viagem GR</label>
+                        <select id="gr">
+                            <option>Selecione o GR</option>
+                            <option value="KMD">KMD</option>
+                            <option value="BR RISK">BR RISK</option>
+                            <option value="KRONA">KRONA</option>
+                            <option value="OPENTECH">OPENTECH</option>
+                            <option value="BUONNY">BUONNY</option>
+                            <option value="TECNORISK">TECNORISK</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="valor">Valor</label>
+                        <input type="text" id="valor">
+                    </div>
+                    <div class="form-group">
+                        <label for="codSm">Cód. SM</label>
+                        <input type="text" id="codSm">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Carreta status</label>
+                        <select id="doc_carreta_status" name="carreta_status">
+                        <option value="Selecione o status">Selecione o status</option>
+                        <option value="VAZIO">VAZIO</option>
+                        <option value="CARREGADO">CARREGADO</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="turno">Turno</label>
+                        <select id="turno">
+                            <option>Selecione o turno</option>
+                            <option value="T1">T1</option>
+                            <option value="T2">T2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="responsavelSS">Responsável SS</label>
+                        <select id="responsavelSS">
+                            <option>Selecione o responsável SS</option>
+                            <option value="ADRIAN FERREIRA">ADRIAN FERREIRA</option>
+                        <option value="ALTAIR">ALTAIR</option>
+                        <option value="ANDRÉA SATIRO">ANDRÉA SATIRO</option>
+                        <option value="CLEMENTE SILVA">CLEMENTE SILVA</option>
+                        <option value="DAIRON">DAIRON</option>
+                        <option value="DAMIÃO">DAMIÃO</option>
+                        <option value="DOUGLAS SANTIAGO">DOUGLAS SANTIAGO</option>
+                        <option value="EDSON SOUZA">EDSON SOUZA</option>
+                        <option value="ELIZEU">ELIZEU</option>
+                        <option value="FABIO ANTONIO">FABIO ANTONIO</option>
+                        <option value="FELIPE">FELIPE</option>
+                        <option value="GUSTAVO VANZEI">GUSTAVO VANZEI</option>
+                        <option value="IRLAN">IRLAN</option>
+                        <option value="JHONATAS">JHONATAS</option>
+                        <option value="JUSCELINO">JUSCELINO</option>
+                        <option value="LUCAS">LUCAS</option>
+                        <option value="LUCAS LIMA">LUCAS LIMA</option>
+                        <option value="MARCELO MORAES">MARCELO MORAES</option>
+                        <option value="ROGÉRIO">ROGÉRIO</option>
+                        <option value="RONEY CASSIO">RONEY CASSIO</option>
+                        <option value="RUY">RUY</option>
+                        <option value="TARSICIO">TARSICIO</option>
+                        <option value="MAURICIO">MAURICIO</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataSaida">Data da saída</label>
+                        <input type="date" id="dataSaida">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="motoristaCheck">
+                        <label for="motoristaCheck">Motorista</label>
+                        <input type="checkbox" id="placaCheck">
+                        <label for="placaCheck">Placa</label>
+                        <input type="checkbox" id="carretaCheck">
+                        <label for="carretaCheck">Carreta</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="observacao">Observação</label>
+                        <input type="text" id="observacao">
+                    </div>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        </div>
+
+    <footer>
+        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('placa').addEventListener('input', function() {
+            // Atualize as opções de rota com base na placa
+            updateRota();
+        });
+
+        document.getElementById('carreta').addEventListener('input', function() {
+            // Atualize as opções de rota com base na carreta
+            updateRota();
+        });
+
+        document.getElementById('motorista').addEventListener('input', function() {
+            // Atualize as opções de rota com base no motorista
+            updateRota();
+        });
+
+        document.getElementById('cliente').addEventListener('input', function() {
+            // Atualize as opções de rota com base no cliente
+            updateRota();
+        });
+
+        document.getElementById('origem').addEventListener('input', function() {
+            // Atualize as opções de rota com base na origem
+            updateRota();
+        });
+
+        document.getElementById('destino').addEventListener('input', function() {
+            // Atualize as opções de rota com base no destino
+            updateRota();
+        });
+
+        document.getElementById('responsavelSS').addEventListener('input', function() {
+            // Atualize as opções de rota com base no responsável SS
+            updateRota();
+        });
+
+        function updateRota() {
+            var placa = document.getElementById('placa').value;
+            var carreta = document.getElementById('carreta').value;
+            var motorista = document.getElementById('motorista').value;
+            var cliente = document.getElementById('cliente').value;
+            var origem = document.getElementById('origem').value;
+            var destino = document.getElementById('destino').value;
+            var responsavelSS = document.getElementById('responsavelSS').value;
+
+            // Implementar lógica para atualizar o campo de rota com base nos valores inseridos
+            var rota = "Rota baseada nos dados fornecidos";
+            document.getElementById('rota').value = rota;
+        }
+    </script>
+
+</body>
+</html>
