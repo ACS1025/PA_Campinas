@@ -383,43 +383,43 @@
     </footer>
     
     <script>
-        // Função para envio ao Google Sheets
-    function enviarGoogleSheets(formData) {
-        var url = 'AKfycbzqbEQ3_XlwmOyk-2S3P4Dtls95aPuGE9_EZ2Ku6TFU0oOtbBPmdGPSyBP5UNzmH862'; // Insira o URL do seu Apps Script
+// Função para envio ao Google Sheets
+function enviarGoogleSheets(formData) {
+    var url = 'AKfycbzqbEQ3_XlwmOyk-2S3P4Dtls95aPuGE9_EZ2Ku6TFU0oOtbBPmdGPSyBP5UNzmH862'; // Insira o URL do seu Apps Script
 
-        return fetch(url, {
-            method: 'POST',
-            body: formData
-        }).then(response => response.text());
-    }
+    return fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => response.text());
+}
 
-    // Função para lidar com o envio do formulário
-    document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+// Função para lidar com o envio do formulário
+document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        // Obtenha os dados do formulário
-        var formData = new FormData(this);
+    // Obtenha os dados do formulário
+    var formData = new FormData(this);
 
-        // Função para enviar ao Google Sheets
-        enviarGoogleSheets(formData)
-            .then(data => {
-                alert('Dados enviados com sucesso para o Google Sheets!');
-            })
-            .catch(error => {
-                alert('Erro ao enviar os dados para o Google Sheets');
-                console.error(error);
-            });
+    // Envio dos dados ao Google Sheets
+    enviarGoogleSheets(formData)
+        .then(data => {
+            alert('Dados enviados com sucesso para o Google Sheets!');
+        })
+        .catch(error => {
+            alert('Erro ao enviar os dados para o Google Sheets');
+            console.error(error);
+        });
+});
 
-                
-        // Função para preencher automaticamente a data e hora atuais
-        window.onload = function() {
-            const agora = new Date();
-            const dataHoraFormatada = agora.toISOString().slice(0, 16);
-            document.getElementById('data').value = dataHoraFormatada;
-        };
+// Função para preencher automaticamente a data e hora atuais
+window.onload = function() {
+    const agora = new Date();
+    const dataHoraFormatada = agora.toISOString().slice(0, 16);
+    document.getElementById('data').value = dataHoraFormatada;
+};
 
-        const listaCidades = [
-        'ABADIA DE GOIÁS/ GO', 
+// Lista de cidades para autocomplete
+const listaCidades = ['ABADIA DE GOIÁS/ GO', 
         'ABADIA DOS DOURADOS/ MG', 
         'ABADIÂNIA/ GO', 
         'ABAETÉ/ MG', 
@@ -5990,39 +5990,45 @@
         'ZÉ DOCA/ MA', 'ZORTÉA/ SC', 
     ];
 
+// Função para buscar cidades e exibir resultados de autocomplete
+function buscarCidades(input, tipo) {
+    const listaOrigem = document.getElementById('lista-origem');
+    const listaDestino = document.getElementById('lista-destino');
+    let lista = tipo === 'origem' ? listaOrigem : listaDestino;
 
-
-
-    function buscarCidades(input, tipo) {
-        const listaOrigem = document.getElementById('lista-origem');
-        const listaDestino = document.getElementById('lista-destino');
-        let lista = tipo === 'origem' ? listaOrigem : listaDestino;
-
-        lista.innerHTML = '';
-        if (input.length > 0) {
-            const cidadesFiltradas = listaCidades.filter(cidade => cidade.toLowerCase().includes(input.toLowerCase()));
-            if (cidadesFiltradas.length > 0) {
-                lista.style.display = 'block'; // Exibe a lista se houver resultados
-                cidadesFiltradas.forEach(cidade => {
-                    const li = document.createElement('li');
-                    li.textContent = cidade;
-                    li.onclick = () => selecionarCidade(cidade, tipo);
-                    lista.appendChild(li);
-                });
-            } else {
-                lista.style.display = 'none'; // Oculta a lista se não houver resultados
-            }
+    lista.innerHTML = '';
+    if (input.length > 0) {
+        const cidadesFiltradas = listaCidades.filter(cidade => cidade.toLowerCase().includes(input.toLowerCase()));
+        if (cidadesFiltradas.length > 0) {
+            lista.style.display = 'block'; // Exibe a lista se houver resultados
+            cidadesFiltradas.forEach(cidade => {
+                const li = document.createElement('li');
+                li.textContent = cidade;
+                li.onclick = () => selecionarCidade(cidade, tipo);
+                lista.appendChild(li);
+            });
         } else {
-            lista.style.display = 'none'; // Oculta a lista se o campo estiver vazio
+            lista.style.display = 'none'; // Oculta a lista se não houver resultados
         }
+    } else {
+        lista.style.display = 'none'; // Oculta a lista se o campo estiver vazio
     }
+}
 
-    function selecionarCidade(cidade, tipo) {
-        const campo = tipo === 'origem' ? document.getElementById('doc_origem') : document.getElementById('doc_destino');
-        campo.value = cidade;
-        document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').innerHTML = '';
-        document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').style.display = 'none'; // Oculta a lista após a seleção
-    }
-    </script>
-</body>
-</html>
+// Função para selecionar uma cidade no autocomplete
+function selecionarCidade(cidade, tipo) {
+    const campo = tipo === 'origem' ? document.getElementById('doc_origem') : document.getElementById('doc_destino');
+    campo.value = cidade;
+    document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').innerHTML = '';
+    document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').style.display = 'none'; // Oculta a lista após a seleção
+}
+
+// Eventos para buscar cidades enquanto o usuário digita
+document.getElementById('doc_origem').addEventListener('input', function() {
+    buscarCidades(this.value, 'origem');
+});
+
+document.getElementById('doc_destino').addEventListener('input', function() {
+    buscarCidades(this.value, 'destino');
+});
+</script>
