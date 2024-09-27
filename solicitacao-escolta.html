@@ -383,16 +383,23 @@
     </footer>
     
     <script>
-// Função para envio ao Google Sheets
 function enviarGoogleSheets(formData) {
-    var url = 'AKfycbzqbEQ3_XlwmOyk-2S3P4Dtls95aPuGE9_EZ2Ku6TFU0oOtbBPmdGPSyBP5UNzmH862'; // Insira o URL do seu Apps Script
+    var url = 'AKfycbzqbEQ3_XlwmOyk-2S3P4Dtls95aPuGE9_EZ2Ku6TFU0oOtbBPmdGPSyBP5UNzmH862'; 
+
+    // Converte o FormData para um objeto simples
+    var dados = {};
+    formData.forEach((value, key) => {
+        dados[key] = value;
+    });
 
     return fetch(url, {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados) // Converte o objeto para JSON
     }).then(response => response.text());
 }
-
 // Função para lidar com o envio do formulário
 document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
     e.preventDefault();
