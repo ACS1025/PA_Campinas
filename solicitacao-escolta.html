@@ -169,7 +169,7 @@
         <!-- Primeiro Container -->
         <div class="container">
             <h2>Solicitação de Escolta</h2>
-            <form>
+            <form id="solicitacaoForm">
                 <div class="form-container">
                     <div class="form-group">
                         <label for="data">Data solicitação:</label>
@@ -383,6 +383,34 @@
     </footer>
     
     <script>
+        // Função para envio ao Google Sheets
+    function enviarGoogleSheets(formData) {
+        var url = 'AKfycbzqbEQ3_XlwmOyk-2S3P4Dtls95aPuGE9_EZ2Ku6TFU0oOtbBPmdGPSyBP5UNzmH862'; // Insira o URL do seu Apps Script
+
+        return fetch(url, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text());
+    }
+
+    // Função para lidar com o envio do formulário
+    document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Obtenha os dados do formulário
+        var formData = new FormData(this);
+
+        // Função para enviar ao Google Sheets
+        enviarGoogleSheets(formData)
+            .then(data => {
+                alert('Dados enviados com sucesso para o Google Sheets!');
+            })
+            .catch(error => {
+                alert('Erro ao enviar os dados para o Google Sheets');
+                console.error(error);
+            });
+
+                
         // Função para preencher automaticamente a data e hora atuais
         window.onload = function() {
             const agora = new Date();
