@@ -192,7 +192,7 @@
   
             <h2>Registro de saídas</h2>
             <br>
-            <form id="registro-saidas-form" action="https://script.google.com/macros/s/AKfycbyQtPsYxV6_MF0N2Tt9LM-OLwlVHNaNUsiICBrO0g0esRKgIsPVQr5iyl9RQUy7YDCj/exec" method="POST">
+            <form id="registro-saidas-form" action="https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec" method="POST">
                 <input type="hidden" name="linkBase" value="PA_Campinas">
                 <div class="input-box">
                     <label for="responsavel">Responsável pelo registro:</label>
@@ -11611,13 +11611,6 @@ function formatarMoeda(elemento) {
 
 const sheetName = 'DADOS_Solicitação';
 const scriptProp = PropertiesService.getScriptProperties();
-
-function doGet() {
-    return ContentService.createTextOutput("Este é um endpoint de serviço. Acesse o endpoint 'doPost' para enviar dados.").setMimeType(ContentService.MimeType.TEXT);
-}
-             // Concatena os valores de origem e destino para o campo "ROTA"
-             document.getElementById("doc_origem").addEventListener("change", updateRoute);
-             document.getElementById("doc_destino").addEventListener("change", updateRoute);
              
              function updateRoute() {
                  var origem = document.getElementById("doc_origem").value;
@@ -11637,7 +11630,41 @@ function doGet() {
 
              const newRow = headers.map(function(header) {
                 return header === 'Date' ? new Date() : e.parameter[header]; // 'e.parameter[header]' mapeia o valor do campo
-              });
+              });    
+              
+             // Concatena os valores de origem e destino para o campo "ROTA"
+             document.getElementById("doc_origem").addEventListener("change", updateRoute);
+             document.getElementById("doc_destino").addEventListener("change", updateRoute);
+
+             function doGet(e) {
+                return HtmlService.createHtmlOutput("Hello, world!");
+              }
+              
+              function doPost(e) {
+                const resposta = e.parameter; // Para acessar os dados do formulário
+                // Aqui você pode processar a resposta, por exemplo, salvando em uma planilha.
+                return ContentService.createTextOutput("Dados recebidos com sucesso!");
+              }
+              
+              function doPost(e) {
+                const resposta = {};
+                try {
+                    // Acessa os dados enviados
+                    const dados = e.parameter;
+            
+                    // Aqui você pode processar os dados, como inseri-los em uma planilha
+                    Logger.log(dados);
+            
+                    resposta.status = "success";
+                    resposta.message = "Dados recebidos com sucesso!";
+                } catch (error) {
+                    resposta.status = "error";
+                    resposta.message = error.message;
+                }
+                
+                return ContentService.createTextOutput(JSON.stringify(resposta)).setMimeType(ContentService.MimeType.JSON);
+            }
+            
               
          </script>
 
