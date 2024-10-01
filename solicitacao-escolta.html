@@ -11330,20 +11330,27 @@ function doPost(e) {
 function enviarFormulario(tipo) {
     var formData = new FormData(document.getElementById(tipo === 'solicitacao' ? 'formSolicitacao' : 'formConfirmacao'));
     formData.append('formType', tipo);
-  
+
     fetch('https://script.google.com/macros/s/AKfycbwIMp164UQzwFpI6VA29xkH6-SFfvzs4XSKOtuALPR7LZG0vA3UywSQGg_i1Dqlb76P/exec', {
-      method: 'POST',
-      body: formData
+        method: 'POST',
+        body: formData
     })
     .then(response => response.text())
     .then(result => {
-      console.log(result);
-      alert('Dados enviados com sucesso!');
+        console.log(result);
+        alert('Dados enviados com sucesso!');
+
+        // Redirecionar para a página do formulário
+        window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html'; 
+        
+        // Limpar os dados do formulário
+        document.getElementById(tipo === 'solicitacao' ? 'formSolicitacao' : 'formConfirmacao').reset(); // Isso irá limpar o formulário
     })
     .catch(error => {
-      console.error('Erro ao enviar os dados:', error);
+        console.error('Erro ao enviar os dados:', error);
     });
-  }
-  
+}
+
+
 
 </script>
