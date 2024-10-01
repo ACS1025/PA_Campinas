@@ -170,7 +170,8 @@
         <!-- Primeiro Container -->
         <div class="container">
             <h2>Solicitação de Escolta</h2>
-            
+            <form id="formSolicitacao" onsubmit="enviarFormulario('solicitacao'); return false;">
+                <input type="hidden" name="formType" value="solicitacao">
                 <div class="form-container">
                     <div class="form-group">
                         <label for="data">Data solicitação:</label>
@@ -292,7 +293,8 @@
            <div class="container" id="confirmacao">
             <h2>Confirmação de Escolta</h2>
             <br>
-            <form>
+            <form id="formConfirmacao" onsubmit="enviarFormulario('confirmacao'); return false;">
+                <input type="hidden" name="formType" value="confirmacao">
                 <div class="form-container">
                     <div class="form-group">
                         <label for="data_confirmacao">Data de Confirmação:</label>
@@ -11324,5 +11326,24 @@ function doPost(e) {
         lock.releaseLock();
     }
 }
+
+function enviarFormulario(tipo) {
+    var formData = new FormData(document.getElementById(tipo === 'solicitacao' ? 'formSolicitacao' : 'formConfirmacao'));
+    formData.append('formType', tipo);
+  
+    fetch('https://script.google.com/macros/s/AKfycbwIMp164UQzwFpI6VA29xkH6-SFfvzs4XSKOtuALPR7LZG0vA3UywSQGg_i1Dqlb76P/exec', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log(result);
+      alert('Dados enviados com sucesso!');
+    })
+    .catch(error => {
+      console.error('Erro ao enviar os dados:', error);
+    });
+  }
+  
 
 </script>
