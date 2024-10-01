@@ -11634,6 +11634,11 @@ function doGet() {
                  valor = 'R$ ' + valor.replace('.', ','); // Troca o ponto por vírgula e adiciona "R$ "
                  elemento.value = valor;
              }
+
+             const newRow = headers.map(function(header) {
+                return header === 'Date' ? new Date() : e.parameter[header]; // 'e.parameter[header]' mapeia o valor do campo
+              });
+              
          </script>
 
          <footer>
