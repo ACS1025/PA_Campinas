@@ -129,10 +129,14 @@
         }
         
         footer {
-            margin-top: 20px;
+            margin-top: 50px;
             text-align: center;
             font-size: 0.9em;
-            color: #777;
+            color: #f9f6f6;
+            padding: 10px 0;
+            background-color: transparent;
+            border-top: 1px solid gray;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
         }
         
         html {
@@ -293,7 +297,7 @@
 
 
         <!-- Segundo Container -->
-           <div class="container" id="confirmacao">
+        <div class="container" id="confirmacao">
             <h2>Confirmação de Escolta</h2>
             <br>
             <form id="formConfirmacao" onsubmit="enviarFormulario('confirmacao'); return false;">
@@ -303,60 +307,60 @@
                         <label for="data_confirmacao">Data de Confirmação:</label>
                         <input type="datetime-local" id="data_confirmacao" name="data_confirmacao">
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="manifesto">Manifesto:</label>
                         <input type="text" id="manifesto" name="manifesto">
                     </div>
-            
+        
                     <div class="form-group">
-                        <label for="equipe_escolta">Equipe programada:</label>
-                        <select id="equipe_escolta" name="equipe_escolta">
-                            <option>Selecione</option>
-                            <option value="op1">01</option>
-                            <option value="opcao2">02</option>
-                            <option value="opcao3">03</option>
+                        <label for="equipe_programada">Equipe programada:</label>
+                        <select id="equipe_programada" name="equipe_escolta">
+                            <option value="">Selecione</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
                         </select>
                     </div>
-            
+        
                     <div class="form-group">
-                        <label for="equipe_escolta">Equipe escolta:</label>
-                        <input type="text" id="equipe_escolta" name="equipe_escolta">                     
+                        <label for="equipe_escolta_input">Equipe escolta:</label>
+                        <input type="text" id="equipe_escolta_input" name="equipe_escolta_input">                     
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="placa_escolta">Placa Escolta:</label>
                         <input type="text" id="placa_escolta" name="placa_escolta">
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="distancia">Distância:</label>
                         <select id="distancia" name="distancia">
-                            <option>Selecione</option>
-                            <option value="opcao1">Origem</option>
-                            <option value="opcao2">100 Km</option>
-                            <option value="opcao3">150 Km</option>
-                            <option value="opcao4">200 Km</option>
-                            <option value="opcao5">250 Km</option>
-                            <option value="opcao6">300 Km</option>
+                            <option value="">Selecione</option>
+                            <option value="Origem">Origem</option>
+                            <option value="100 Km">100 Km</option>
+                            <option value="150 Km">150 Km</option>
+                            <option value="200 Km">200 Km</option>
+                            <option value="250 Km">250 Km</option>
+                            <option value="300 Km">300 Km</option>
                         </select>
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="ponto_encontro">Ponto de encontro:</label>
                         <input type="text" id="ponto_encontro" name="ponto_encontro" placeholder="Digite o nome do local">
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="cliente">Cliente:</label>
                         <input type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente">
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="inicio_operacao">Início da operação:</label>
-                        <input type="datetime-local" id="dataHora" name="dataHora">
+                        <input type="datetime-local" id="inicio_operacao" name="inicio_operacao">
                     </div>
-            
+        
                     <div class="form-group">
                         <label for="observacao">Observação:</label>
                         <textarea id="observacao" name="observacao" placeholder="Escreva sua observação"></textarea>
@@ -373,12 +377,21 @@
     </footer>
     
     <script>
-        // Função para preencher automaticamente a data e hora atuais
-        window.onload = function() {
-            const agora = new Date();
-            const dataHoraFormatada = agora.toISOString().slice(0, 16);
-            document.getElementById('data').value = dataHoraFormatada;
-        };
+       // Função para preencher automaticamente a data e hora atuais no horário de Brasília
+       window.onload = function() {
+        const agora = new Date();
+
+        // Obtendo o fuso horário de Brasília
+        const fusoHorarioBrasilia = -3; // UTC-3
+        const horarioBrasilia = new Date(agora.getTime() + (fusoHorarioBrasilia * 60 * 60 * 1000));
+
+        // Formatando a data e hora para o formato ISO e extraindo os primeiros 16 caracteres
+        const dataHoraFormatada = horarioBrasilia.toISOString().slice(0, 16);
+        
+        // Preenche os campos de data
+        document.getElementById('data').value = dataHoraFormatada; // Para a solicitação
+        document.getElementById('data_confirmacao').value = dataHoraFormatada; // Para a confirmação
+    };
 
         const listaPlacas = ['.ABR-2870', 
         'AAA-0000', 
