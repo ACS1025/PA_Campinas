@@ -173,121 +173,124 @@
             <form id="formSolicitacao" onsubmit="enviarFormulario('solicitacao'); return false;">
                 <input type="hidden" name="formType" value="solicitacao">
                 <div class="form-container">
-                    <div class="form-group">
-                        <label for="data">Data solicitação:</label>
-                        <input type="datetime-local" id="data" name="data" value="" readonly>
-                    </div>
+                  <div class="form-group">
+                    <label for="data">Data solicitação:</label>
+                    <input type="datetime-local" id="data" name="data" value="" readonly>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="filial">Filial</label>
+                    <select id="filial" name="filial">
+                      <option>Selecione a filial</option>
+                      <option value="CAMPINAS/ SP">CAMPINAS/ SP</option>
+                      <option value="BELÉM/ PA">BELÉM/ PA</option>
+                      <option value="MANAUS/ AM">MANAUS/ AM</option>
+                    </select>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="solicitante">Solicitante</label>
+                    <select id="solicitante" name="solicitante">
+                      <option>Selecione</option>
+                      <option value="ADRIAN FERREIRA">ADRIAN FERREIRA</option>
+                      <option value="DOUGLAS SANTIAGO">DOUGLAS SANTIAGO</option>
+                      <option value="EDSON SOUZA">EDSON SOUZA</option>
+                      <option value="GUSTAVO VANZEI">GUSTAVO VANZEI</option>
+                      <option value="LUCAS LIMA">LUCAS LIMA</option>
+                    </select>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="equipe">Programar equipe</label>
+                    <select id="equipe" name="equipe">
+                      <option>Selecione</option>
+                      <option value="01">01</option>
+                      <option value="02">02</option>
+                      <option value="03">03</option>
+                    </select>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="distancia">Distância:</label>
+                    <select id="distancia" name="distancia">
+                      <option>Selecione</option>
+                      <option value="Origem">Origem</option>
+                      <option value="100 Km">100 Km</option>
+                      <option value="150 Km">150 Km</option>
+                      <option value="200 Km">200 Km</option>
+                      <option value="250 Km">250 Km</option>
+                      <option value="300 Km">300 Km</option>
+                    </select>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="saida">Saída:</label>
+                    <input type="date" id="saida" name="saida">
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="doc_origem">Origem:</label>
+                    <input type="text" id="doc_origem" name="doc_origem" placeholder="Digite a cidade" oninput="buscarCidades(this.value, 'origem')">
+                    <ul id="lista-origem"></ul>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="doc_destino">Destino:</label>
+                    <input type="text" id="doc_destino" name="doc_destino" placeholder="Digite a cidade" oninput="buscarCidades(this.value, 'destino')">
+                    <ul id="lista-destino"></ul>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="ponto_encontro">Ponto de encontro:</label>
+                    <input type="text" id="ponto_encontro" name="ponto_encontro" placeholder="Digite o nome o local">
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="cliente">Cliente:</label>
+                    <input type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente">
+                  </div>
 
-                    <div class="form-group">
-                        <label for="filial">Filial</label>
-                        <select id="filial">
-                            <option>Selecione a filial</option>
-                            <option value="opcao1">CAMPINAS/ SP</option>
-                            <option value="opcao2">BELÉM/ PA</option>
-                            <option value="opcao3">MANAUS/ AM</option>
-                        </select>
-                    </div>
+                  <div class="form-group">
+                    <label for="sm">SM</label>
+                    <input type="text" id="sm" name="sm">
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="doc_placa">Placa:</label>
+                    <input type="text" id="doc_placa" name="doc_placa" placeholder="Digite a placa" oninput="buscarPlacas(this.value)">
+                    <ul id="lista-placa" class="autocomplete-list"></ul>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="doc_carreta">Carreta:</label>
+                    <input type="text" id="doc_carreta" name="doc_carreta" placeholder="Digite a carreta" oninput="buscarCarretas(this.value)">
+                    <ul id="lista-carreta" class="autocomplete-list"></ul>
+                  </div>
 
-                    <div class="form-group">
-                        <label for="solicitante">Solicitante</label>
-                        <select id="solicitante">
-                            <option>Selecione</option>
-                            <option value="ADRIAN FERREIRA">ADRIAN FERREIRA</option>
-                            <option value="DOUGLAS SANTIAGO">DOUGLAS SANTIAGO</option>
-                            <option value="EDSON SOUZA">EDSON SOUZA</option>
-                            <option value="GUSTAVO VANZEI">GUSTAVO VANZEI</option>
-                            <option value="LUCAS LIMA">LUCAS LIMA</option>
-                        </select>
-                    </div>
+                  <div class="form-group">
+                    <label for="doc_motorista">Motorista:</label>
+                    <input type="text" id="doc_motorista" name="doc_motorista" placeholder="Digite o motorista" oninput="buscarMotoristas(this.value)">
+                    <ul id="lista-motorista" class="autocomplete-list"></ul>
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone">
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="manifesto">Manifesto</label>
+                    <input type="text" id="manifesto" name="manifesto">
+                  </div>
 
-                    <div class="form-group">
-                        <label for="equipe">Programar equipe</label>
-                        <select id="equipe">
-                            <option>Selecione</option>
-                            <option value="opcao1">01</option>
-                            <option value="opcao2">02</option>
-                            <option value="opcao3">03</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="distancia">Distância:</label>
-                        <select id="distancia">
-                            <option>Selecione</option>
-                            <option value="opcao1">Origem</option>
-                            <option value="opcao2">100 Km</option>
-                            <option value="opcao3">150 Km</option>
-                            <option value="opcao4">200 Km</option>
-                            <option value="opcao5">250 Km</option>
-                            <option value="opcao6">300 Km</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="saida">Saída:</label>
-                        <input type="date" id="saida" name="saida">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="doc_origem">Origem:</label>
-                        <input type="text" id="doc_origem" name="doc_origem" placeholder="Digite a cidade" oninput="buscarCidades(this.value, 'origem')">
-                        <ul id="lista-origem"></ul>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="doc_destino">Destino:</label>
-                        <input type="text" id="doc_destino" name="doc_destino" placeholder="Digite a cidade" oninput="buscarCidades(this.value, 'destino')">
-                        <ul id="lista-destino"></ul>
-                    </div>
-                    
-
-                    <div class="form-group">
-                        <label for="ponto_encontro">Ponto de encontro:</label>
-                        <input type="text" id="ponto_encontro" name="ponto_encontro" placeholder="Digite o nome o local">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cliente">Cliente:</label>
-                        <input type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="doc_placa">Placa:</label>
-                        <input type="text" id="doc_placa" name="doc_placa" placeholder="Digite a placa" oninput="buscarPlacas(this.value)">
-                        <ul id="lista-placa" class="autocomplete-list"></ul>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="sm">SM</label>
-                        <input type="text" id="sm" name="frota">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="doc_carreta">Carreta:</label>
-                        <input type="text" id="doc_carreta" name="doc_carreta" placeholder="Digite a carreta" oninput="buscarCarretas(this.value)">
-                        <ul id="lista-carreta" class="autocomplete-list"></ul>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="doc_motorista">Motorista:</label>
-                        <input type="text" id="doc_motorista" name="doc_motorista" placeholder="Digite o motorista" oninput="buscarMotoristas(this.value)">
-                        <ul id="lista-motorista" class="autocomplete-list"></ul>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="text" id="telefone" name="telefone">
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="manifesto">Manifesto</label>
-                        <input type="text" id="manifesto" name="manifesto">
-                    </div>
+                  <input type="submit" value="Enviar">
                 </div>
-                
-                <input type="submit" value="Enviar">
-            </form>
-        </div>
+              </form>
+              </div>
+              
+              
+    
+
 
         <!-- Segundo Container -->
            <div class="container" id="confirmacao">
@@ -300,37 +303,35 @@
                         <label for="data_confirmacao">Data de Confirmação:</label>
                         <input type="datetime-local" id="data_confirmacao" name="data_confirmacao">
                     </div>
-
+            
                     <div class="form-group">
                         <label for="manifesto">Manifesto:</label>
                         <input type="text" id="manifesto" name="manifesto">
                     </div>
-
-
+            
                     <div class="form-group">
                         <label for="equipe_escolta">Equipe programada:</label>
-                        <select id="equipe_escolta">
+                        <select id="equipe_escolta" name="equipe_escolta">
                             <option>Selecione</option>
                             <option value="opcao1">01</option>
                             <option value="opcao2">02</option>
                             <option value="opcao3">03</option>
                         </select>
                     </div>
-
+            
                     <div class="form-group">
                         <label for="equipe_escolta">Equipe escolta:</label>
-                        <input type="text" id="equipe_escolta">                     
+                        <input type="text" id="equipe_escolta" name="equipe_escolta">                     
                     </div>
-
+            
                     <div class="form-group">
                         <label for="placa_escolta">Placa Escolta:</label>
                         <input type="text" id="placa_escolta" name="placa_escolta">
                     </div>
-
-
+            
                     <div class="form-group">
                         <label for="distancia">Distância:</label>
-                        <select id="distancia">
+                        <select id="distancia" name="distancia">
                             <option>Selecione</option>
                             <option value="opcao1">Origem</option>
                             <option value="opcao2">100 Km</option>
@@ -340,22 +341,22 @@
                             <option value="opcao6">300 Km</option>
                         </select>
                     </div>
-
+            
                     <div class="form-group">
                         <label for="ponto_encontro">Ponto de encontro:</label>
                         <input type="text" id="ponto_encontro" name="ponto_encontro" placeholder="Digite o nome do local">
                     </div>
-
+            
                     <div class="form-group">
                         <label for="cliente">Cliente:</label>
                         <input type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente">
                     </div>
-
+            
                     <div class="form-group">
                         <label for="inicio_operacao">Início da operação:</label>
                         <input type="datetime-local" id="dataHora" name="dataHora">
                     </div>
-
+            
                     <div class="form-group">
                         <label for="observacao">Observação:</label>
                         <textarea id="observacao" name="observacao" placeholder="Escreva sua observação"></textarea>
@@ -5580,94 +5581,7 @@
         'YGOR SILETE', 
         'ZILDO BARBOSA DE SOUZA'
         ]; // Exemplo de lista de motoristas
-        
-        // Função para buscar placas
-        function buscarPlacas(input) {
-            const lista = document.getElementById('lista-placa');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const placasFiltradas = listaPlacas.filter(placa => placa.toLowerCase().includes(input.toLowerCase()));
-                if (placasFiltradas.length > 0) {
-                    lista.style.display = 'block';
-                    placasFiltradas.forEach(placa => {
-                        const li = document.createElement('li');
-                        li.textContent = placa;
-                        li.onclick = () => selecionarPlacas(placa);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarPlacas(placa) {
-            document.getElementById('doc_placa').value = placa;
-            document.getElementById('lista-placa').innerHTML = '';
-            document.getElementById('lista-placa').style.display = 'none';
-        }
-        
-        // Função para buscar carretas
-        function buscarCarretas(input) {
-            const lista = document.getElementById('lista-carreta');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const carretasFiltradas = listaCarretas.filter(carreta => carreta.toLowerCase().includes(input.toLowerCase()));
-                if (carretasFiltradas.length > 0) {
-                    lista.style.display = 'block';
-                    carretasFiltradas.forEach(carreta => {
-                        const li = document.createElement('li');
-                        li.textContent = carreta;
-                        li.onclick = () => selecionarCarretas(carreta);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarCarretas(carreta) {
-            document.getElementById('doc_carreta').value = carreta;
-            document.getElementById('lista-carreta').innerHTML = '';
-            document.getElementById('lista-carreta').style.display = 'none';
-        }
-        
-        // Função para buscar motoristas
-        function buscarMotoristas(input) {
-            const lista = document.getElementById('lista-motorista');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const motoristasFiltrados = listaMotoristas.filter(motorista => motorista.toLowerCase().includes(input.toLowerCase()));
-                if (motoristasFiltrados.length > 0) {
-                    lista.style.display = 'block';
-                    motoristasFiltrados.forEach(motorista => {
-                        const li = document.createElement('li');
-                        li.textContent = motorista;
-                        li.onclick = () => selecionarMotoristas(motorista);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarMotoristas(motorista) {
-            document.getElementById('doc_motorista').value = motorista;
-            document.getElementById('lista-motorista').innerHTML = '';
-            document.getElementById('lista-motorista').style.display = 'none';
-        }
-        
-
-// Lista de cidades para autocomplete
-const listaCidades = ['ABADIA DE GOIÁS/ GO', 
+        const listaCidades = ['ABADIA DE GOIÁS/ GO', 
         'ABADIA DOS DOURADOS/ MG', 
         'ABADIÂNIA/ GO', 
         'ABAETÉ/ MG', 
@@ -11236,7 +11150,94 @@ const listaCidades = ['ABADIA DE GOIÁS/ GO',
         'ZABELÊ/ PB', 
         'ZACARIAS/ SP', 
         'ZÉ DOCA/ MA', 'ZORTÉA/ SC', 
-    ];
+        ];
+
+
+        // Função para buscar placas
+        function buscarPlacas(input) {
+            const lista = document.getElementById('lista-placa');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const placasFiltradas = listaPlacas.filter(placa => placa.toLowerCase().includes(input.toLowerCase()));
+                if (placasFiltradas.length > 0) {
+                    lista.style.display = 'block';
+                    placasFiltradas.forEach(placa => {
+                        const li = document.createElement('li');
+                        li.textContent = placa;
+                        li.onclick = () => selecionarPlacas(placa);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarPlacas(placa) {
+            document.getElementById('doc_placa').value = placa;
+            document.getElementById('lista-placa').innerHTML = '';
+            document.getElementById('lista-placa').style.display = 'none';
+        }
+        
+        // Função para buscar carretas
+        function buscarCarretas(input) {
+            const lista = document.getElementById('lista-carreta');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const carretasFiltradas = listaCarretas.filter(carreta => carreta.toLowerCase().includes(input.toLowerCase()));
+                if (carretasFiltradas.length > 0) {
+                    lista.style.display = 'block';
+                    carretasFiltradas.forEach(carreta => {
+                        const li = document.createElement('li');
+                        li.textContent = carreta;
+                        li.onclick = () => selecionarCarretas(carreta);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarCarretas(carreta) {
+            document.getElementById('doc_carreta').value = carreta;
+            document.getElementById('lista-carreta').innerHTML = '';
+            document.getElementById('lista-carreta').style.display = 'none';
+        }
+        
+        
+        // Função para buscar motoristas
+        function buscarMotoristas(input) {
+            const lista = document.getElementById('lista-motorista');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const motoristasFiltrados = listaMotoristas.filter(motorista => motorista.toLowerCase().includes(input.toLowerCase()));
+                if (motoristasFiltrados.length > 0) {
+                    lista.style.display = 'block';
+                    motoristasFiltrados.forEach(motorista => {
+                        const li = document.createElement('li');
+                        li.textContent = motorista;
+                        li.onclick = () => selecionarMotoristas(motorista);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarMotoristas(motorista) {
+            document.getElementById('doc_motorista').value = motorista;
+            document.getElementById('lista-motorista').innerHTML = '';
+            document.getElementById('lista-motorista').style.display = 'none';
+        }
+        
 
 // Função para buscar cidades e exibir resultados de autocomplete
 function buscarCidades(input, tipo) {
