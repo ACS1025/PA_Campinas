@@ -84,8 +84,8 @@
             font-size: 0.9em;
             color: #f9f6f6;
             padding: 10px 0;
-            background-color: #9b9a9a;
-            border-top: 1px solid #9b9a9a;
+            background-color: transparent;
+            border-top: 1px solid gray;
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
         }
         
@@ -187,13 +187,14 @@
         
         <div class="container">
             <div class="form-image">
-                <img src="src/img/ssonic.ico" alt="Supersonic">
+                <img src="src/img/supersonic.png" alt="Supersonic">
             </div>
   
             <h2>Registro de saídas</h2>
             <br>
             <form id="registro-saidas-form" action="https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec" method="POST">
                 <input type="hidden" name="linkBase" value="PA_Campinas">
+            
                 <div class="input-box">
                     <label for="responsavel">Responsável pelo registro:</label>
                     <select id="responsavel" name="responsavel" required>
@@ -206,16 +207,16 @@
                         <option value="THAMARA">THAMARA</option>
                     </select>
                 </div>
-                
+            
                 <div class="input-box">
                     <label for="data_emissao">Data da emissão:</label>
                     <input type="date" id="data_emissao" name="data_emissao">
                 </div>
-
+            
                 <div class="input-box">
                     <label for="doc_saida">Doc. saída:</label>
-                    <select id="doc_saida" name="doc_saida">
-                        <option value="Selecione tipo de saída">Selecione tipo de saída</option>
+                    <select id="doc_saida" name="doc_saida" onchange="atualizarCarretaStatus()" required>
+                        <option value="">Selecione tipo de saída</option>
                         <option value="ORDEM DE COLETA">ORDEM DE COLETA</option>
                         <option value="AUT. SAÍDA">AUT. SAÍDA</option>
                         <option value="AUTORIZAÇÃO DE SAÍDA">AUTORIZAÇÃO DE SAÍDA</option>
@@ -223,114 +224,116 @@
                         <option value="MANUTENÇÃO">MANUTENÇÃO</option>
                     </select>
                 </div>
-
+            
                 <div class="input-box">
                     <label for="ordem">Ordem:</label>
                     <input type="text" id="ordem" name="ordem">
                 </div>
-
-                <!-- Novas linhas para inserção -->
+            
+                <!-- Novos campos ajustados com autocomplete -->
                 <div class="form-group">
                     <label for="doc_placa">Placa:</label>
                     <input type="text" id="doc_placa" name="doc_placa" placeholder="Digite a placa" oninput="buscarPlacas(this.value)">
                     <ul id="lista-placa" class="autocomplete-list"></ul>
-                </div>
-
+                  </div>
+            
                 <div class="input-box">
-                    <label for="frota" style="font-weight: bold;">Frota:</label>
+                    <label for="frota">Frota:</label>
                     <input type="text" id="frota" name="frota">
                 </div>
-
-                <div class="form-group">
+            
+                <div class="input-box">
                     <label for="doc_carreta">Carreta:</label>
                     <input type="text" id="doc_carreta" name="doc_carreta" placeholder="Digite a carreta" oninput="buscarCarretas(this.value)">
                     <ul id="lista-carreta" class="autocomplete-list"></ul>
                 </div>
-
-                <div class="form-group">
+            
+                <div class="input-box">
                     <label for="doc_motorista">Motorista:</label>
                     <input type="text" id="doc_motorista" name="doc_motorista" placeholder="Digite o motorista" oninput="buscarMotoristas(this.value)">
                     <ul id="lista-motorista" class="autocomplete-list"></ul>
                 </div>
-
-                <div class="form-group">
+            
+                <div class="input-box">
                     <label for="doc_cliente">Cliente:</label>
                     <input type="text" id="doc_cliente" name="doc_cliente" placeholder="Digite a cliente" oninput="buscarClientes(this.value, 'cliente')">
                     <ul id="lista-cliente"></ul>
                 </div>
-
+            
                 <div class="form-group">
                     <label for="filial">Filial</label>
-                    <select id="filial">
-                        <option>Selecione a filial</option>
-                        <option value="opcao1">CAMPINAS/ SP</option>
-                        <option value="opcao2">BELÉM/ PA</option>
-                        <option value="opcao3">MANAUS/ AM</option>
+                    <select id="filial" name="filial">
+                      <option>Selecione a filial</option>
+                      <option value="CAMPINAS/ SP">CAMPINAS/ SP</option>
+                      <option value="BELÉM/ PA">BELÉM/ PA</option>
+                      <option value="MANAUS/ AM">MANAUS/ AM</option>
                     </select>
-                </div>
-
-                <div class="form-group">
+                  </div>
+            
+                <div class="input-box">
                     <label for="doc_origem">Origem:</label>
-                    <input type="text" id="doc_origem" name="doc_origem" placeholder="Digite a cidade" oninput="buscarCidades(this.value, 'origem')">
+                    <input type="text" id="doc_origem" name="doc_origem" placeholder="Digite a cidade" 
+                           oninput="buscarCidades(this.value, 'origem'); updateRoute();">
                     <ul id="lista-origem"></ul>
                 </div>
-
-                <div class="form-group">
+                
+                <div class="input-box">
                     <label for="doc_destino">Destino:</label>
-                    <input type="text" id="doc_destino" name="doc_destino" placeholder="Digite a cidade" oninput="buscarCidades(this.value, 'destino')">
+                    <input type="text" id="doc_destino" name="doc_destino" placeholder="Digite a cidade" 
+                           oninput="buscarCidades(this.value, 'destino'); updateRoute();">
                     <ul id="lista-destino"></ul>
                 </div>
-
+            
                 <div class="input-box">
-                    <label for="rota" style="font-weight: bold;">Rota:</label>
+                    <label for="rota">Rota:</label>
                     <input type="text" id="rota" name="rota" readonly>
-                </div>
-
+                </div>  
+            
                 <div class="input-box">
-                        <label for="doc_viagem_rastreada" style="font-weight: bold;">Viagem rastreada:</label>
-                        <select id="doc_viagem_rastreada" name="doc_viagem_rastreada">
-                            <option value="Selecione a GR">Selecione a GR</option>
-                            <option value="KMD">KMD</option>
-                            <option value="BR RISK">BR RISK</option>
-                            <option value="KRONA">KRONA</option>
-                            <option value="OPENTECH">OPENTECH</option>
-                            <option value="BUONNY">BUONNY</option>
-                            <option value="TECNORISK">TECNORISK</option>
-                        </select>
-                    </div>
-
-                    <div class="input-box">
-                        <label for="valor" style="font-weight: bold;">Valor:</label>
-                        <input type="text" id="valor" name="valor" onkeyup="formatarMoeda(this)">
-                    </div>
-
-                    <div class="input-box">
-                        <label for="cod_sm" style="font-weight: bold;">Cód. SM:</label>
-                        <input type="text" id="cod_sm" name="cod_sm">
-                    </div>
-                
-                    <div class="input-box">
-                        <label for="carreta_status" style="font-weight: bold;">Carreta status:</label>
-                        <select id="doc_carreta_status" name="carreta_status">
-                            <option value="Selecione o status">Selecione o status</option>
-                            <option value="VAZIO">VAZIO</option>
-                            <option value="CARREGADO">CARREGADO</option>
-                        </select>
-                    </div>
-                
-                    <div class="input-box">
-                        <label for="doc_turno" style="font-weight: bold;">Turno:</label>
-                        <select id="doc_turno" name="doc_turno">
-                            <option value="Selecione o turno de saída">Selecione o turno de saída</option>
-                            <option value="T1">T1</option>
-                            <option value="T2">T2</option>
-                        </select>
-                    </div>
-                
-                    <div class="input-box">
-                        <label for="doc_responsavel_ssonic" style="font-weight: bold;">Responsável SS:</label>
-                        <select id="doc_responsavel_ssonic" name="doc_responsavel_ssonic">
-                            <option value="Selecione o responsável SSONIC">Selecione o responsável SSONIC</option>
+                    <label for="doc_viagem_rastreada">Viagem rastreada:</label>
+                    <select id="doc_viagem_rastreada" name="doc_viagem_rastreada">
+                        <option value="">Selecione a GR</option>
+                        <option value="KMD">KMD</option>
+                        <option value="BR RISK">BR RISK</option>
+                        <option value="KRONA">KRONA</option>
+                        <option value="OPENTECH">OPENTECH</option>
+                        <option value="BUONNY">BUONNY</option>
+                        <option value="TECNORISK">TECNORISK</option>
+                    </select>
+                </div>
+            
+                <div class="input-box">
+                    <label for="valor">Valor:</label>
+                    <input type="text" id="valor" name="valor" onkeyup="formatarMoeda(this)">
+                </div>
+            
+                <div class="input-box">
+                    <label for="cod_sm">Cód. SM:</label>
+                    <input type="text" id="cod_sm" name="cod_sm">
+                </div>
+            
+                <div class="input-box">
+                    <label for="carreta_status">Carreta status:</label>
+                    <select id="doc_carreta_status" name="carreta_status">
+                        <option value="">Selecione o status</option>
+                        <option value="VAZIO">VAZIO</option>
+                        <option value="CARREGADO">CARREGADO</option>
+                    </select>
+                </div>
+            
+                <div class="input-box">
+                    <label for="doc_turno">Turno:</label>
+                    <select id="doc_turno" name="doc_turno">
+                        <option value="">Selecione o turno de saída</option>
+                        <option value="T1">T1</option>
+                        <option value="T2">T2</option>
+                    </select>
+                </div>
+            
+                <div class="input-box">
+                    <label for="doc_responsavel_ssonic">Responsável SS:</label>
+                    <select id="doc_responsavel_ssonic" name="doc_responsavel_ssonic">
+                        <option value="">Selecione o responsável SSONIC</option>
                             <option value="ADRIAN FERREIRA">ADRIAN FERREIRA</option>
                             <option value="ALTAIR">ALTAIR</option>
                             <option value="ANDRÉA SATIRO">ANDRÉA SATIRO</option>
@@ -349,27 +352,40 @@
                             <option value="LUCAS">LUCAS</option>
                             <option value="LUCAS LIMA">LUCAS LIMA</option>
                             <option value="MARCELO MORAES">MARCELO MORAES</option>
-                            <option value="MAURICIO">MARCELO MORAES</option>
+                            <option value="MAURICIO">MAURICIO</option>
                             <option value="ROGÉRIO">ROGÉRIO</option>
                             <option value="RONEY CASSIO">RONEY CASSIO</option>
                             <option value="RUY">RUY</option>
                             <option value="TARSICIO">TARSICIO</option>
                         </select>
-                    </div>
-
-                    <div class="input-group">
-                        <div class="input-box">
-                            <label for="data_saida" style="font-weight: bold;">Data da saída:</label>
-                            <input type="date" id="data_saida" name="data_saida">
-                        </div>
-
-                <button type="submit">Enviar</button>
+                </div>
+            
+                <div class="input-box">
+                    <label for="data_saida">Data da saída:</label>
+                    <input type="date" id="data_saida" name="data_saida">
+                </div>
+            
+                <div class="input-box">
+                    <button type="submit" class="btn-enviar">Enviar</button>
+                </div>
             </form>
         </div>
     </div>
 
     
          <script>
+
+            function atualizarCarretaStatus() {
+                var docSaida = document.getElementById("doc_saida").value;
+                var carretaStatus = document.getElementById("doc_carreta_status");
+        
+                // Se "MANIFESTO" for selecionado, o status da carreta será "CARREGADO", caso contrário, será "VAZIO"
+                if (docSaida === "MANIFESTO") {
+                    carretaStatus.value = "CARREGADO";
+                } else {
+                    carretaStatus.value = "VAZIO";
+                }
+            }    
 
     // Obtém a data atual
     const dataAtual = new Date();
@@ -11589,16 +11605,23 @@ document.getElementById('doc_destino').addEventListener('input', function() {
     buscarCidades(this.value, 'destino');
 });
 
-// Concatena os valores de origem e destino para o campo "ROTA"
-document.getElementById("doc_origem").addEventListener("change", updateRoute);
-document.getElementById("doc_destino").addEventListener("change", updateRoute);
+     // Função para atualizar a rota com base na origem e destino
+    function updateRoute() {
+        var origem = document.getElementById("doc_origem").value;
+        var destino = document.getElementById("doc_destino").value;
 
-function updateRoute() {
-    var origem = document.getElementById("doc_origem").value;
-    var destino = document.getElementById("doc_destino").value;
-    var rota = origem + " X " + destino;
-    document.getElementById("rota").value = rota;
-}
+        // Concatena a rota
+        var rota = "";
+        if (origem && destino) {
+            rota = "XX " + origem + " X " + destino; // Formato: XX ORIGEM X DESTINO
+        } else if (origem || destino) {
+            rota = (origem || "XX") + " X " + (destino || "XX"); // Formato: ORIGEM X DESTINO, substituindo vazio por XX
+        } else {
+            rota = "XX"; // Se nenhum campo estiver preenchido, mostrar XX como padrão
+        }
+
+        document.getElementById("rota").value = rota; // Atualiza o campo Rota
+    }
 
 // Formata o valor como moeda
 function formatarMoeda(elemento) {
