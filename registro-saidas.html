@@ -263,7 +263,7 @@
                 <div class="form-group">
                     <label for="filial">Filial:</label>
                     <select id="filial" name="filial">
-                        <option value="">Selecione a filial</option>
+                        <option value="">Selecione</option>
                         <option value="CAMPINAS/ SP">CAMPINAS/ SP</option>
                         <option value="BELÉM/ PA">BELÉM/ PA</option>
                         <option value="MANAUS/ AM">MANAUS/ AM</option>
@@ -11670,22 +11670,37 @@ const scriptProp = PropertiesService.getScriptProperties();
               }
               
               function doPost(e) {
-                const resposta = {};
+                const lock = LockService.getScriptLock();
+                lock.tryLock(10000);
+            
                 try {
-                    // Acessa os dados enviados
-                    const dados = e.parameter;
+                    // Abrir a planilha e a aba especificada
+                    const doc = SpreadsheetApp.openById(scriptProp.getProperty('key'));
+                    const sheet = doc.getSheetByName(sheetName);
             
-                    // Aqui você pode processar os dados, como inseri-los em uma planilha
-                    Logger.log(dados);
+                    // Obter os cabeçalhos e identificar a próxima linha
+                    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+                    const nextRow = sheet.getLastRow() + 1;
             
-                    resposta.status = "success";
-                    resposta.message = "Dados recebidos com sucesso!";
+                    // Mapear os dados do formulário, incluindo "Filial" e "Placa"
+                    const newRow = headers.map(function(header) {
+                        return e.parameter[header] !== undefined ? e.parameter[header] : ''; // Garante que todos os campos sejam inseridos
+                    });
+            
+                    // Inserir os dados na próxima linha disponível
+                    sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
+            
+                    // Redirecionar o usuário de volta para a página desejada após o envio
+                    const linkBase = 'https://acs1025.github.io/PA_Campinas/index.html';
+                    return HtmlService.createHtmlOutput(`<script>window.location.href = '${linkBase}';</script>`);
+                    
                 } catch (error) {
-                    resposta.status = "error";
-                    resposta.message = error.message;
+                    // Em caso de erro, redirecionar para a URL com um alerta
+                    const linkBase = 'https://acs1025.github.io/PA_Campinas/index.html';
+                    return HtmlService.createHtmlOutput(`<script>alert('Erro: ${error.message}'); window.location.href = '${linkBase}';</script>`);
+                } finally {
+                    lock.releaseLock();
                 }
-                
-                return ContentService.createTextOutput(JSON.stringify(resposta)).setMimeType(ContentService.MimeType.JSON);
             }
             
               
