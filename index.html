@@ -52,6 +52,13 @@
             height: 40px;
         }
 
+        .icon-link img {
+            width: 50px; /* Ajuste o tamanho da imagem conforme necessário */
+            height: 50px;
+            border-radius: 50%; /* Torna a imagem redonda */
+            object-fit: cover; /* Ajusta a imagem para preencher o círculo */
+          }
+
         .image-container {
             width: 300px; /* Ajuste a largura conforme necessário */
         }
@@ -72,8 +79,8 @@
             background-color: rgba(255, 255, 255, 0.9);
             text-align: center;
             color: #333;
-        }
-
+        }    
+                 
         @media (max-width: 768px) {
             .dashboard-card {
                 flex: 1 1 calc(50% - 40px);
