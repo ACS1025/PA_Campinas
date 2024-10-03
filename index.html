@@ -5,20 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://apis.google.com/js/api.js" async defer></script>
-    <title>PA-Campinas</title>
+    <title>Home - PA-Campinas</title>
     <style>
+        /* Estilos principais */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-image: url('src/img/background.jpg'); /* Inclua o caminho da imagem de fundo */
+            background-image: url('src/img/Registro\ de\ Saidas.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            background-color: transparent;
+            border-radius: 10px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .sidebar {
+            width: 200px; /* Ajuste a largura conforme necessário */
+            margin-right: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-link {
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .icon-link img {
+            width: 40px; /* Ajuste o tamanho do ícone */
+            height: 40px;
+        }
+
+        .image-container {
+            width: 300px; /* Ajuste a largura conforme necessário */
         }
 
         .dashboard {
@@ -26,42 +61,29 @@
             flex-wrap: wrap;
             justify-content: center;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro com opacidade */
-            border-radius: 10px;
-            margin: 20px;
         }
 
         .dashboard-card {
-            flex: 1 1 calc(30% - 40px); /* Cada cartão ocupa 30% da largura */
+            flex: 1 1 calc(30% - 40px);
             margin: 20px;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.9); /* Fundo claro com opacidade */
+            background-color: rgba(255, 255, 255, 0.9);
             text-align: center;
             color: #333;
         }
 
-        #chartContainer {
-            width: 100%;
-            height: 400px;
-        }
-
         @media (max-width: 768px) {
             .dashboard-card {
-                flex: 1 1 calc(50% - 40px); /* Reduz para 50% em telas menores */
+                flex: 1 1 calc(50% - 40px);
             }
         }
 
         @media (max-width: 480px) {
             .dashboard-card {
-                flex: 1 1 100%; /* Cada cartão ocupa 100% da largura em telas muito pequenas */
+                flex: 1 1 100%;
             }
-        }
-
-        .error-message {
-            color: red;
-            text-align: center;
         }
 
         ul {
@@ -80,19 +102,19 @@
         .header {
             text-align: center;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: A5896;
             color: white;
         }
 
         .navbar {
             display: flex;
             justify-content: center;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: transparent;
             padding: 10px;
         }
 
         .navbar a {
-            color: white;
+            color: black;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
@@ -102,14 +124,14 @@
         }
 
         .navbar a:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(22, 11, 181, 0.3);
         }
 
         footer {
             text-align: center;
             padding: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
+            background-color: transparent;
+            color: grey;
             position: fixed;
             width: 100%;
             bottom: 0;
@@ -118,7 +140,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>PA-Campinas</h1>
+        <h1>Monitoramento - PA-Campinas</h1>
     </div>
 
     <div class="navbar">
@@ -127,121 +149,54 @@
         <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
     </div>
 
-    <div class="content">
-        <div class="dashboard">
-            <!-- Cartões do dashboard -->
-            <div class="dashboard-card" id="solicitacao-card">
-                <h3>Solicitação de Escolta</h3>
-                <p>Total: <span id="total-solicitacoes">0</span></p>
+    <div class="container">
+        <div class="sidebar">
+            <div class="icon-link">
+                <a href="relatorio1.html"><img src="src/img/icon1.png" alt="Relatório 1"></a>
+                <p>Relatório 1</p>
             </div>
-            <div class="dashboard-card" id="distancia-card">
-                <h3>Total por Distância</h3>
-                <div id="chartContainer"></div> <!-- Gráfico de coluna -->
+            <div class="icon-link">
+                <a href="relatorio2.html"><img src="src/img/icon2.png" alt="Relatório 2"></a>
+                <p>Relatório 2</p>
             </div>
-            <div class="dashboard-card" id="lista-card">
-                <h3>Placas e Ponto de Encontro</h3>
-                <ul id="lista"></ul> <!-- Lista filtrada -->
+            <div class="icon-link">
+                <a href="relatorio3.html"><img src="src/img/icon3.png" alt="Relatório 3"></a>
+                <p>Relatório 3</p>
+            </div>
+            <div class="icon-link">
+                <a href="relatorio4.html"><img src="src/img/icon4.png" alt="Relatório 4"></a>
+                <p>Relatório 4</p>
+            </div>
+            <div class="icon-link">
+                <a href="relatorio5.html"><img src="src/img/icon5.png" alt="Relatório 5"></a>
+                <p>Relatório 5</p>
             </div>
         </div>
-        
-        <div class="error-message" id="error-message"></div> <!-- Área para mensagens de erro -->
+
+        <div class="content">
+            <div class="dashboard">
+                <div class="dashboard-card" id="solicitacao-card">
+                    <h3>Solicitação de Escolta</h3>
+                    <p>Total: <span id="total-solicitacoes">0</span></p>
+                </div>
+                <div class="dashboard-card" id="distancia-card">
+                    <h3>Total por Distância</h3>
+                    <div id="chartContainer"></div>
+                </div>
+                <div class="dashboard-card" id="lista-card">
+                    <h3>Placas e Ponto de Encontro</h3>
+                    <ul id="lista"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="src/img/seu-imagem.jpg" alt="Komandomo" style="width: 100%; border-radius: 10px;">
+        </div>
     </div>
 
     <footer>
         <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
     </footer>
-
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script>
-        function initClient() {
-            gapi.client.init({
-                apiKey: 'YOUR_API_KEY', // Coloque sua chave de API aqui
-                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-            }).then(function () {
-                return gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: 'YOUR_SPREADSHEET_ID', // Substitua pelo ID da sua planilha
-                    range: 'PONTO DE ENCONTRO!A1:R1000', // Altere para o intervalo que você deseja buscar
-                });
-            }).then(function (response) {
-                const data = response.result.values;
-                const totalSolicitacoesEl = document.getElementById('total-solicitacoes');
-                const errorMessage = document.getElementById('error-message');
-                const lista = document.getElementById('lista');
-                const chartContainer = document.getElementById('chartContainer');
-                errorMessage.innerHTML = ''; // Limpa mensagens de erro
-                chartContainer.innerHTML = ''; // Limpa o gráfico anterior
-
-                if (data.length) {
-                    // Inicializando variáveis
-                    let totalSolicitacoes = 0;
-                    const distancias = {};
-                    const filteredList = [];
-
-                    // Processa os dados
-                    data.slice(1).forEach(row => {
-                        if (row[15] && ['SE:FIM DE OPERAÇÃO', 'SOLICITAÇÃO DE ESCOLTA EM ABERTO', 'CONFIRMADO', 'ESCOLTA EM ANDAMENTO', 'NÃO CONFIRMADO'].includes(row[15])) {
-                            totalSolicitacoes += 1;
-
-                            const distancia = parseInt(row[2] || 0);
-                            if (distancias[distancia]) {
-                                distancias[distancia] += 1;
-                            } else {
-                                distancias[distancia] = 1;
-                            }
-
-                            // Filtro para lista
-                            filteredList.push({
-                                placa: row[9],
-                                distancia: row[3],
-                                pontoEncontro: row[7],
-                                cliente: row[8],
-                            });
-                        }
-                    });
-
-                    // Atualiza o total de solicitações
-                    totalSolicitacoesEl.innerHTML = totalSolicitacoes;
-
-                    // Preparar pontos de dados para o gráfico
-                    const dataPoints = Object.keys(distancias).map(distancia => {
-                        return { y: distancias[distancia], label: `${distancia} Km` };
-                    });
-
-                    // Criar o gráfico de coluna
-                    const chart = new CanvasJS.Chart("chartContainer", {
-                        animationEnabled: true,
-                        theme: "light2",
-                        title: {
-                            text: "Total de Solicitações por Distância"
-                        },
-                        axisY: {
-                            title: "Total de Solicitações"
-                        },
-                        data: [{
-                            type: "column",
-                            dataPoints: dataPoints
-                        }]
-                    });
-                    chart.render();
-
-                    // Exibir a lista filtrada
-                    lista.innerHTML = filteredList.map(item => {
-                        return `<li>Placa: ${item.placa}, Distância: ${item.distancia} Km, Ponto de Encontro: ${item.pontoEncontro}, Cliente: ${item.cliente}</li>`;
-                    }).join('');
-                } else {
-                    errorMessage.innerHTML = "Nenhum dado encontrado.";
-                }
-            }, function (response) {
-                const errorMessage = document.getElementById('error-message');
-                errorMessage.innerHTML = "Erro ao acessar a planilha: " + response.result.error.message;
-            });
-        }
-
-        function handleClientLoad() {
-            gapi.load('client', initClient);
-        }
-
-        document.addEventListener("DOMContentLoaded", handleClientLoad);
-    </script>
 </body>
 </html>
