@@ -31,13 +31,13 @@
         }
 
         .content {
-            flex: 1;
+            flex: 2;
             padding: 20px;
+            text-align: center;
         }
 
         .sidebar {
-            width: 200px; /* Ajuste a largura conforme necessário */
-            margin-right: 20px;
+            width: 200px;
             display: flex;
             flex-direction: column;
         }
@@ -48,19 +48,10 @@
         }
 
         .icon-link img {
-            width: 40px; /* Ajuste o tamanho do ícone */
-            height: 40px;
-        }
-
-        .icon-link img {
-            width: 50px; /* Ajuste o tamanho da imagem conforme necessário */
+            width: 50px;
             height: 50px;
-            border-radius: 50%; /* Torna a imagem redonda */
-            object-fit: cover; /* Ajusta a imagem para preencher o círculo */
-          }
-
-        .image-container {
-            width: 300px; /* Ajuste a largura conforme necessário */
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .dashboard {
@@ -155,9 +146,9 @@
         <a href="registro-saidas.html">Registro de Saídas</a>
         <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
     </div>
-    
 
     <div class="container">
+        <!-- Coluna esquerda -->
         <div class="sidebar">
             <div class="icon-link">
                 <a href="https://app.powerbi.com/reportEmbed?reportId=1a7d3c7c-85ca-46c1-9240-025d6a361317&autoAuth=true&ctid=4f246adb-7006-4a8b-8a7b-d2b435a65aaa" target="_blank" rel="noopener noreferrer">
@@ -184,6 +175,7 @@
             </div>
         </div>
 
+        <!-- Conteúdo central -->
         <div class="content">
             <div class="dashboard">
                 <div class="dashboard-card" id="solicitacao-card">
@@ -201,13 +193,41 @@
             </div>
         </div>
 
-        <div class="image-container">
-            <img src="src/img/KmdMonitor.png" alt="Komandomonitor" style="width: 100%; border-radius: 80px;">
+        <!-- Coluna direita -->
+        <div class="sidebar">
+            <!-- Novos Ícones GIF -->
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeEGaGLqegml3MhhjjD_LOrn6SecC0tYEJ9I9wNq8OjACgXww/viewform?embedded=true" target="_blank">
+                    <img src="src/img/checklist.gif" alt="Icon 1">
+                </a>
+                <p>Checklist presencial</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc3SvaWWqrfbBmxj6TdLDr5AbkuF6QD0Fm9kGrwQ0mracRxqw/viewform?embedded=true" target="_blank">
+                    <img src="src/img/briefing.gif" alt="Icon 2">
+                </a>
+                <p>Briefing digital</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/presentation/d/e/2PACX-1vRA6jDzcE_wYCi9tPomaGZol04jb6UspexRU1P_5cBtywUg4frobdVOWUj0bAr8l-B-F2lx4sF8aTsI/pub?start=false&loop=false&delayms=3000" target="_blank">
+                    <img src="src/img/treinamento.gif" alt="Icon 3">
+                </a>
+                <p>Treinamento motorista</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIvZGFCID_1TmfICBGlqWn1AZXAZu-9WIjuBCw3RRxU98F9g/viewform?embedded=true" target="_blank">
+                    <img src="src/img/dica.gif" alt="Icon 4">
+                </a>
+                <p>Dica</p>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
+        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados. by ACS</p>
     </footer>
 </body>
 </html>
