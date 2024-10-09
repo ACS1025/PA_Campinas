@@ -11663,35 +11663,42 @@ const scriptProp = PropertiesService.getScriptProperties();
 
              function doGet(e) {
                 return HtmlService.createHtmlOutput("Hello, world!");
-              }
+         }            
               
-              function doPost(e) {
-                const resposta = e.parameter; // Para acessar os dados do formulário
-                // Aqui você pode processar a resposta, por exemplo, salvando em uma planilha.
-                return ContentService.createTextOutput("Dados recebidos com sucesso!");
-              }
-              
-              function doPost(e) {
-                const resposta = {};
+            function doPost(e) {
+                const lock = LockService.getScriptLock();
+                lock.tryLock(10000);
+            
                 try {
-                    // Acessa os dados enviados
-                    const dados = e.parameter;
+                    const doc = SpreadsheetApp.openById('1rof7JDSESoKGu0n02r5n8wSmSoeHVpMvcX28ncG3jyg');
+                    const sheet = doc.getSheetByName('DADOS');
             
-                    // Aqui você pode processar os dados, como inseri-los em uma planilha
-                    Logger.log(dados);
+                    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+                    const nextRow = sheet.getLastRow() + 1;
             
-                    resposta.status = "success";
-                    resposta.message = "Dados recebidos com sucesso!";
-                } catch (error) {
-                    resposta.status = "error";
-                    resposta.message = error.message;
+                    const newRow = headers.map(function(header) {
+                        return header === 'Date' ? new Date() : e.parameter[header];
+                    });
+            
+                    sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
+            
+                    // Após processar os dados, redirecionar para a página do formulário
+                    return HtmlService.createHtmlOutput('<script>window.top.location.href="https://acs1025.github.io/PA_Campinas/index.html";/script>');
+                } catch (e) {
+                    const errorResponse = {
+                        result: 'error',
+                        error: e
+                    };
+            
+                    return ContentService
+                        .createTextOutput(JSON.stringify(errorResponse))
+                        .setMimeType(ContentService.MimeType.JSON);
+                } finally {
+                    lock.releaseLock();
                 }
-                
-                return ContentService.createTextOutput(JSON.stringify(resposta)).setMimeType(ContentService.MimeType.JSON);
             }
             
-              
-         </script>
+        </script>
 
          <footer>
             <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
