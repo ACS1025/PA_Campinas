@@ -193,7 +193,7 @@
   
             <h2>Registro de saídas</h2>
             <br>
-            <form id="registro-saidas-form" method="POST">
+            <form id="registro-saidas-form" action="https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec" method="POST">
                 <input type="hidden" name="linkBase" value="PA_Campinas">
             
                 <div class="input-box">
@@ -11634,8 +11634,8 @@ function formatarMoeda(elemento) {
     elemento.value = valor;
 }
 
-        const sheetName = 'Dados';
-        const scriptProp = PropertiesService.getScriptProperties();
+const sheetName = 'DADOS_Solicitação';
+const scriptProp = PropertiesService.getScriptProperties();
              
              function updateRoute() {
                  var origem = document.getElementById("doc_origem").value;
@@ -11663,31 +11663,25 @@ function formatarMoeda(elemento) {
 
              function doGet(e) {
                 return HtmlService.createHtmlOutput("Hello, world!");
-         } 
-         document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Evitar o envio padrão do formulário
-
-            const formData = new FormData(this);
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec'; // URL do seu Google Apps Script
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    // Redirecionar para o link fornecido na resposta
-                    window.location.href = data.link; // Use o link retornado pelo script
-                } else {
-                    // Lidar com erro
-                    console.error('Erro:', data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Erro na requisição:', error);
-            });
-        });    
+         }            
+              
+         fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
+            method: 'POST',
+            body: formData // Certifique-se de que formData contém os dados do formulário
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.result === 'success') {
+                window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html'; // Redirecionar
+            } else {
+                alert('Erro ao enviar dados: ' + result.error); // Mostra o erro recebido
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao enviar os dados:', error);
+            alert('Ocorreu um erro. Tente novamente.');
+        });
+        
             
         </script>
 
