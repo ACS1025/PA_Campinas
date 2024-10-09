@@ -11665,39 +11665,23 @@ const scriptProp = PropertiesService.getScriptProperties();
                 return HtmlService.createHtmlOutput("Hello, world!");
          }            
               
-            function doPost(e) {
-                const lock = LockService.getScriptLock();
-                lock.tryLock(10000);
-            
-                try {
-                    const doc = SpreadsheetApp.openById('1rof7JDSESoKGu0n02r5n8wSmSoeHVpMvcX28ncG3jyg');
-                    const sheet = doc.getSheetByName('DADOS');
-            
-                    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-                    const nextRow = sheet.getLastRow() + 1;
-            
-                    const newRow = headers.map(function(header) {
-                        return header === 'Date' ? new Date() : e.parameter[header];
-                    });
-            
-                    sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
-            
-                    // Após processar os dados, redirecionar para a página do formulário
-                    return HtmlService.createHtmlOutput('<script>window.top.location.href="https://acs1025.github.io/PA_Campinas/index.html";</script>');
-
-                } catch (e) {
-                    const errorResponse = {
-                        result: 'error',
-                        error: e
-                    };
-            
-                    return ContentService
-                        .createTextOutput(JSON.stringify(errorResponse))
-                        .setMimeType(ContentService.MimeType.JSON);
-                } finally {
-                    lock.releaseLock();
-                }
+         fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
+            method: 'POST',
+            body: formData // Certifique-se de que formData contém os dados do formulário
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.result === 'success') {
+                window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html'; // Redirecionar
+            } else {
+                alert('Erro ao enviar dados: ' + result.error); // Mostra o erro recebido
             }
+        })
+        .catch(error => {
+            console.error('Erro ao enviar os dados:', error);
+            alert('Ocorreu um erro. Tente novamente.');
+        });
+        
             
         </script>
 
