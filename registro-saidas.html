@@ -11683,7 +11683,8 @@ const scriptProp = PropertiesService.getScriptProperties();
                     sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
             
                     // Após processar os dados, redirecionar para a página do formulário
-                    return HtmlService.createHtmlOutput('<script>window.top.location.href="https://acs1025.github.io/PA_Campinas/index.html";/script>');
+                    return HtmlService.createHtmlOutput('<script>window.top.location.href="https://acs1025.github.io/PA_Campinas/index.html";</script>');
+
                 } catch (e) {
                     const errorResponse = {
                         result: 'error',
