@@ -263,7 +263,7 @@
             
                 <div class="input-box">
                     <label for="filial">Filial:</label>
-                    <select id="filial" name="filial">
+                    <select id="filial" name="doc_filial">
                         <option value="">Selecione a filial</option>
                         <option value="CAMPINAS/ SP">CAMPINAS/ SP</option>
                         <option value="BELÉM/ PA">BELÉM/ PA</option>
@@ -4188,7 +4188,7 @@
         'SYM-9D76', 
         'TCE-4B89'
         ]; // Exemplo de lista de carretas
-                 const listaMotoristas = ['ABIMAEL GOMES FILHO', 
+            const listaMotoristas = ['ABIMAEL GOMES FILHO', 
         'ABNER PAIVA DE MENDONCA', 
         'ABNER PEREIRA SOUZA DE SOUSA', 
         'ABRAAO MARINHO CARNEIRO', 
@@ -5602,7 +5602,7 @@
         'YGOR SILETE', 
         'ZILDO BARBOSA DE SOUZA'
         ]; 
-                const listaClientes= [
+            const listaClientes= [
         '3M',
         'ADATA ELECTRONICS',
         'ADRIANA - JORGE TEXEIRA',
@@ -5993,8 +5993,8 @@
             document.getElementById('lista-cliente').style.display = 'none';
         }
 
-        // Lista de cidades para autocomplete
-        const listaCidades = ['ABADIA DE GOIÁS/ GO', 
+// Lista de cidades para autocomplete
+const listaCidades = ['ABADIA DE GOIÁS/ GO', 
         'ABADIA DOS DOURADOS/ MG', 
         'ABADIÂNIA/ GO', 
         'ABAETÉ/ MG', 
@@ -11565,8 +11565,8 @@
         'ZÉ DOCA/ MA', 'ZORTÉA/ SC', 
     ];
 
-        // Função para buscar cidades e exibir resultados de autocomplete
-    function buscarCidades(input, tipo) {
+// Função para buscar cidades e exibir resultados de autocomplete
+function buscarCidades(input, tipo) {
     const listaOrigem = document.getElementById('lista-origem');
     const listaDestino = document.getElementById('lista-destino');
     let lista = tipo === 'origem' ? listaOrigem : listaDestino;
