@@ -59,8 +59,52 @@
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            justify-content: space-between; /* Mantém os itens separados */
+            }
+
+        .container {
+            padding-right: 120px; /* Adiciona espaço para evitar sobreposição com a sidebar */
+            position: relative;
+            }
+        
+        /* Barra lateral redonda no topo e à direita */
+        .sidebar {
+            position: absolute;
+            top: 50%;
+            right: 50px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
         
+
+
+        /* Estilo para os ícones dentro da sidebar */
+        .icon-link {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .icon-link img {
+            width: 100px; /* Tamanho da imagem */
+            border-radius: 50%; /* Faz o ícone também ser redondo */
+        }
+        .icon-link a:hover {
+            background-color: #FFD600;
+            border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
+            padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+
+
+
         h2 {
             text-align: center;
             color: #333;
@@ -77,6 +121,8 @@
             display: flex;
             flex-direction: column;
         }
+
+        
 
         footer {
             margin-top: 50px;
@@ -169,6 +215,19 @@
                 grid-column: span 1;
             }
         }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                flex: 1 1 calc(50% - 40px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-card {
+                flex: 1 1 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -329,7 +388,7 @@
                         <option value="T1">T1</option>
                         <option value="T2">T2</option>
                     </select>
-                </div>
+                </div>                
             
                 <div class="input-box">
                     <label for="doc_responsavel_ssonic">Responsável SS:</label>
@@ -361,7 +420,7 @@
                             <option value="TARSICIO">TARSICIO</option>
                         </select>
                 </div>
-            
+                          
                 <div class="input-box">
                     <label for="data_saida">Data da saída:</label>
                     <input type="date" id="data_saida" name="data_saida">
@@ -371,8 +430,19 @@
                     <button type="submit" class="btn-enviar">Enviar</button>
                 </div>
             </form>
+            
         </div>
-    </div>
+
+        <!-- Coluna direita -->
+        <div class="sidebar">
+            <!-- Novos Ícones GIF -->
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=1ad463bcfadb57a687f5" target="_blank">
+                    <img src="src/img/Controle.gif" alt="Icon 1">
+                </a>
+                <h3><span style="color: white;"><b>Controle Carretas</b></span></h3>
+            </div>
+        </div>
 
     
          <script>
