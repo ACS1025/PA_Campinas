@@ -45,13 +45,27 @@
         .icon-link {
             margin: 10px 0;
             text-align: center;
+            background-color: transparent; /* Remove qualquer fundo da div */
+            list-style-type: none; /* Remove o marcador do <li> */
         }
 
         .icon-link img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             object-fit: cover;
+            background-color: transparent; /* Remove o fundo branco da imagem */
+        }
+
+        .icon-link li {
+            display: inline-block; /* Mantém o <li> inline, mas tratado como bloco */
+            background-color: transparent;
+        }
+        .icon-link a.pdf:hover {
+            background-color: red; /* Fundo vermelho ao passar o mouse */
+            border-radius: 50%; /* Mantém o formato redondo */
+            padding: 10px; /* Espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
         }
 
         .dashboard {
@@ -171,8 +185,9 @@
             </div>
 
             <div class="icon-link">
-                <a href="relatorio3.html"><img src="src/img/KMDPbix.gif" alt="Relatório 3"></a>
-                <p>Relatório 3</p>
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiYzAwNzBhM2EtOTBkYS00ZDI2LTg5NjItOTg5Yzc1Njc4ZjA3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
+                    <img src="src/img/KMDPbix.gif" alt="Relatorio"></a>
+                <p>Relatório Mensal</p>
             </div>
             <div class="icon-link">
                 <a href="relatorio4.html"><img src="src/img/KMDPbix.gif" alt="Relatório 4"></a>
@@ -232,6 +247,15 @@
                 </a>
                 <p>Dica</p>
             </div>
+
+            <div class="icon-link">
+                <li>
+                    <a href="pdfs/documento1.pdf" target="_blank" class="pdf">
+                        <img src="src/img/dica.gif" alt="Icon 4">
+                    </a>
+                </li>
+                <p>PDF's</p>
+                </div>
         </div>
     </div>
 
