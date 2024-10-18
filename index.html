@@ -3,101 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PA-Campinas</title>
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Home - PA-Campinas</title>
     <style>
+        /* Estilos principais */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             background-image: url('src/img/Registro\ de\ Saidas.png');
-            background-size: cover; /* Ajusta a imagem para cobrir a tela sem distorção */
+            background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Imagem fixa ao fundo durante o scroll */
-            height: 100vh; /* Ocupa a altura total da tela */
-            overflow: hidden; /* Evita barras de rolagem horizontais */
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            background-color: transparent;
+            border-radius: 10px;
+        }
+
+        .content {
+            flex: 2;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sidebar {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-link {
+            margin: 10px 0;
+            text-align: center;
+            background-color: transparent; /* Remove qualquer fundo da div */
+            list-style-type: none; /* Remove o marcador do <li> */
+        }
+
+        .icon-link img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: transparent; /* Remove o fundo branco da imagem */
+        }
+
+        .icon-link li {
+            display: inline-block; /* Mantém o <li> inline, mas tratado como bloco */
+            background-color: transparent;
+        }
+        .icon-link a.pdf:hover {
+            background-color: red; /* Fundo vermelho ao passar o mouse */
+            border-radius: 50%; /* Mantém o formato redondo */
+            padding: 10px; /* Espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+        .icon-link a.pdf img {
+            border: none; /* Remove qualquer borda ao redor da imagem */
+            background-color: transparent; /* Remove qualquer fundo que a imagem possa ter */
+            padding: 0; /* Remove qualquer preenchimento ao redor da imagem */
+            box-shadow: none; /* Remove qualquer sombra */
+            outline: none; /* Remove qualquer outline ao focar */
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            flex: 1 1 calc(30% - 40px);
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            color: #333;
+        }    
+                 
+        @media (max-width: 768px) {
+            .dashboard-card {
+                flex: 1 1 calc(50% - 40px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-card {
+                flex: 1 1 100%;
+            }
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f1f1f1;
         }
 
         .header {
-            color: rgb(247, 243, 243);
-            padding: 10px 0;
             text-align: center;
-            position: fixed;
-            width: 100%;
-            top: 50px;
-            z-index: 1000;
+            padding: 20px;
+            background-color: A5896;
+            color: white;
         }
 
         .navbar {
             display: flex;
             justify-content: center;
-            background-color: #444;
-            position: fixed;
-            top: 0%; /* Adiciona espaço para o header */
-            width: 100%;
-            z-index: 1000;
+            background-color: transparent;
+            padding: 10px;
         }
 
         .navbar a {
-            color: rgb(252, 254, 255);
+            color: black;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
-            display: block;
+            background-color: transparent;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
 
         .navbar a:hover {
-            background-color: #555;
+            background-color: rgba(22, 11, 181, 0.3);
         }
-
-        .content {
-            padding: 120px 20px; /* Adiciona espaço para a navbar e header fixos */
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #847d7d;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 2rem;
-        }
-
-        h2 {
-            font-size: 1.6rem;
+        .icon-link a:hover {
+            background-color: white;
+            border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
+            padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
         }
 
         footer {
-            margin-top: 50px;
             text-align: center;
-            font-size: 0.9em;
-            color: #f9f6f6;
-            padding: 10px 0;
-            background-color: #9b9a9a;
-            border-top: 1px solid #9b9a9a
-            ;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Adiciona a sombra no rodapé */
-        }
-
-        html {
-            scroll-behavior: smooth;
+            padding: 10px;
+            background-color: transparent;
+            color: grey;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
-
     <div class="header">
-        <h1>PA-Campinas</h1>
+        <h1>Monitoramento - PA-Campinas</h1>
     </div>
 
     <div class="navbar">
@@ -105,18 +173,101 @@
         <a href="registro-saidas.html">Registro de Saídas</a>
         <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
     </div>
-    
 
-    <div class="content">
-        <div id="home" class="section">
-            <h2></h2>
-            <p>Bem-vindo à nossa página de monitoramento PA-Campinas. Utilize o menu para acessar as funcionalidades disponíveis.</p>
+    <div class="container">
+        <!-- Coluna esquerda -->
+        <div class="sidebar">
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank" rel="noopener noreferrer">
+                    <img src="src/img/KMDPbix.gif" alt="PA Campinas">
+                </a>
+                <p>PA Campinas</p>
+            </div>
+            
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank" rel="noopener noreferrer">                 
+                    <img src="src/img/KMDPbix.gif" alt="Coletas">
+                </a>
+                <p>Coletas SSonic</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiYzAwNzBhM2EtOTBkYS00ZDI2LTg5NjItOTg5Yzc1Njc4ZjA3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
+                    <img src="src/img/KMDPbix.gif" alt="Relatorio"></a>
+                <p>Relatório Mensal</p>
+            </div>
+            <div class="icon-link">
+                <a href="relatorio4.html"><img src="src/img/KMDPbix.gif" alt="Relatório 4"></a>
+                <p>Relatório 4</p>
+            </div>
+            <div class="icon-link">
+                <a href="briefing.html"><img src="src/img/KMDPbix.gif" alt="briefing"></a>
+                <p>Briefing de Viagem</p>
+            </div>
+        </div>
+
+        <!-- Conteúdo central -->
+        <div class="content">
+            <div class="dashboard">
+                <div class="dashboard-card" id="solicitacao-card">
+                    <h3>Escoltas em andamento</h3>
+                    <p>Total: <span id="total-solicitacoes">0</span></p>
+                </div>
+                <div class="dashboard-card" id="distancia-card">
+                    <h3>Pátio Santarém</h3>
+                    <div id="chartContainer"></div>
+                </div>
+                <div class="dashboard-card" id="lista-card">
+                    <h3>Placas e Ponto de Encontro</h3>
+                    <ul id="lista"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna direita -->
+        <div class="sidebar">
+            <!-- Novos Ícones GIF -->
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeEGaGLqegml3MhhjjD_LOrn6SecC0tYEJ9I9wNq8OjACgXww/viewform?embedded=true" target="_blank">
+                    <img src="src/img/checklist.gif" alt="Icon 1">
+                </a>
+                <p>Checklist presencial</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc3SvaWWqrfbBmxj6TdLDr5AbkuF6QD0Fm9kGrwQ0mracRxqw/viewform?embedded=true" target="_blank">
+                    <img src="src/img/briefing.gif" alt="Icon 2">
+                </a>
+                <p>Briefing digital</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/presentation/d/e/2PACX-1vRA6jDzcE_wYCi9tPomaGZol04jb6UspexRU1P_5cBtywUg4frobdVOWUj0bAr8l-B-F2lx4sF8aTsI/pub?start=false&loop=false&delayms=3000" target="_blank">
+                    <img src="src/img/treinamento.gif" alt="Icon 3">
+                </a>
+                <p>Treinamento motorista</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIvZGFCID_1TmfICBGlqWn1AZXAZu-9WIjuBCw3RRxU98F9g/viewform?embedded=true" target="_blank">
+                    <img src="src/img/dica.gif" alt="Icon 4">
+                </a>
+                <p>Dica</p>
+            </div>
+
+            <div class="icon-link">
+                <li>
+                    <a href="src/pdf/Checklist Presencial - Modelo.pdf" target="_blank" class="pdf">
+                        <img src="src/img/dica.gif" alt="Icon 4">
+                    </a>
+                </li>
+                <p>Checklist presencial</p>
+                </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
+        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados. by ACS</p>
     </footer>
-
 </body>
 </html>
