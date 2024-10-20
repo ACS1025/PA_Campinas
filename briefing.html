@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Briefing de Viagem</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('src/img/Registro de Saidas.png');
+            margin: 0;
+            padding: 0;
+        }
+    
         h2 {
             text-align: center;
             margin-bottom: 10px;
-        }
-    
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('src/img/Registro\ de\ Saidas.png');
         }
     
         .container {
@@ -24,26 +26,26 @@
             border: 1px solid #ccc;
             background-color: #f9f9f9;
         }
-    
+
         .header {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-bottom: 10px;
-            padding: 5px;
-            border: 1px solid #000;
+            padding: 10px;
             background-color: #e0e0e0;
+            border: 1px solid #000;
         }
-    
+
         .header p, .header .input-box {
             margin: 0;
         }
-    
+
         .header label {
             display: block;
             margin-bottom: 3px;
         }
-    
+
         .header input {
             background-color: #d9ead3;
             border: 1px solid #666;
@@ -52,6 +54,7 @@
             padding: 4px;
             box-sizing: border-box;
         }
+    
     
         .header .input-box ul {
             list-style-type: none;
@@ -70,39 +73,81 @@
             background-color: #f0f0f0;
         }
     
-        .section {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f8f8f8;
+
+        .header .input-box ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
     
+        .section, .checkbox-group {
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #000;
+        }
+        
+    
+        .checkbox-group {
+            background-color: #f0f0f0;
+        }
+    
+        .section {
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #000;
+            margin-bottom: 10px;
+        }
+
+        .section h3 {
+            color: rgb(219, 32, 32);
+            margin-bottom: 5px;
+        }
+
         .section input, .section textarea {
             width: 100%;
             padding: 5px;
             margin-top: 5px;
-        }
-    
-        .section h3 {
-            margin-bottom: 5px;
-            color: rgb(219, 32, 32);
-        }
-    
-        textarea {
-            resize: vertical;
             border: 1px solid #ccc;
-            padding: 8px;
             border-radius: 3px;
         }
-    
+
         .contact-section h3 {
             background-color: yellow;
             padding: 8px;
             margin-bottom: 8px;
-            color: #000;
-            font-size: 16px;
             text-align: center;
         }
     
+    
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+    
+        .contact-info i {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+    
+        .phone, .whatsapp {
+            display: flex;
+            align-items: center;
+        }
+    
+        .dashed-line {
+            border-top: 2px dashed #000;
+            margin-bottom: 15px;
+        }
+    
+        #attention-text {
+            font-weight: bold;
+            color: rgb(15, 15, 17);
+            background-color: yellow;
+        }
+    
+
         .contact-info {
             display: flex;
             justify-content: center;
@@ -140,79 +185,166 @@
             cursor: pointer;
             font-size: 14px;
         }
-    
+
         button:hover {
             background-color: #45a049;
         }
-    
-        .signature-section p {
-            margin-bottom: 15px;
+
+        /* Estilo da Navbar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 0;
         }
-    
-        .signature-section #plateDisplay, 
-        .signature-section #driverNameDisplay {
+
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
             font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-    
-/* Media Queries para impressão */
-@media print {
-    body, .container {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        background-color: white;
-    }
 
-    input, textarea {
-        border: 1px solid #000;
-        background-color: #fff;
-        color: #000;
-    }
+        .navbar a:hover {
+            background-color: #555;
+        }
 
-    label, h2, h3, p {
-        color: black;
-        font-weight: normal;
-    }
+        .navbar a.active {
+            background-color: #FFD600;
+            color: #000;
+        }
 
-    button {
-        display: none; /* Esconder botão de impressão */
-    }
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                grid-template-columns: 1fr;
+            }
 
-    .header {
-        grid-template-columns: 1fr 1fr 1fr;
-        margin-bottom: 5px;
-        padding: 0;
-    }
+            .navbar {
+                flex-direction: column;
+            }
 
-    .section, .header, .checkbox-group {
-        border: 1px solid #000;
-        background-color: white;
-        page-break-inside: avoid; /* Evitar quebra dentro das seções */
-    }
+            .navbar a {
+                width: 100%;
+                text-align: center;
+            }
+        }
 
-    body, label, h2, h3, p {
-        font-size: 12px;
-        line-height: 1.2;
-    }
+       
 
-    /* Forçar quebra de página após a div com linha tracejada */
-    .dashed-line {
-        border-top: 2px dashed #000;
-        margin-bottom: 15px;
-        page-break-after: always; /* Quebra de página após essa div */
-    }
-}
+
+        /* Ajustar a imagem para ocupar todo o topo */
+        .container img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* Ajuste para impressão */
+        @media print {
+            body, .container {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                background-color: white;
+            }
+
+            header {
+                margin: 0;
+                padding: 0;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+            .container img {
+                display: block;
+                max-width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 0;
+            }
+        
+            .header {
+                margin-top: 10px; /* Ajuste este valor dependendo da altura da imagem para dar espaço ao conteúdo */
+                grid-template-columns: repeat(4, 1fr);
+                border: 1px solid #000;
+            }
+
+            
+
+            input, textarea {
+                border: 1px solid #000;
+                background-color: #fff;
+                color: #000;
+            }
+        
+            label, h2, h3, p {
+                color: black;
+                font-weight: normal;
+            }
+
+            .header {
+                grid-template-columns: repeat(4, 1fr);
+                border: 1px solid #000;
+                margin-bottom: 5px;
+            }
+        
+            .section, .header, .checkbox-group {
+                border: 1px solid #000;
+                background-color: white;
+                page-break-inside: avoid;
+            }
+        
+            .dashed-line {
+                border-top: 2px dashed #000;
+                margin-bottom: 15px;
+                page-break-after: always; /* Quebra de página após essa div */
+            }
+
+            button {
+                display: none;
+            }   
+
+            .header, .section {
+                border: 1px solid #000;
+                background-color: white;
+                page-break-inside: avoid;
+            }
+
+            .dashed-line {
+                border-top: 2px dashed #000;
+                page-break-after: always;
+            }
+        }
 
 
     </style>
-    
-    
 </head>
 <body>
-    <div class="container">
 
-        <center><h2>Briefing de Viagem</h2></center>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="index.html" class="active">Home</a>
+        <a href="registro-saidas.html">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    </div>
+
+    
+    <div class="container">
+        <center>
+            <img src="src/img/FormBriefing_Digital.jpg" alt="Cabeçalho Briefing de Viagem" style="max-width: 100%; height: auto;">
+        </center>
         <br>
+        
         <!-- Primeira página -->
         <div class="header">
             <p><strong>Data:</strong> <input type="date" id="data" required></p>
@@ -367,6 +499,7 @@
         
         <button onclick="window.print()">Imprimir</button>
     </div>
+</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
