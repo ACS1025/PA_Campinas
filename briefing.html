@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Briefing de Viagem</title>
     <style>
-        h2 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-    
         body {
             font-family: Arial, sans-serif;
-            background-image: url('src/img/Registro\ de\ Saidas.png');
+            background-image: url('src/img/Registro de Saidas.png');
+            margin: 0;
+            padding: 0;
+        }
+    
+        h2 {
+            text-align: center; 
+            margin-bottom: 10px;
         }
     
         .container {
@@ -24,26 +26,26 @@
             border: 1px solid #ccc;
             background-color: #f9f9f9;
         }
-    
+
         .header {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-bottom: 10px;
-            padding: 5px;
-            border: 1px solid #000;
+            padding: 10px;
             background-color: #e0e0e0;
+            border: 1px solid #000;
         }
-    
+
         .header p, .header .input-box {
             margin: 0;
         }
-    
+
         .header label {
             display: block;
             margin-bottom: 3px;
         }
-    
+
         .header input {
             background-color: #d9ead3;
             border: 1px solid #666;
@@ -52,6 +54,7 @@
             padding: 4px;
             box-sizing: border-box;
         }
+    
     
         .header .input-box ul {
             list-style-type: none;
@@ -70,39 +73,81 @@
             background-color: #f0f0f0;
         }
     
-        .section {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f8f8f8;
+
+        .header .input-box ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
     
+        .section, .checkbox-group {
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #000;
+        }
+        
+    
+        .checkbox-group {
+            background-color: #f0f0f0;
+        }
+    
+        .section {
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #000;
+            margin-bottom: 10px;
+        }
+
+        .section h3 {
+            color: rgb(219, 32, 32);
+            margin-bottom: 5px;
+        }
+
         .section input, .section textarea {
             width: 100%;
             padding: 5px;
             margin-top: 5px;
-        }
-    
-        .section h3 {
-            margin-bottom: 5px;
-            color: rgb(219, 32, 32);
-        }
-    
-        textarea {
-            resize: vertical;
             border: 1px solid #ccc;
-            padding: 8px;
             border-radius: 3px;
         }
-    
+
         .contact-section h3 {
             background-color: yellow;
             padding: 8px;
             margin-bottom: 8px;
-            color: #000;
-            font-size: 16px;
             text-align: center;
         }
     
+    
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+    
+        .contact-info i {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+    
+        .phone, .whatsapp {
+            display: flex;
+            align-items: center;
+        }
+    
+        .dashed-line {
+            border-top: 2px dashed #000;
+            margin-bottom: 15px;
+        }
+    
+        #attention-text {
+            font-weight: bold;
+            color: rgb(15, 15, 17);
+            background-color: yellow;
+        }
+    
+
         .contact-info {
             display: flex;
             justify-content: center;
@@ -140,79 +185,163 @@
             cursor: pointer;
             font-size: 14px;
         }
-    
+
         button:hover {
             background-color: #45a049;
         }
-    
-        .signature-section p {
-            margin-bottom: 15px;
+
+        /* Estilo da Navbar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 0;
         }
-    
-        .signature-section #plateDisplay, 
-        .signature-section #driverNameDisplay {
+
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
             font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-    
-/* Media Queries para impressão */
-@media print {
-    body, .container {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        background-color: white;
-    }
 
-    input, textarea {
-        border: 1px solid #000;
-        background-color: #fff;
-        color: #000;
-    }
+        .navbar a:hover {
+            background-color: #555;
+        }
 
-    label, h2, h3, p {
-        color: black;
-        font-weight: normal;
-    }
+        .navbar a.active {
+            background-color: #FFD600;
+            color: #000;
+        }
 
-    button {
-        display: none; /* Esconder botão de impressão */
-    }
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                grid-template-columns: 1fr;
+            }
 
-    .header {
-        grid-template-columns: 1fr 1fr 1fr;
-        margin-bottom: 5px;
-        padding: 0;
-    }
+            .navbar {
+                flex-direction: column;
+            }
 
-    .section, .header, .checkbox-group {
-        border: 1px solid #000;
-        background-color: white;
-        page-break-inside: avoid; /* Evitar quebra dentro das seções */
-    }
+            .navbar a {
+                width: 100%;
+                text-align: center;
+            }
+        }
 
-    body, label, h2, h3, p {
-        font-size: 12px;
-        line-height: 1.2;
-    }
+       
 
-    /* Forçar quebra de página após a div com linha tracejada */
-    .dashed-line {
-        border-top: 2px dashed #000;
-        margin-bottom: 15px;
-        page-break-after: always; /* Quebra de página após essa div */
-    }
-}
+
+        /* Ajustar a imagem para ocupar todo o topo */
+        .container img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* Ajuste para impressão */
+        @media print {
+            body, .container {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                background-color: white;
+            }
+
+            header {
+                margin: 0;
+                padding: 0;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+            .container img {
+                display: block;
+                max-width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 0;
+            }
+        
+            .header {
+                margin-top: 10px; /* Ajuste este valor dependendo da altura da imagem para dar espaço ao conteúdo */
+                grid-template-columns: repeat(4, 1fr);
+                border: 1px solid #000;
+            }
+
+            
+
+            input, textarea {
+                border: 1px solid #000;
+                background-color: #fff;
+                color: #000;
+            }
+        
+            label, h2, h3, p {
+                color: black;
+                font-weight: normal;
+            }
+
+            .header {
+                grid-template-columns: repeat(4, 1fr);
+                border: 1px solid #000;
+                margin-bottom: 5px;
+            }
+        
+            .section, .header, .checkbox-group {
+                border: 1px solid #000;
+                background-color: white;
+                page-break-inside: avoid;
+            }
+        
+            .dashed-line {
+                border-top: 2px dashed #000;
+                margin-bottom: 15px;
+                page-break-after: always; /* Quebra de página após essa div */
+            }
+
+            button {
+                display: none;
+            }   
+
+            .header, .section {
+                border: 1px solid #000;
+                background-color: white;
+                page-break-inside: avoid;
+            }
+
+            .dashed-line {
+                border-top: 2px dashed #000;
+                page-break-after: always;
+            }
+        }
 
 
     </style>
-    
-    
 </head>
 <body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="index.html" class="active">Home</a>
+        <a href="registro-saidas.html">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    </div>
+    
     <div class="container">
-
-        <center><h2>Briefing de Viagem</h2></center>
-        <br>
+        <center>
+            <img src="src/img/FormBriefing_Digital.jpg" alt="Cabeçalho Briefing de Viagem" style="max-width: 100%; height: auto;">
+        </center>
+        <br>        
         <!-- Primeira página -->
         <div class="header">
             <p><strong>Data:</strong> <input type="date" id="data" required></p>
@@ -243,46 +372,49 @@
             <br>
             <P>Senhor Motorista, você está prestes a iniciar uma viagem rastreada com a GR KOMANDO <b>É IMPORTANTE</b> o conhecimento e aceite das regras   a seguir: <b>INFORMAR INÍCIO DE VIAGEM (Via macro de acordo com a sua tecnologia)</b> // INFORMAR PARADAS // INFORMAR PERNOITE // 
                 REINÍCIO DE VIAGEM / CHEGADA AO CLIENTE / FINAL DE VIAGEM</P>
-            <p><strong>Início de Viagem:</strong></p>
-            <p>"Tempo Liberado até 30 Minutos, havendo alguma irregularidade de sensores e atuadores, a viagem não será liberada; Sempre Aguardar o <b>LIBERADO KMD</b>; Durante a espera da mensagem de liberação, o motorista deverá aguardar dentro da cabine, com as travas e portas fechadas."</p>
+           
+        </div>
+
+        <div class="section">
+            <h3>Início de Viagem::</h3>
+            <p>Tempo Liberado até 30 Minutos, havendo alguma irregularidade de sensores e atuadores, a viagem não será liberada; Sempre Aguardar o <b>LIBERADO KMD</b>; Durante a espera da mensagem de liberação, o motorista deverá aguardar dentro da cabine, com as travas e portas fechadas.</p>
         </div>
 
         <div class="section">
             <h3>Paradas:</h3>
-            <p>"Toda e qualquer parada deverá ser informada através de MACRO DE PARADA, de acordo com o motivo. Obrigatório o preenchimento do motivo da parada com um X e, preferencialmente com previsão de reinicio."</p>
+            <p>Toda e qualquer parada deverá ser informada através de MACRO DE PARADA, de acordo com o motivo. Obrigatório o preenchimento do motivo da parada com um X e, preferencialmente com previsão de reinicio.</p>
         </div>
 
         <div class="section">
             <h3>Pontos de Parada e Manutenção</h3>
-            <p>"Tendo parada programada na viagem, esta foi informada com antecedência para a Supersonic? Havendo a necessidade de paradas para manutenção, informe o tipo de serviço a ser realizado e a macro correta de acordo com o seu equipamento. E informe via mensagem o tipo de serviço que será realizado e se haverá perda de sinal."</p>
+            <p>Tendo parada programada na viagem, esta foi informada com antecedência para a Supersonic? Havendo a necessidade de paradas para manutenção, informe o tipo de serviço a ser realizado e a macro correta de acordo com o seu equipamento. E informe via mensagem o tipo de serviço que será realizado e se haverá perda de sinal.</p>
         </div>
 
         <div class="section">
             <h3>Reinício de viagem</h3>
-            <p>"Deverá ser utilizada para retomar a viagem após qualquer  MACRO DE PARADA ou PERNOITE"</p>
+            <p>Deverá ser utilizada para retomar a viagem após qualquer  MACRO DE PARADA ou PERNOITE</p>
         </div>
 
         <div class="section">
             <h3>Chegada ao Cliente</h3>
-            <p>"Informar sempre que estiver aguardando descarga / Abertura da cabine é automática Após a chegada no cliente, para a abertura do baú ou desengate da carreta, deverá ser enviado macro quando houver ou mensagem livre (Solicito autorizar abertura de Baú e/ ou Solicito autorizar Desengate da carreta)"></p>
+            <p>Informar sempre que estiver aguardando descarga / Abertura da cabine é automática Após a chegada no cliente, para a abertura do baú ou desengate da carreta, deverá ser enviado macro quando houver ou mensagem livre (Solicito autorizar abertura de Baú e/ ou Solicito autorizar Desengate da carreta)></p>
         </div>
 
         <div class="section">
             <h3>Fim de viagem</h3>
-            <p>"Somente deve ser informado quando o veículo ESTIVER VAZIO. (Desabilitará todos os comandos de segurança manualmente). Ao final da viagem, enviar uma foto do baú vazio ou canhoto para a operação KOMANDO, via whats app."</p>
+            <p>Somente deve ser informado quando o veículo ESTIVER VAZIO. (Desabilitará todos os comandos de segurança manualmente). Ao final da viagem, enviar uma foto do baú vazio ou canhoto para a operação KOMANDO, via whats app.</p>
         </div>
 
         <div class="section">
-            <p><h3>Segurança no Trânsito</h3>
-            "Este é um assunto de extrema importância, pois pode representar riscos tanto para os motoristas como para os pedestres. Lembrando que a segurança no trânsito é responsabilidade de todos os envolvidos, sejam motoristas, pedestres e ou autoridades de trânsito. Seguir essas medidas contribui para a redução de acidentes e a preservação da vida. 
-            Aqui estão algumas medidas que podem ajudar a promover a segurança no trânsito e em sua viagem:"</p>
-
-            <p><h2>ORIENTAÇÕES PARA VIAGEM:</h2>
-                Respeitar o Código Nacional de Trânsito; (Multas serão de RESPONSABILIDADE do motorista)
-                Manter a Komando Gerenciadora de Riscos, sempre informada de qualquer anormalidade;
-                Não é recomendada à parada dentro das áreas de risco definidas em PGR.
-                Proibido pernoite em residência, bem como deixar o veículo no posto e ir para a residência. Não parar em casa de familiares e dentre outros locais quando carregado ou locais que não foram previamente autorizados.</p>
-
+            <h3>Segurança no Trânsito</h3>
+    <p>Este é um assunto de extrema importância, pois pode representar riscos tanto para os motoristas quanto para os pedestres. Lembrando que a segurança no trânsito é responsabilidade de todos os envolvidos, sejam motoristas, pedestres ou autoridades de trânsito. Seguir essas medidas contribui para a redução de acidentes e a preservação da vida.</p>
+    <h2>ORIENTAÇÕES PARA VIAGEM:</h2>
+    <p>
+        - Respeitar o Código Nacional de Trânsito; (Multas serão de RESPONSABILIDADE do motorista)<br>
+        - Manter a Komando Gerenciadora de Riscos sempre informada de qualquer anormalidade;<br>
+        - Não é recomendada a parada dentro das áreas de risco definidas em PGR.<br>
+        - Proibido pernoite em residência, bem como deixar o veículo no posto e ir para a residência. Não parar em casa de familiares e outros locais quando carregado ou locais que não foram previamente autorizados.
+    </p>
               
 
                 <div class="section contact-section">
@@ -306,7 +438,10 @@
 <div class="dashed-line"></div>
 
         <!-- Segunda página -->
-        <h2>Briefing de Viagem Historico Motorista</h2>
+        <center>
+            <img src="src/img/FormBriefing_Digital.jpg" alt="Cabeçalho Briefing de Viagem" style="max-width: 100%; height: auto;">
+        </center>
+        <br>
         <div class="section">
             <p><strong>Rota Informada:</strong></p>
             <textarea id="rota_informada" rows="2" placeholder="Informe a rota"></textarea>
@@ -367,6 +502,7 @@
         
         <button onclick="window.print()">Imprimir</button>
     </div>
+</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
@@ -404,7 +540,7 @@
         });
 
         
-        const listaPlacas = ['.ABR-2870', 
+                const listaPlacas = ['.ABR-2870', 
         'AAA-0000', 
         'AAW-1470', 
         'ABK-9I74', 
@@ -5913,151 +6049,7 @@
         'ENVISION',
         'ZILIA'
         ];
-
-        
-        
-        // Função para buscar placas
-        function buscarPlacas(input) {
-            const lista = document.getElementById('lista-placa');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const placasFiltradas = listaPlacas.filter(placa => placa.toLowerCase().includes(input.toLowerCase()));
-                if (placasFiltradas.length > 0) {
-                    lista.style.display = 'block';
-                    placasFiltradas.forEach(placa => {
-                        const li = document.createElement('li');
-                        li.textContent = placa;
-                        li.onclick = () => selecionarPlacas(placa);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarPlacas(placa) {
-            document.getElementById('doc_placa').value = placa;
-            document.getElementById('lista-placa').innerHTML = '';
-            document.getElementById('lista-placa').style.display = 'none';
-        }
-        
-        // Função para buscar carretas
-        function buscarCarretas(input) {
-            const lista = document.getElementById('lista-carreta');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const carretasFiltradas = listaCarretas.filter(carreta => carreta.toLowerCase().includes(input.toLowerCase()));
-                if (carretasFiltradas.length > 0) {
-                    lista.style.display = 'block';
-                    carretasFiltradas.forEach(carreta => {
-                        const li = document.createElement('li');
-                        li.textContent = carreta;
-                        li.onclick = () => selecionarCarretas(carreta);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarCarretas(carreta) {
-            document.getElementById('doc_carreta').value = carreta;
-            document.getElementById('lista-carreta').innerHTML = '';
-            document.getElementById('lista-carreta').style.display = 'none';
-        }
-        
-        // Função para buscar motoristas
-        function buscarMotoristas(input) {
-            const lista = document.getElementById('lista-motorista');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const motoristasFiltrados = listaMotoristas.filter(motorista => motorista.toLowerCase().includes(input.toLowerCase()));
-                if (motoristasFiltrados.length > 0) {
-                    lista.style.display = 'block';
-                    motoristasFiltrados.forEach(motorista => {
-                        const li = document.createElement('li');
-                        li.textContent = motorista;
-                        li.onclick = () => selecionarMotoristas(motorista);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarMotoristas(motorista) {
-            document.getElementById('doc_motorista').value = motorista;
-            document.getElementById('lista-motorista').innerHTML = '';
-            document.getElementById('lista-motorista').style.display = 'none';
-        }
-        
-                // Função para buscar motoristas
-        function buscarMotoristas(input) {
-            const lista = document.getElementById('lista-motorista');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const motoristasFiltrados = listaMotoristas.filter(motorista => motorista.toLowerCase().includes(input.toLowerCase()));
-                if (motoristasFiltrados.length > 0) {
-                    lista.style.display = 'block';
-                    motoristasFiltrados.forEach(motorista => {
-                        const li = document.createElement('li');
-                        li.textContent = motorista;
-                        li.onclick = () => selecionarMotoristas(motorista);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarMotoristas(motorista) {
-            document.getElementById('doc_motorista').value = motorista;
-            document.getElementById('lista-motorista').innerHTML = '';
-            document.getElementById('lista-motorista').style.display = 'none';
-        }
-
-       // Função para buscar clientes
-         function buscarClientes(input) {
-            const lista = document.getElementById('lista-cliente');
-            lista.innerHTML = '';
-            if (input.length > 0) {
-                const clientesFiltrados = listaClientes.filter(cliente => cliente.toLowerCase().includes(input.toLowerCase()));
-                if (clientesFiltrados.length > 0) {
-                    lista.style.display = 'block';
-                    clientesFiltrados.forEach(cliente => {
-                        const li = document.createElement('li');
-                        li.textContent = cliente;
-                        li.onclick = () => selecionarClientes(cliente);
-                        lista.appendChild(li);
-                    });
-                } else {
-                    lista.style.display = 'none';
-                }
-            } else {
-                lista.style.display = 'none';
-            }
-        }
-        
-        function selecionarClientes(cliente) {
-            document.getElementById('doc_cliente').value = cliente;
-            document.getElementById('lista-cliente').innerHTML = '';
-            document.getElementById('lista-cliente').style.display = 'none';
-        }
-
-// Lista de cidades para autocomplete
-const listaCidades = ['ABADIA DE GOIÁS/ GO', 
+                const listaCidades = ['ABADIA DE GOIÁS/ GO', 
         'ABADIA DOS DOURADOS/ MG', 
         'ABADIÂNIA/ GO', 
         'ABAETÉ/ MG', 
@@ -11627,6 +11619,149 @@ const listaCidades = ['ABADIA DE GOIÁS/ GO',
         'ZACARIAS/ SP', 
         'ZÉ DOCA/ MA', 'ZORTÉA/ SC', 
     ];
+
+
+        
+        
+        // Função para buscar placas
+        function buscarPlacas(input) {
+            const lista = document.getElementById('lista-placa');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const placasFiltradas = listaPlacas.filter(placa => placa.toLowerCase().includes(input.toLowerCase()));
+                if (placasFiltradas.length > 0) {
+                    lista.style.display = 'block';
+                    placasFiltradas.forEach(placa => {
+                        const li = document.createElement('li');
+                        li.textContent = placa;
+                        li.onclick = () => selecionarPlacas(placa);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarPlacas(placa) {
+            document.getElementById('doc_placa').value = placa;
+            document.getElementById('lista-placa').innerHTML = '';
+            document.getElementById('lista-placa').style.display = 'none';
+        }
+        
+        // Função para buscar carretas
+        function buscarCarretas(input) {
+            const lista = document.getElementById('lista-carreta');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const carretasFiltradas = listaCarretas.filter(carreta => carreta.toLowerCase().includes(input.toLowerCase()));
+                if (carretasFiltradas.length > 0) {
+                    lista.style.display = 'block';
+                    carretasFiltradas.forEach(carreta => {
+                        const li = document.createElement('li');
+                        li.textContent = carreta;
+                        li.onclick = () => selecionarCarretas(carreta);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarCarretas(carreta) {
+            document.getElementById('doc_carreta').value = carreta;
+            document.getElementById('lista-carreta').innerHTML = '';
+            document.getElementById('lista-carreta').style.display = 'none';
+        }
+        
+        // Função para buscar motoristas
+        function buscarMotoristas(input) {
+            const lista = document.getElementById('lista-motorista');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const motoristasFiltrados = listaMotoristas.filter(motorista => motorista.toLowerCase().includes(input.toLowerCase()));
+                if (motoristasFiltrados.length > 0) {
+                    lista.style.display = 'block';
+                    motoristasFiltrados.forEach(motorista => {
+                        const li = document.createElement('li');
+                        li.textContent = motorista;
+                        li.onclick = () => selecionarMotoristas(motorista);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarMotoristas(motorista) {
+            document.getElementById('doc_motorista').value = motorista;
+            document.getElementById('lista-motorista').innerHTML = '';
+            document.getElementById('lista-motorista').style.display = 'none';
+        }
+        
+                // Função para buscar motoristas
+        function buscarMotoristas(input) {
+            const lista = document.getElementById('lista-motorista');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const motoristasFiltrados = listaMotoristas.filter(motorista => motorista.toLowerCase().includes(input.toLowerCase()));
+                if (motoristasFiltrados.length > 0) {
+                    lista.style.display = 'block';
+                    motoristasFiltrados.forEach(motorista => {
+                        const li = document.createElement('li');
+                        li.textContent = motorista;
+                        li.onclick = () => selecionarMotoristas(motorista);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarMotoristas(motorista) {
+            document.getElementById('doc_motorista').value = motorista;
+            document.getElementById('lista-motorista').innerHTML = '';
+            document.getElementById('lista-motorista').style.display = 'none';
+        }
+
+       // Função para buscar clientes
+         function buscarClientes(input) {
+            const lista = document.getElementById('lista-cliente');
+            lista.innerHTML = '';
+            if (input.length > 0) {
+                const clientesFiltrados = listaClientes.filter(cliente => cliente.toLowerCase().includes(input.toLowerCase()));
+                if (clientesFiltrados.length > 0) {
+                    lista.style.display = 'block';
+                    clientesFiltrados.forEach(cliente => {
+                        const li = document.createElement('li');
+                        li.textContent = cliente;
+                        li.onclick = () => selecionarClientes(cliente);
+                        lista.appendChild(li);
+                    });
+                } else {
+                    lista.style.display = 'none';
+                }
+            } else {
+                lista.style.display = 'none';
+            }
+        }
+        
+        function selecionarClientes(cliente) {
+            document.getElementById('doc_cliente').value = cliente;
+            document.getElementById('lista-cliente').innerHTML = '';
+            document.getElementById('lista-cliente').style.display = 'none';
+        }
 
 // Função para buscar cidades e exibir resultados de autocomplete
 function buscarCidades(input, tipo) {
