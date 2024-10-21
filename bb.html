@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Briefing de Viagem</title>
+
+<style>    
+</style>
+    
+    
+</head>
+<body>
+    <div class="container">
+
+        <center><h2>Briefing de Viagem</h2></center>
+        <br>
+        <!-- Primeira página -->
+        <div class="header">
+            <p><strong>Data:</strong> <input type="date" id="data" required></p>
+            <p><strong>Cód. SM:</strong> <input type="text" id="cod_sm" required></p>
+            <p><strong>Placa:</strong> <input type="text" id="placa" name="placa" required></p>
+            <p><strong>Carreta:</strong> <input type="text" id="carreta" required></p>
+            <div class="input-box">
+                <label for="doc_motorista">Motorista:</label>
+                <input type="text" id="doc_motorista" name="doc_motorista" placeholder="Digite o motorista" oninput="buscarMotoristas(this.value)">
+                <ul id="lista-motorista" class="autocomplete-list"></ul>
+            </div>
+            <div class="input-box">
+                <label for="doc_cliente">Cliente:</label>
+                <input type="text" id="doc_cliente" name="doc_cliente" placeholder="Digite a cliente" oninput="buscarClientes(this.value, 'cliente')">
+                <ul id="lista-cliente"></ul>
+            </div>
+            <div class="input-box">
+                <label for="doc_destino">Destino:</label>
+                <input type="text" id="doc_destino" name="doc_destino" placeholder="Digite a cidade" 
+                       oninput="buscarCidades(this.value, 'destino'); updateRoute();">
+                <ul id="lista-destino"></ul>
+            </div>
+        </div>
+
+            <div class="section">
+            <h3>ALERTA:</h3>
+            <p id="attention-text"></p>
+            <br>
+            <P>Senhor Motorista, você está prestes a iniciar uma viagem rastreada com a GR KOMANDO <b>É IMPORTANTE</b> o conhecimento e aceite das regras   a seguir: <b>INFORMAR INÍCIO DE VIAGEM (Via macro de acordo com a sua tecnologia)</b> // INFORMAR PARADAS // INFORMAR PERNOITE // 
+                REINÍCIO DE VIAGEM / CHEGADA AO CLIENTE / FINAL DE VIAGEM</P>
+            <p><strong>Início de Viagem:</strong></p>
+            <p>"Tempo Liberado até 30 Minutos, havendo alguma irregularidade de sensores e atuadores, a viagem não será liberada; Sempre Aguardar o <b>LIBERADO KMD</b>; Durante a espera da mensagem de liberação, o motorista deverá aguardar dentro da cabine, com as travas e portas fechadas."</p>
+        </div>
+
+        <div class="section">
+            <h3>Paradas:</h3>
+            <p>"Toda e qualquer parada deverá ser informada através de MACRO DE PARADA, de acordo com o motivo. Obrigatório o preenchimento do motivo da parada com um X e, preferencialmente com previsão de reinicio."</p>
+        </div>
+
+        <div class="section">
+            <h3>Pontos de Parada e Manutenção</h3>
+            <p>"Tendo parada programada na viagem, esta foi informada com antecedência para a Supersonic? Havendo a necessidade de paradas para manutenção, informe o tipo de serviço a ser realizado e a macro correta de acordo com o seu equipamento. E informe via mensagem o tipo de serviço que será realizado e se haverá perda de sinal."</p>
+        </div>
+
+        <div class="section">
+            <h3>Reinício de viagem</h3>
+            <p>"Deverá ser utilizada para retomar a viagem após qualquer  MACRO DE PARADA ou PERNOITE"</p>
+        </div>
+
+        <div class="section">
+            <h3>Chegada ao Cliente</h3>
+            <p>"Informar sempre que estiver aguardando descarga / Abertura da cabine é automática Após a chegada no cliente, para a abertura do baú ou desengate da carreta, deverá ser enviado macro quando houver ou mensagem livre (Solicito autorizar abertura de Baú e/ ou Solicito autorizar Desengate da carreta)"></p>
+        </div>
+
+        <div class="section">
+            <h3>Fim de viagem</h3>
+            <p>"Somente deve ser informado quando o veículo ESTIVER VAZIO. (Desabilitará todos os comandos de segurança manualmente). Ao final da viagem, enviar uma foto do baú vazio ou canhoto para a operação KOMANDO, via whats app."</p>
+        </div>
+
+        <div class="section">
+            <p><h3>Segurança no Trânsito</h3>
+            "Este é um assunto de extrema importância, pois pode representar riscos tanto para os motoristas como para os pedestres. Lembrando que a segurança no trânsito é responsabilidade de todos os envolvidos, sejam motoristas, pedestres e ou autoridades de trânsito. Seguir essas medidas contribui para a redução de acidentes e a preservação da vida. 
+            Aqui estão algumas medidas que podem ajudar a promover a segurança no trânsito e em sua viagem:"</p>
+
+            <p><h2>ORIENTAÇÕES PARA VIAGEM:</h2>
+                Respeitar o Código Nacional de Trânsito; (Multas serão de RESPONSABILIDADE do motorista)
+                Manter a Komando Gerenciadora de Riscos, sempre informada de qualquer anormalidade;
+                Não é recomendada à parada dentro das áreas de risco definidas em PGR.
+                Proibido pernoite em residência, bem como deixar o veículo no posto e ir para a residência. Não parar em casa de familiares e dentre outros locais quando carregado ou locais que não foram previamente autorizados.</p>
+
+              
+
+                <div class="section contact-section">
+                    <h3>CONTATO 24 HORAS BASE KOMANDO</h3>
+                    <div class="contact-info">
+                        <div class="phone">
+                            <i class="fas fa-phone-alt"></i>
+                            <h2>19 9 8103-2053</h2>
+                        </div>
+                        <div class="whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            <h2>19 9 8126-0767</h2>
+                        </div>
+                    </div>
+                    <textarea id="contato" rows="4" placeholder="Declaro estar apto a realizar esta viagem até o destino e estar ciente de que devo seguir a rota a mim previamente informada, estando ciente dos procedimentos descritos e apresentados neste briefing de viagem, comprometendo-me a cumpri-los em sua totalidade."></textarea>
+                </div>
+                
+</div>
+
+        
+<div class="dashed-line"></div>
+
+        <!-- Segunda página -->
+        <h2>Briefing de Viagem Historico Motorista</h2>
+        <div class="section">
+            <p><strong>Rota Informada:</strong></p>
+            <textarea id="rota_informada" rows="2" placeholder="Informe a rota"></textarea>
+        </div>
+
+        <div class="checkbox-group">
+            <p><strong>Questionário:</strong></p>
+            <div>
+                <label for="pergunta1">Está apto a realizar a viagem hoje?</label>
+                <input type="radio" id="pergunta1-sim" name="pergunta1" value="sim">SIM
+                <input type="radio" id="pergunta1-nao" name="pergunta1" value="nao">NÃO
+            </div>
+            <br>
+            <div>
+                <label for="pergunta2">Tomou algum medicamento hoje?</label>
+                <input type="radio" id="pergunta2-sim" name="pergunta2" value="sim">SIM
+                <input type="radio" id="pergunta2-nao" name="pergunta2" value="nao">NÃO
+            </div>
+            <br>
+            <div>
+                <label for="pergunta3">Caso positivo, informe qual:</label>
+                <textarea id="pergunta3-texto" rows="2"></textarea>
+            </div>
+            <br>
+            <div>
+                <label for="pergunta4">Chave e rota em mãos?</label>
+                <input type="radio" id="pergunta4-sim" name="pergunta4" value="sim">SIM
+                <input type="radio" id="pergunta4-nao" name="pergunta4" value="nao">NÃO
+            </div>
+            <br>
+            <div>
+                <label for="pergunta5">Compromete-se a respeitar os limites de velocidade?</label>
+                <input type="radio" id="pergunta5-sim" name="pergunta5" value="sim">SIM
+                <input type="radio" id="pergunta5-nao" name="pergunta5" value="nao">NÃO
+            </div>
+            <br>
+            <br>
+
+            <p><h2>DECLARAÇÃO:</h2>
+                Declaro estar ciente dos procedimentos aqui descritos e apresentados no briefing e comprometo-me a cumpri-lo em sua totalidade, assumindo total responsabilidade pelas conseqüências acarretadas pela não cumprimento de tais procedimentos.
+            <br>
+            <br>
+            Estou ciente da restrição do limite máximo de velocidade de 80 km/h, leis de trânsito, da jornada de trabalho, da rota a ser seguida e postos e procedimentos do rastreamento.                                                                                                                                                   </p>
+
+            <br><br>
+
+            <div class="signature-section">
+                <p>Data: <span id="currentDate"></span></p>
+                <br>
+                <br>
+                <br>
+                <p>Assinatura: ___________________________________________</p>
+                <p><strong>Placa:</strong> <span id="signaturePlaca"></span></p>
+                <p><strong>Nome do motorista:</strong> <span id="signatureMotorista"></span></p>
+            </div>
+        </div>
+
+        
+        <button onclick="window.print()">Imprimir</button>
+    </div>
+
