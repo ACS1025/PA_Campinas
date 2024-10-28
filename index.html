@@ -102,6 +102,27 @@
             overflow-y: auto;  /* Adiciona a barra de rolagem vertical quando o conteúdo exceder a altura */
         }
 
+        .dashboard-card table {
+         width: 100%; /* Define a largura da tabela */
+         border-collapse: collapse; /* Remove espaços entre as bordas */
+        }
+
+        .dashboard-card th {
+            background-color: #f2f2f2; /* Cor de fundo dos cabeçalhos */
+            font-size: 1.2em; /* Tamanho da fonte dos cabeçalhos */
+        }
+
+        .dashboard-card td {
+            font-size: 1em; /* Tamanho da fonte das células */
+        }
+
+        /* Para ajustar o tamanho da fonte dos veículos */
+    .dashboard-card h5 {
+        font-size: 0.9em; /* Ajuste o tamanho conforme necessário */
+        margin: 0; /* Remove margens */
+    }
+
+
         .dashboard-card:hover {
             transform: translateY(-5px);
         }
@@ -207,6 +228,8 @@
 
         
 
+        
+
         footer {
             text-align: center;
             padding: 10px;
@@ -261,44 +284,137 @@
             </div>
         </div>
 
-        <!-- Conteúdo central -->
-        <div class="content">
-            <div class="dashboard">
-                <div class="dashboard-card" id="solicitacao-card">
-                    <h3>Escoltas em andamento</h3>
-                    <p>Total: <span id="total-solicitacoes"><h3><b>6</b></h3></span></p>
-                </div>
-
-                
-                <div class="dashboard-card" id="distancia-card">
-                    <h3>Acompanhamento Santarém</h3>
-                    <div id="chartContainer"><p>Total: <span id="total-solicitacoes"><h3><b>6</b></h3></span></p></div>
-                </div>
-                <div class="dashboard-card" id="lista-card">
-                    <table class="carreta-table">
-                        <thead>
-                            <tr>
-                                <th colspan="2">
-                                    <h3>LIBERAÇÃO CARRETA MANAUS</h3>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>BXF-3839</td>
-                            </tr>
-                            <tr>
-                                <td>JWX-1691</td>
-                            </tr>
-                            <tr>
-                                <td>NBQ-5F96</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<!-- Conteúdo central -->
+<div class="content">
+    <div class="dashboard">
+        <!-- Tabela para Escoltas em Andamento -->
+        <div class="dashboard-card" id="solicitacao-card">
+            <h3>Escoltas em Andamento</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Veículo</th>
+                        <th>Status</th>
+                        <th>Ponto de encontro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><h5><b>AKQ-4C28</b></h5></td>
+                        <td>Em Viagem</td>
+                        <td>Pirassununga/ SP</td> 
+                    </tr>
+                    <tr>
+                        <td><h5><b>BWT-1377</b></h5></td>
+                        <td>AG ponto a 150km do Cliente</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h5><b>GLI-9A17</b></h5></td>
+                        <td>AG ponto a 150km do Cliente</td>
+                        <td></td> 
+                    </tr>
+                    <tr>
+                        <td><h5><b>FUC-5049</b></h5></td>
+                        <td>No Cliente</td> 
+                        <td>Hortolândia/ SP</td>
+                    </tr>
+                    <tr>
+                        <td><h5><b>FUC-5049</b></h5></td>
+                        <td>AG Escolta na Origem</td> 
+                        <td>Campinas/ SP</td>
+                    </tr>
+                    <tr>
+                        <td><h5><b>GGC-2976</b></h5></td>
+                        <td>No cliente</td>
+                        <td>Jundiaí/ SP</td>
+                    </tr>
+                    <tr>
+                        <td><h5><b>CUA-6I41</b></h5></td>
+                        <td>AG Escolta na Origem</td>
+                        <td>Campinas/ SP</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+
+        <!-- Tabela para Acompanhamento Santarém -->
+        <div class="dashboard-card" id="distancia-card">
+            <h3>Acompanhamento Santarém</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Veículo</th>
+                        <th>Status</th>
+                        <th>Data atualizada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><h5><b>MAX-1473</b></h5></td>
+                        <td>Em viagem</td>
+                        <td>28/10/2024</td>
+                    </tr>
+                    <tr>
+                        <td><h5><b>NFO-9G90</b></h5></td>
+                        <td>Em viagem</td>
+                        <td>28/10/2024</td>
+                    </tr>
+                </tbody>
+                <tr>
+                    <td><h5><b>FWZ-3H19</b></h5></td>
+                    <td>Em viagem</td>
+                    <td>28/10/2024</td>
+                </tr>
+                <tr>
+                    <td><h5><b>EJV-8144</b></h5></td>
+                    <td>Em viagem</td>
+                    <td>28/10/2024</td>
+                </tr>
+                <tr>
+                    <td><h5><b>FWZ-3H19</b></h5></td>
+                    <td>Em viagem</td>
+                    <td>28/10/2024</td>
+                </tr>
+                <tr>
+                    <td><h5><b>FUB-9486</b></h5></td>
+                    <td>Em viagem</td>
+                    <td>28/10/2024</td>
+                </tr>
+                <tr>
+                    <td><h5><b>MBQ-1A56</b></h5></td>
+                    <td>Em viagem</td>
+                    <td>28/10/2024</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Tabela para Liberação Carreta Manaus -->
+        <div class="dashboard-card" id="lista-card">
+            <table class="carreta-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <h3>LIBERAÇÃO CARRETA MANAUS</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BXF-3839</td>
+                    </tr>
+                    <tr>
+                        <td>JWX-1691</td>
+                    </tr>
+                    <tr>
+                        <td>NBQ-5F96</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
         <!-- Coluna direita -->
         <div class="sidebar">
             <!-- Novos Ícones GIF -->
