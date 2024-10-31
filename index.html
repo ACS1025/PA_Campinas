@@ -194,7 +194,7 @@
 
         .header {
             text-align: center;
-            padding: 20px;
+            padding: 60px;
             background-color: A5896;
             color: white;
         }
@@ -204,31 +204,57 @@
             justify-content: center;
             background-color: transparent;
             padding: 10px;
+            position: fixed; /* Fixa a navbar no topo */
+            top: 0;         /* Alinha ao topo da página */
+            left: 0;        /* Alinha à esquerda da página */
+            width: 100%;    /* Faz a navbar ocupar toda a largura */
+            background-color: transparent; /* Cor de fundo da navbar */
+            overflow: hidden; /* Esconde o conteúdo que transborda */
+            z-index: 1000;  /* Mantém a navbar acima de outros elementos */
         }
 
         .navbar a {
-            color: black;
+            color: transparent;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
             background-color: transparent;
             border-radius: 4px;
             transition: background-color 0.3s;
+            float: left;        /* Alinha os links à esquerda */
+            display: block;     /* Faz os links se comportarem como blocos */
+             color: white;       /* Cor do texto dos links */
+            text-align: center; /* Centraliza o texto */
+            padding: 14px 16px; /* Adiciona preenchimento aos links */
+            text-decoration: none; /* Remove o sublinhado dos links */
         }
 
         .navbar a:hover {
-            background-color: rgba(22, 11, 181, 0.3);
+            background-color: #ddd; /* Cor de fundo ao passar o mouse */
+            color: black;           /* Cor do texto ao passar
         }
+            .icon-link {
+            display: inline-block; /* Faz com que o link trate o espaço como um bloco */
+            text-align: center;   /* Centraliza o conteúdo do link */
+            text-decoration: none; /* Remove sublinhado dos links */
+        }
+
+        .icon-link a:hover {
+            background-color: white; /* Cor de fundo ao passar o mouse */
+            border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
+            padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+
+
         .icon-link a:hover {
             background-color: white;
             border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
             padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
             transition: background-color 0.3s ease; /* Transição suave */
         }
-
-        
-
-        
+    
+             
 
         footer {
             text-align: center;
@@ -242,15 +268,17 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Monitoramento - PA-Campinas</h1>
-    </div>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="active">Home</a>
+    <a href="registro-saidas.html">Registro de Saídas</a>
+    <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+</div>
 
-    <div class="navbar">
-        <a href="index.html" class="active">Home</a>
-        <a href="registro-saidas.html">Registro de Saídas</a>
-        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
-    </div>
+<!-- Cabeçalho com título principal -->
+<header class="header">
+    <h1>- MONITORAMENTO - <br>PA-Campinas</h1>
+</header>
 
     <div class="container">
         <!-- Coluna esquerda -->
