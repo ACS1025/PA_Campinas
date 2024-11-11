@@ -135,6 +135,7 @@
                     <option value="PERDA DE SINAL">PERDA DE SINAL</option>
                     <option value="FALHA NO EQUIPAMENTO">FALHA NO EQUIPAMENTO</option>
                     <option value="PARADA PARA MANUTENÇÃO">PARADA PARA MANUTENÇÃO</option>
+                    <option value="VEÍCULO QUEBRADO NA VIA">PARADA PARA MANUTENÇÃO</option>
                     <option value="DESCUMPRIMENTO DE NORMAS DE GR">DESCUMPRIMENTO DE NORMAS DE GR</option>
                 </select>
             </div>
@@ -209,34 +210,57 @@
     document.getElementById("dataHora").value = new Date().toISOString().slice(0, 16);
 
     function enviarWhatsApp() {
-        const sm = document.getElementById("sm").value;
-        const veiculo = document.getElementById("veiculo").value;
-        const motorista = document.getElementById("motorista").value;
-        const embarcador = document.getElementById("embarcador").value;
-        const valor = document.getElementById("valor").value;
-        const rota = document.getElementById("rota").value;
-        const ultimaPosicao = document.getElementById("ultimaPosicao").value;
-        const latLong = document.getElementById("latLong").value;
-        const situacaoDescricao = document.getElementById("situacaoDescricao").value;
-        const ocorrencia = document.getElementById("ocorrencia").value;
-    
-        // Montar mensagem para WhatsApp
-        const mensagem = `*Para Conhecimento*\n\n` +
-                         `*dataHora:* ${new Date().toISOString()}\n` +
-                         `*Ocorrência:* ${ocorrencia}\n` +
-                         `*SM:* ${sm}\n` +
-                         `*Veículo:* ${veiculo}\n` +
-                         `*Motorista:* ${motorista}\n` +
-                         `*Embarcador:* ${embarcador}\n` +
-                         `*Valor:* ${valor}\n` +
-                         `*Rota:* ${rota}\n` +
-                         `*Última Posição:* ${ultimaPosicao}\n` +
-                         `*Lat/Long:* ${latLong}\n` +
-                         `*Situação/Descrição:* ${situacaoDescricao}\n`;
-    
-        // Enviar para o WhatsApp
-        const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-        window.open(urlWhatsApp, "_blank");
+    const dataHoraInput = document.getElementById("dataHora").value;
+    const dataHora = new Date(dataHoraInput);
+
+    // Ajustar a data para o fuso horário de Brasília (UTC-3)
+    dataHora.setHours(dataHora.getHours() - 3);
+
+    // Formatar a data e hora no estilo dd/mm/aaaa hh:mm
+    const dataFormatada = `${String(dataHora.getDate()).padStart(2, '0')}/` +
+                          `${String(dataHora.getMonth() + 1).padStart(2, '0')}/` +
+                          `${dataHora.getFullYear()} ` +
+                          `${String(dataHora.getHours()).padStart(2, '0')}:` +
+                          `${String(dataHora.getMinutes()).padStart(2, '0')}`;
+
+    const sm = document.getElementById("sm").value;
+    const veiculo = document.getElementById("veiculo").value;
+    const motorista = document.getElementById("motorista").value;
+    const embarcador = document.getElementById("embarcador").value;
+    const valor = document.getElementById("valor").value;
+    const rota = document.getElementById("rota").value;
+    const ultimaPosicao = document.getElementById("ultimaPosicao").value;
+    const latLong = document.getElementById("latLong").value;
+    const situacaoDescricao = document.getElementById("situacaoDescricao").value;
+    const ocorrencia = document.getElementById("ocorrencia").value;
+
+    // Saudação baseada na hora
+    const now = new Date();
+    const hour = now.getHours();
+    const greeting = hour < 12 ? "Bom dia" : (hour < 18 ? "Boa tarde" : "Boa noite");
+
+    // Montar a mensagem para o WhatsApp
+    const mensagem = `*Para Conhecimento*\n\n` +
+                     `${greeting},\n\n` +
+                     `*Data/Hora:* ${dataFormatada}\n` +
+                     `*Ocorrência:* ${ocorrencia}\n` +
+                     `*SM:* ${sm}\n` +
+                     `*Veículo:* ${veiculo}\n` +
+                     `*Motorista:* ${motorista}\n` +
+                     `*Embarcador:* ${embarcador}\n` +
+                     `*Valor:* ${valor}\n` +
+                     `*Rota:* ${rota}\n` +
+                     `*Última Posição:* ${ultimaPosicao}\n` +
+                     `*Lat/Long:* ${latLong}\n` +
+                     `*Situação/Descrição:* ${situacaoDescricao}\n`;
+
+    // Enviar para o WhatsApp
+    const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+    window.open(urlWhatsApp, "_blank");
+
+    // Opcional: Enviar para o Google Sheets
+}
+
     
         // Enviar para o Google Sheets (Substitua com o seu URL do Web App)
         const urlGoogleScript = 'https://script.google.com/macros/s/AKfycbzlF5RDRasoqpQcs3PdsPGZ4Wp4vFNfi-UwcmS07fpstYS61hQgdv0sLq2e0ujW1lbe/exec';  
@@ -260,7 +284,7 @@
         .then(response => response.text())
         .then(data => console.log('Dados salvos:', data))
         .catch(error => console.error('Erro ao salvar dados:', error));
-    }
+    
     
 </script>
 
