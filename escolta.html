@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Escoltas - PA-Campinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px;
+            background-color: A5896;
+            color: white;          
+            padding: 10px 20px;
+        }
+       
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 20px;
+        }
+
+        .main-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            padding: 20px;
+        }
+
+      
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 0%; /* Adiciona espaço para o header */
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: rgb(252, 254, 255);
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .icon-link a:hover {
+            background-color: white; /* Cor de fundo ao passar o mouse */
+            border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
+            padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+
+
+        .icon-link a:hover {
+            background-color: white;
+            border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
+            padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+
+        .sidebar {
+            width: 20%;
+            padding: 10px;
+        }
+
+        .totals {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .totals .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .totals .card h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .totals .card p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filters select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="active">Home</a>
+    <a href="registro-saidas.html">Registro de Saídas</a>
+    <a href="escolta.html">Escoltas</a>    
+    <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    <a href="conhecimento.html">Para conhecimento</a>
+</div>
+
+<!-- Cabeçalho com título principal -->
+<header class="header">
+    <h1>- MONITORAMENTO - <br>PA-Campinas</h1>
+</header>
+        <!-- Layout principal com container -->
+        <div class="container">
+            <!-- Sidebar (espaço lateral para informações adicionais) -->
+            <div class="sidebar">
+                <p><strong>Informações adicionais</strong></p>
+                <p>Aqui você pode adicionar gráficos, notas ou widgets.</p>
+            </div>
+
+            <!-- Conteúdo central -->
+            <div class="main-content">
+                <!-- Totalizadores -->
+                <div class="totals">
+                    <div class="card">
+                        <h2 id="totalAndamento">0</h2>
+                        <p>Status: Em Andamento</p>
+                    </div>
+                    <div class="card">
+                        <h2 id="totalFinalizado">0</h2>
+                        <p>Status: Finalizado</p>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="filters">
+                    <select id="filterFilial">
+                        <option value="all">Todas as Filiais</option>
+                        <option value="CAMPINAS/ SP">Campinas</option>
+                        <option value="BELÉM/ PA">Belém</option>
+                    </select>
+                    <select id="filterCliente">
+                        <option value="all">Todos os Clientes</option>
+                    </select>
+                    <select id="filterMotorista">
+                        <option value="all">Todos os Motoristas</option>
+                    </select>
+                    <select id="filterSaida">
+                        <option value="all">Todas as Saídas</option>
+                    </select>
+                </div>
+
+                <!-- Cards -->
+                <div class="dashboard" id="dashboard">
+                    <!-- Os cards serão preenchidos dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Sidebar (espaço lateral para informações adicionais) -->
+            <div class="sidebar">
+                <p><strong>Informações adicionais</strong></p>
+                <p>Você pode usar este espaço para ações rápidas ou atalhos.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const data = [
+            { saida: "2024-11-04", filial: "CAMPINAS/ SP", solicitante: "GUSTAVO VANZEI", destino: "HORTOLÂNDIA/ SP", cliente: "DELL", motorista: "NICOLE CRISTINE MASSUCI", status: "finalizado" },
+            { saida: "2024-11-07", filial: "CAMPINAS/ SP", solicitante: "ADRIAN FERREIRA", destino: "HORTOLÂNDIA/ SP", cliente: "DELL", motorista: "THIAGO LOPES DA SILVA", status: "emAndamento" },
+            { saida: "2024-11-06", filial: "BELÉM/ PA", solicitante: "EDSON SOUZA", destino: "SERRA/ ES", cliente: "COMPAL", motorista: "IVAN VANEL", status: "finalizado" }
+        ];
+
+        const dashboard = document.getElementById('dashboard');
+        const filterFilial = document.getElementById('filterFilial');
+        const filterCliente = document.getElementById('filterCliente');
+        const filterMotorista = document.getElementById('filterMotorista');
+        const filterSaida = document.getElementById('filterSaida');
+        const totalAndamento = document.getElementById('totalAndamento');
+        const totalFinalizado = document.getElementById('totalFinalizado');
+
+        function renderCards(filter = {}) {
+            dashboard.innerHTML = '';
+            let filteredData = data;
+
+            // Filtros
+            if (filter.filial && filter.filial !== "all") {
+                filteredData = filteredData.filter(item => item.filial === filter.filial);
+            }
+            if (filter.cliente && filter.cliente !== "all") {
+                filteredData = filteredData.filter(item => item.cliente === filter.cliente);
+            }
+            if (filter.motorista && filter.motorista !== "all") {
+                filteredData = filteredData.filter(item => item.motorista === filter.motorista);
+            }
+            if (filter.saida && filter.saida !== "all") {
+                filteredData = filteredData.filter(item => item.saida === filter.saida);
+            }
+
+            // Render Cards
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${item.cliente}</h3>
+                    <p><strong>Data de Saída:</strong> ${item.saida}</p>
+                    <p><strong>Filial:</strong> ${item.filial}</p>
+                    <p><strong>Motorista:</strong> ${item.motorista}</p>
+                    <p><strong>Status:</strong> ${item.status}</p>
+                `;
+                dashboard.appendChild(card);
+            });
+
+            // Atualizar Totalizadores
+            totalAndamento.textContent = filteredData.filter(item => item.status === "emAndamento").length;
+            totalFinalizado.textContent = filteredData.filter(item => item.status === "finalizado").length;
+        }
+
+        // Popular Filtros Dinâmicos
+        function populateFilters() {
+            const clientes = [...new Set(data.map(item => item.cliente))];
+            const motoristas = [...new Set(data.map(item => item.motorista))];
+            const saidas = [...new Set(data.map(item => item.saida))];
+            
+            clientes.forEach(cliente => filterCliente.innerHTML += `<option value="${cliente}">${cliente}</option>`);
+            motoristas.forEach(motorista => filterMotorista.innerHTML += `<option value="${motorista}">${motorista}</option>`);
+            saidas.forEach(saida => filterSaida.innerHTML += `<option value="${saida}">${saida}</option>`);
+        }
+
+        // Eventos dos Filtros
+        filterFilial.addEventListener('change', () => renderCards({ filial: filterFilial.value }));
+        filterCliente.addEventListener('change', () => renderCards({ cliente: filterCliente.value }));
+        filterMotorista.addEventListener('change', () => renderCards({ motorista: filterMotorista.value }));
+        filterSaida.addEventListener('change', () => renderCards({ saida: filterSaida.value }));
+
+        // Inicializar Filtros e Renderizar
+        populateFilters();
+        renderCards();
+    </script>
+</body>
+</html>
