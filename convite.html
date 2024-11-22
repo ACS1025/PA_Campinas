@@ -151,6 +151,7 @@
                         <option value="" disabled selected>Escolha um modelo</option>
                         <option value="checklist">Check list vencido</option>
                         <option value="manutencao">Agendamento de manutenção</option>
+                        <option value="briefing">Briefing digital</option>
                     </select>
                 </div>
 
@@ -201,10 +202,12 @@
         document.getElementById("greetingMessage").textContent = greeting;
 
         // Modelos de texto
-        const textos = {
-            checklist: `*Check list vencido*\n\nSr. Motorista,\n\nSeu check list está vencido. Por favor verifique o melhor horário para realizar o teste. Antes, verifique as travas e sensores do veículo. Esteja engatado e entre em contato em nossos telefones para realizarmos o teste.\n\n*Equipe Komando*`,
-            manutencao: `*Agendamento de manutenção*\n\nSr. Motorista,\n\nVerificamos que o seu equipamento rastreador necessita de manutenção, estamos recebendo alertas. Por favor, verifique com a autorizada mais próxima  para realizar os reparos necessários. Certifique-se de que o equipamento esteja em condições seguras e nos chame para um novo teste.\n\n*Equipe Komando*`
-        };
+    const textos = {
+        checklist: `*Check list vencido*\n\nSr. Motorista,\n\nSeu check list está vencido. Por favor verifique o melhor horário para realizar o teste. Antes, verifique as travas e sensores do veículo. Esteja engatado e entre em contato em nossos telefones para realizarmos o teste.\n\n*Equipe Komando*`,
+        manutencao: `*Agendamento de manutenção*\n\nSr. Motorista,\n\nVerificamos que o seu equipamento rastreador necessita de manutenção, estamos recebendo alertas. Por favor, verifique com a autorizada mais próxima para realizar os reparos necessários. Certifique-se de que o equipamento esteja em condições seguras e nos chame para um novo teste.\n\n*Equipe Komando*`,
+        briefing: 'Sr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, leia o formulário e preencha os campos. https://forms.gle/NNoGutTnmT5zfjfD6 Qualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+    };
+
 
         // Carregar texto pronto
         function carregarTexto() {
