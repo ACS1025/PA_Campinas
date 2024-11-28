@@ -82,29 +82,20 @@
         box-shadow: none; /* Remove qualquer sombra */
         outline: none; /* Remove qualquer outline ao focar */
     }
+    .icon-link img {
+        width: 80px; /* Aumente se necessário */
+        height: 80px;
+        margin-bottom: 5px; /* Espaço entre a imagem e o texto */
+}
 
     .dashboard {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 20px;
+        padding: 80px;
     }
 
-    .dashboard-card {
-        flex: 1 1 calc(30% - 40px);
-        margin: 20px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.9);
-        text-align: center;
-        color: #333;
-        padding: 20px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        transition: transform 0.3s;
-    }   
-
+   
     .dashboard-card {
         max-height: 150px; /* Define uma altura fixa */
         overflow-y: auto;  /* Adiciona a barra de rolagem vertical quando o conteúdo exceder a altura */
@@ -147,30 +138,67 @@
         color: #333;
     }
 
-    .carreta-table {
+    .dashboard {
+        transition: transform 0.3s ease; /* Para uma transição suave */
+        cursor: pointer; /* Indica que o item é clicável */
+      }
+      
+    .dashboard:hover {
+        transform: scale(1.1); /* Aumenta o tamanho em 10% ao passar o mouse */
+      }
+      
+    .dashboard-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .dashboard {
         width: 100%;
-        background-color: rgba(255, 255, 0, 0.4); /* Fundo amarelo transparente */
-        border-collapse: collapse;
-        text-align: center;
+        height: 300px;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
     }
-
-    .carreta-table th, .carreta-table td {
+    
+    .dashboard:hover {
+        transform: scale(1.05); /* Zoom de 5% */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dashboard-title {
+        position: center;
+        top: 0;
+        left: 0;
+        width: 100%;
         padding: 10px;
-        border: 1px solid #000; /* Adiciona bordas */
+        font-size: 16px;
+        font-weight: bold;
+        background-color: rgba(92, 9, 9, 0.7);
+        color: #fff;
+        text-align: ;
+        z-index: 10;
     }
-
-    .carreta-table th {
-        background-color: rgba(255, 255, 0, 0.6); /* Fundo amarelo um pouco mais opaco para o cabeçalho */
+    
+    
+    .dashboard iframe {
+        border: none;
+        width: 100%;
+        height: calc(100% - 30px); /* Ajuste para acomodar o link */
     }
-
-    h3 {
-        margin: 0;
-        padding: 0;
+    
+    iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+        display: block;
     }
+    
 
-    h4 {
-        display: none; /* Esconde o h4 original */
-    } 
                  
     @media (max-width: 768px) {
         .dashboard-card {
@@ -246,7 +274,16 @@
             gap: 10px;
         }
     }
-
+    @media (max-width: 480px) {
+        .sidebar {
+            display: flex;
+            flex-direction: row; /* Ícones lado a lado */
+            overflow-x: auto; /* Adiciona barra de rolagem horizontal */
+        }
+        .icon-link {
+            margin: 0 5px;
+        }
+    }
     /* Adicionando um espaçamento superior ao conteúdo para não ficar embaixo da navbar fixa */
     .content {
         padding-top: 60px;
@@ -324,7 +361,7 @@
                 </a>
                 <p>Coletas SSonic</p>
             </div>
-
+            
             <div class="icon-link">
                 <a href="https://app.powerbi.com/view?r=eyJrIjoiYzAwNzBhM2EtOTBkYS00ZDI2LTg5NjItOTg5Yzc1Njc4ZjA3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
                     <img src="src/img/KMDPbix.gif" alt="Relatorio"></a>
@@ -341,15 +378,34 @@
         </div>
 
 <!-- Conteúdo central -->
-<div class="dashboard">
-    <div class="powerbi-embed" style="width: 50%; height: 400px; display: inline-block;">
-        <iframe width="100%" height="100%" src="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
-        frameborder="0" allowFullScreen="true"></iframe>
-    </div>
-    <div class="powerbi-embed" style="width: 48%; height: 400px; display: inline-block;">
-        <iframe width="100%" height="100%" src="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
-        frameborder="0" allowFullScreen="true"></iframe>
-    </div>
+<div class="dashboard-container">
+    <!-- Primeiro Dashboard -->
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank">
+        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Escoltas em Andamento</div>
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
+        </div>
+    </a>
+
+    <!-- Segundo Dashboard -->
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank">
+        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Acompanhamento Carreta Solar</div>
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
+        </div>
+    </a>
 </div>
         <!-- Coluna direita -->
         <div class="sidebar">
@@ -417,5 +473,18 @@
             }
         }
     }
+      
     </script>
     
+    <script>
+        // Função para alternar tela cheia
+        function toggleFullscreen(element) {
+            if (!document.fullscreenElement) {
+                element.requestFullscreen().catch(err => {
+                    console.error(`Erro ao entrar em tela cheia: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>

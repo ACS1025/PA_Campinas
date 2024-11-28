@@ -49,16 +49,23 @@
             }
         
         .content {
+            display: flex; /* Mantém os containers lado a lado */
+            justify-content: center;center; /* Centraliza os containers horizontalmente */
+            align-items: center; /* Centraliza os containers verticalmente */
             padding: 120px 20px;
+            gap: 20px;
+            box-sizing: border-box;
+            min-height: 100vh; /* Garante que ocupe toda a altura da tela */
+            margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
         }
         
         .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #fff;
+            width: 120%;
+            padding: 60px;
+            background-color: #fdfcfc;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
             justify-content: space-between; /* Mantém os itens separados */
             }
 
@@ -67,22 +74,29 @@
             position: relative;
             }
         
-        /* Barra lateral redonda no topo e à direita */
-        .sidebar {
-            position: absolute;
-            top: 50%;
-            right: 50px;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transform: translateY(-50%);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
+            .carreta-table {
+                width: 38%; /* A tabela ocupa toda a largura do container */
+                max-height: 400px; /* Define a altura máxima da tabela */
+                background-color: rgba(255, 255, 0, 0.4); /* Fundo amarelo transparente */
+                border-collapse: collapse;
+                text-align: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow-y: auto; /* Ativa a rolagem vertical */
+                display: block; /* Faz a tabela se comportar como bloco */
+            }
+            
+            .carreta-table th, .carreta-table td {
+                padding: 10px;
+                border: 1px solid #000;
+            }
+            
+            .carreta-table th {
+                background-color: rgba(255, 255, 0, 0.6); /* Fundo amarelo para o cabeçalho */
+            }
+            
+            .carreta-table td {
+                white-space: nowrap; /* Evita quebra de linha dentro das células */
+            }
         
 
 
@@ -201,6 +215,7 @@
         button:hover {
             background-color: #388E3C;
         }
+        
         
         @media (max-width: 768px) {
             form {
@@ -436,15 +451,50 @@
         </div>
 
         <!-- Coluna direita -->
-        <div class="sidebar">
-            <!-- Novos Ícones GIF -->
-            <div class="icon-link">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=1ad463bcfadb57a687f5" target="_blank">
-                    <img src="src/img/Controle.gif" alt="Icon 1">
-                </a>
-                <h3><span style="color: white;"><b>Controle Carretas</b></span></h3>
-            </div>
+        <!-- Tabela para Liberação Carreta Manaus -->
+        <div class="dashboard-card" id="lista-card">
+            <table class="carreta-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <h3>LIBERAÇÃO CARRETA MANAUS</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>BXF-3839</td></tr>
+                    <tr><td>CBS-3C61</td></tr>
+                    <tr><td>CBS-3F97</td></tr>
+                    <tr><td>CGR-1D60</td></tr>
+                    <tr><td>CGR-1E80</td></tr>
+                    <tr><td>CZB-3689</td></tr>
+                    <tr><td>CZB-4H16</td></tr>
+                    <tr><td>DAJ-0432</td></tr>
+                    <tr><td>DAJ-0B20</td></tr>
+                    <tr><td>DBC-6E71</td></tr>
+                    <tr><td>DBC-7434</td></tr>
+                    <tr><td>DBS-6E35</td></tr>
+                    <tr><td>DPB-3234</td></tr>
+                    <tr><td>DPC-3652</td></tr>
+                    <tr><td>DPC-3929</td></tr>
+                    <tr><td>JWX-1691</td></tr>
+                    <tr><td>JWX-1941</td></tr>
+                    <tr><td>JXA-3A72</td></tr>
+                    <tr><td>JXA-3A82</td></tr>
+                    <tr><td>JXA-3H85</td></tr>
+                    <tr><td>JXA-3D66</td></tr>
+                    <tr><td>JXA-3E96</td></tr>
+                    <tr><td>JXG-3158</td></tr>
+                    <tr><td>JXG-4766</td></tr>
+                    <tr><td>JXJ-2903</td></tr>
+                    <tr><td>JXP-3669</td></tr>
+                    <tr><td>NBL-3A05</td></tr>
+                    <tr><td>NBQ-5F96</td></tr>
+                </tbody>
+            </table>
         </div>
+    </div>
+</div>
 
     
          <script>
