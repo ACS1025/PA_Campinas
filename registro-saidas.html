@@ -50,7 +50,7 @@
         
         .content {
             display: flex; /* Mantém os containers lado a lado */
-            justify-content: center;center; /* Centraliza os containers horizontalmente */
+            justify-content: center; /* Centraliza os containers horizontalmente */
             align-items: center; /* Centraliza os containers verticalmente */
             padding: 120px 20px;
             gap: 20px;
@@ -333,7 +333,8 @@
             
                 <div class='input-box'>
                     <label for='doc_cliente'>Cliente:</label>
-                    <input type='text' id='doc_cliente' name='doc_cliente' placeholder='Digite a cliente' oninput='buscarClientes(this.value, 'cliente')'>
+                    <input type='text' id='doc_cliente' name='doc_cliente' placeholder='Digite a cliente' 
+                           oninput="buscarClientes(this.value, 'cliente')">
                     <ul id='lista-cliente'></ul>
                 </div>
             
@@ -350,14 +351,14 @@
                 <div class='input-box'>
                     <label for='doc_origem'>Origem:</label>
                     <input type='text' id='doc_origem' name='doc_origem' placeholder='Digite a cidade' 
-                           oninput='buscarCidades(this.value, 'origem'); updateRoute();'>
+                           oninput="buscarCidades(this.value, 'origem'); updateRoute();">
                     <ul id='lista-origem'></ul>
                 </div>
                 
                 <div class='input-box'>
                     <label for='doc_destino'>Destino:</label>
                     <input type='text' id='doc_destino' name='doc_destino' placeholder='Digite a cidade' 
-                           oninput='buscarCidades(this.value, 'destino'); updateRoute();'>
+                           oninput="buscarCidades(this.value, 'destino'); updateRoute();">
                     <ul id='lista-destino'></ul>
                 </div>
             
