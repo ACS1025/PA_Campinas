@@ -48,57 +48,77 @@
                 background-color: #555;
             }
         
-        .content {
-            display: flex; /* Mantém os containers lado a lado */
-            justify-content: center; /* Centraliza os containers horizontalmente */
-            align-items: center; /* Centraliza os containers verticalmente */
-            padding: 120px 20px;
-            gap: 20px;
-            box-sizing: border-box;
-            min-height: 100vh; /* Garante que ocupe toda a altura da tela */
-            margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
-        }
-        
-        .container {
-            width: 120%;
-            padding: 60px;
-            background-color: #fdfcfc;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-            justify-content: space-between; /* Mantém os itens separados */
+            .content {
+                display: flex; /* Mantém os containers lado a lado */
+                justify-content: flex-start; /* Alinha os containers à esquerda */
+                align-items: center; /* Centraliza os containers verticalmente */
+                padding: 100px 20px;
+                gap: 20px;
+                box-sizing: border-box;
+                min-height: 100vh; /* Garante que ocupe toda a altura da tela */
+                margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
+                margin-left: 20%; /* Adiciona espaço à esquerda */
             }
-
-        .container {
-            padding-right: 120px; /* Adiciona espaço para evitar sobreposição com a sidebar */
-            position: relative;
+            .container-blue {
+                background-color: #d6eaf8; /* Azul claro */
+                padding: 20px; /* Espaçamento interno */
+                border-radius: 12px; /* Bordas arredondadas */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+                display: flex; /* Garante o layout flexível */
+                flex-direction: column; /* Organiza os itens verticalmente */
+                align-items: center; /* Centraliza os elementos horizontalmente */
+                width: 100%; /* Ocupa toda a largura */
+                box-sizing: border-box; /* Inclui padding no cálculo do tamanho */
             }
+                
         
-            .carreta-table {
-                width: 38%; /* A tabela ocupa toda a largura do container */
-                max-height: 400px; /* Define a altura máxima da tabela */
-                background-color: rgba(255, 255, 0, 0.4); /* Fundo amarelo transparente */
-                border-collapse: collapse;
-                text-align: center;
+            .container {
+                width: 150%;
+                padding: 60px;
+                background-color: #fdfcfc;
+                border-radius: 12px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                overflow-y: auto; /* Ativa a rolagem vertical */
-                display: block; /* Faz a tabela se comportar como bloco */
-            }
-            
-            .carreta-table th, .carreta-table td {
-                padding: 10px;
-                border: 1px solid #000;
-            }
-            
-            .carreta-table th {
-                background-color: rgba(255, 255, 0, 0.6); /* Fundo amarelo para o cabeçalho */
-            }
-            
-            .carreta-table td {
-                white-space: nowrap; /* Evita quebra de linha dentro das células */
-            }
-        
+                box-sizing: border-box;
+                justify-content: space-between; /* Mantém os itens separados */
+                }
 
+            .container {
+                padding-right: 120px; /* Adiciona espaço para evitar sobreposição com a sidebar */
+                position: relative;
+                }
+            
+            .carreta-table {
+                    width: 48%; /* A tabela ocupa toda a largura do container */
+                    max-height: 400px; /* Define a altura máxima da tabela */
+                    background-color: rgba(255, 255, 0, 0.4); /* Fundo amarelo transparente */
+                    border-collapse: collapse;
+                    text-align: center;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    overflow-y: auto; /* Ativa a rolagem vertical */
+                    display: block; /* Faz a tabela se comportar como bloco */
+                }
+                
+            .carreta-table th, .carreta-table td {
+                    padding: 10px;
+                    border: 1px solid #000;
+                }
+                
+            .carreta-table th {
+                    background-color: rgba(194, 194, 33, 0.6); /* Fundo amarelo para o cabeçalho */
+                }
+                
+            .carreta-table td {
+                    white-space: nowrap; /* Evita quebra de linha dentro das células */
+                }
+        
+            .sticky-header {
+                position: sticky; /* Torna o cabeçalho "grudado" durante a rolagem */
+                top: 0; /* Define a posição fixa na parte superior da tabela */
+                z-index: 10; /* Garante que fique sobre outros elementos */
+                background-color: #d6eaf8; /* Fundo azul claro, igual ao container */
+                text-align: center; /* Centraliza o texto */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra leve */
+            }
 
         /* Estilo para os ícones dentro da sidebar */
         .icon-link {
@@ -245,7 +265,7 @@
 
     </style>
 </head>
-<body>
+<div>
    
     <div class='header'>
         <h1> </h1>
@@ -453,11 +473,12 @@
 
         <!-- Coluna direita -->
         <!-- Tabela para Liberação Carreta Manaus -->
+        <div class="container-blue">  
         <div class='dashboard-card' id='lista-card'>
             <table class='carreta-table'>
                 <thead>
-                    <tr>
-                        <th colspan='2'>
+                    <tr class="sticky-header">
+                        <th colspan="2">
                             <h3>LIBERAÇÃO CARRETA MANAUS</h3>
                         </th>
                     </tr>
@@ -496,6 +517,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 
     
