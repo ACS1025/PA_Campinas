@@ -52,45 +52,48 @@
                 display: flex; /* Mantém os containers lado a lado */
                 justify-content: flex-start; /* Alinha os containers à esquerda */
                 align-items: center; /* Centraliza os containers verticalmente */
-                padding: 100px 20px;
+                padding: 80px 5px;
                 gap: 20px;
                 box-sizing: border-box;
                 min-height: 100vh; /* Garante que ocupe toda a altura da tela */
                 margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
                 margin-left: 20%; /* Adiciona espaço à esquerda */
             }
-            .container-blue {
-                background-color: #d6eaf8; /* Azul claro */
-                padding: 20px; /* Espaçamento interno */
-                border-radius: 12px; /* Bordas arredondadas */
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
-                display: flex; /* Garante o layout flexível */
-                flex-direction: column; /* Organiza os itens verticalmente */
-                align-items: center; /* Centraliza os elementos horizontalmente */
-                width: 100%; /* Ocupa toda a largura */
-                box-sizing: border-box; /* Inclui padding no cálculo do tamanho */
+            .content {
+                display: flex; /* Mantém os containers lado a lado */
+                justify-content: center; /* Centraliza os containers horizontalmente */
+                align-items: center; /* Centraliza os containers verticalmente */
+                gap: 20px; /* Espaçamento entre os containers */
+                padding: 80px 5px;
+                box-sizing: border-box;
+                min-height: 100vh; /* Garante que ocupe toda a altura da tela */
+                margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
             }
-                
-        
+            
             .container {
-                width: 150%;
-                padding: 60px;
                 background-color: #fdfcfc;
                 border-radius: 12px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 60px;
                 box-sizing: border-box;
-                justify-content: space-between; /* Mantém os itens separados */
-                }
-
-            .container {
-                padding-right: 120px; /* Adiciona espaço para evitar sobreposição com a sidebar */
-                position: relative;
-                }
+                width: 70%; /* Ocupa 70% da largura do container pai */
+            }
+            
+            .container-blue {
+                background-color: transparent;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                box-sizing: border-box;
+                width: 20%; /* Ocupa 28% da largura do container pai */
+            }
+            
+            
             
             .carreta-table {
-                    width: 48%; /* A tabela ocupa toda a largura do container */
+                    width: 90%; /* A tabela ocupa toda a largura do container */
                     max-height: 400px; /* Define a altura máxima da tabela */
-                    background-color: rgba(255, 255, 0, 0.4); /* Fundo amarelo transparente */
+                    background-color: rgba(217, 236, 195, 0.815); /* Fundo amarelo transparente */
                     border-collapse: collapse;
                     text-align: center;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -104,7 +107,7 @@
                 }
                 
             .carreta-table th {
-                    background-color: rgba(194, 194, 33, 0.6); /* Fundo amarelo para o cabeçalho */
+                    background-color: rgba(245, 245, 26, 0.842); /* Fundo amarelo para o cabeçalho */
                 }
                 
             .carreta-table td {
