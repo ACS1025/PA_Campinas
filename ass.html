@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Assinatura de E-mail</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos da assinatura */
+        .email-signature {
+            font-family: Arial, sans-serif;
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+        .email-signature td {
+            padding: 10px;
+        }
+
+        .contact-info i {
+            margin-right: 8px; /* Espaço entre o ícone e o texto */
+            font-size: 18px; /* Tamanho do ícone */
+            color: #58502c; /* Cor do ícone (azul, por exemplo) */
+        }
+        
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+        .info p {
+            margin: 0;
+            color: #555;
+        }
+        .info p.name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .info p.job-title {
+            font-size: 14px;
+        }
+        .contact-info a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .social-icons a {
+            margin: 0 10px;
+        }
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.2s;
+        }
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+        .footer {
+            padding: 10px;
+            font-size: 12px;
+            text-align: center;
+            color: #01070e;
+            background-color: #c2defa;
+        }
+    </style>
+</head>
+<body>
+    <table class="email-signature">
+        <tr>
+            <!-- Coluna do logotipo -->
+            <td class="logo" style="width: 120px; text-align: left; vertical-align: middle;">
+                <img src="https://i.imgur.com/tXTTc2i.jpeg" alt="Logo ACS Consult">
+            </td>
+            <!-- Coluna com as informações -->
+            <td class="info">
+                <p class="name">Ana Claudia de Souza</p>
+                <p class="job-title">Consultora em Gestão de Inovação e Dados</p>
+                <p class="contact-info">
+                    <i class="fas fa-phone-alt"></i> <strong>(11) 9 9623-2846</strong><br>
+                    <i class="fas fa-envelope"></i> <a href="mailto:acs.consult25@gmail.com">acs.consult25@gmail.com</a><br>
+                    <i class="fas fa-laptop"></i> <a href="https://acs1025.github.io/ACS/index.html">https://acs1025.github.io/ACS/index.html</a>
+                </p>
+            </td>
+        <tr>
+            <!-- Linha com redes sociais -->
+            <td colspan="2" class="social-icons" style="text-align: center; background-color: #f8f9fa;">
+                <a href="https://www.linkedin.com/in/acs-ana-claudia" style="margin: 0 10px;">
+                    <i class="fab fa-linkedin" style="font-size: 24px; color: #0077b5;"></i>
+                </a>
+                <a href="https://www.instagram.com/acs_consult" style="margin: 0 10px;">
+                    <i class="fab fa-instagram" style="font-size: 24px; color: #e1306c;"></i>
+                </a>
+                <a href="https://www.whatsapp.com/send?phone=+5511996232846" style="margin: 0 10px;">
+                    <i class="fab fa-whatsapp" style="font-size: 24px; color: #25d366;"></i>
+                </a>
+            </td>
+        </tr>
+            <!-- Mensagem de responsabilidade ambiental -->
+            <td colspan="2" class="footer">
+                "Antes de imprimir, pense na sua responsabilidade com o meio ambiente."
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
