@@ -25,123 +25,108 @@
             top: 50px;
             z-index: 1000;
         }
-            
-            .navbar {
-                display: flex;
-                justify-content: center;
-                background-color: #444;
-                position: fixed;
-                top: 0%; /* Adiciona espaço para o header */
-                width: 100%;
-                z-index: 1000;
-            }
-            
-            .navbar a {
-                color: rgb(252, 254, 255);
-                padding: 14px 20px;
-                text-decoration: none;
-                text-align: center;
-                display: block;
-            }
-            
-            .navbar a:hover {
-                background-color: #555;
-            }
         
-            .content {
-                display: flex; /* Mantém os containers lado a lado */
-                justify-content: flex-start; /* Alinha os containers à esquerda */
-                align-items: center; /* Centraliza os containers verticalmente */
-                padding: 80px 5px;
-                gap: 20px;
-                box-sizing: border-box;
-                min-height: 100vh; /* Garante que ocupe toda a altura da tela */
-                margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
-                margin-left: 20%; /* Adiciona espaço à esquerda */
-            }
-            .content {
-                display: flex; /* Mantém os containers lado a lado */
-                justify-content: center; /* Centraliza os containers horizontalmente */
-                align-items: center; /* Centraliza os containers verticalmente */
-                gap: 20px; /* Espaçamento entre os containers */
-                padding: 80px 5px;
-                box-sizing: border-box;
-                min-height: 100vh; /* Garante que ocupe toda a altura da tela */
-                margin-top: 120px; /* Ajusta o espaço superior para não sobrepor o header */
-            }
-            
-            .container {
-                background-color: #fdfcfc;
-                border-radius: 12px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                padding: 60px;
-                box-sizing: border-box;
-                width: 70%; /* Ocupa 70% da largura do container pai */
-            }
-            
-            .container-blue {
-                background-color: transparent;
-                border-radius: 12px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-                box-sizing: border-box;
-                width: 20%; /* Ocupa 28% da largura do container pai */
-            }
-            
-            
-            
-            .carreta-table {
-                    width: 100%; /* A tabela ocupa toda a largura do container */
-                    max-height: 400px; /* Define a altura máxima da tabela */
-                    background-color: rgba(158, 233, 181, 0.815); /* Fundo amarelo transparente */
-                    border-collapse: collapse;
-                    text-align: center;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    overflow-y: auto; /* Ativa a rolagem vertical */
-                    display: block; /* Faz a tabela se comportar como bloco */
-                }
-                
-            .carreta-table th, .carreta-table td {
-                    padding: 10px;
-                    border: 1px solid #000;
-                }
-                
-            .carreta-table th {
-                    background-color: rgba(245, 245, 26, 0.842); /* Fundo amarelo para o cabeçalho */
-                }
-                
-            .carreta-table td {
-                    white-space: nowrap; /* Evita quebra de linha dentro das células */
-                }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 0%;
+            width: 100%;
+            z-index: 1000;
+        }
         
-            .sticky-header {
-                position: sticky; /* Torna o cabeçalho "grudado" durante a rolagem */
-                top: 0; /* Define a posição fixa na parte superior da tabela */
-                z-index: 10; /* Garante que fique sobre outros elementos */
-                background-color: #d6eaf8; /* Fundo azul claro, igual ao container */
-                text-align: center; /* Centraliza o texto */
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra leve */
-            }
-
-        /* Estilo para os ícones dentro da sidebar */
+        .navbar a {
+            color: rgb(252, 254, 255);
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+        
+        .navbar a:hover {
+            background-color: #555;
+        }
+        
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 80px 5px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            margin-top: 120px;
+        }
+        
+        .container {
+            background-color: #fdfcfc;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 60px;
+            box-sizing: border-box;
+            width: 70%;
+        }
+        
+        .container-blue {
+            background-color: transparent;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            width: 20%;
+        }
+        
+        .carreta-table {
+            width: 100%;
+            max-height: 400px;
+            background-color: rgba(158, 233, 181, 0.815);
+            border-collapse: collapse;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            display: block;
+        }
+        
+        .carreta-table th, .carreta-table td {
+            padding: 10px;
+            border: 1px solid #000;
+        }
+        
+        .carreta-table th {
+            background-color: rgba(245, 245, 26, 0.842);
+        }
+        
+        .carreta-table td {
+            white-space: nowrap;
+        }
+        
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #d6eaf8;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
         .icon-link {
             text-align: center;
             margin-bottom: 20px;
         }
         
         .icon-link img {
-            width: 100px; /* Tamanho da imagem */
-            border-radius: 50%; /* Faz o ícone também ser redondo */
+            width: 100px;
+            border-radius: 50%;
         }
+        
         .icon-link a:hover {
             background-color: #FFD600;
-            border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
-            padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
-            transition: background-color 0.3s ease; /* Transição suave */
+            border-radius: 50%;
+            padding: 10px;
+            transition: background-color 0.3s ease;
         }
-
-
-
+        
         h2 {
             text-align: center;
             color: #333;
@@ -150,7 +135,7 @@
         
         form {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+            grid-template-columns: repeat(4, 1fr);
             grid-gap: 10px;
         }
         
@@ -158,9 +143,7 @@
             display: flex;
             flex-direction: column;
         }
-
         
-
         footer {
             margin-top: 50px;
             text-align: center;
@@ -169,7 +152,7 @@
             padding: 10px 0;
             background-color: transparent;
             border-top: 1px solid gray;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
         }
         
         label {
@@ -185,10 +168,10 @@
             font-size: 1rem;
             background-color: #f9f9f9;
             color: #333;
-            width: 100%; 
+            width: 100%;
             box-sizing: border-box;
         }
-
+        
         .input-group {
             display: flex;
             flex-wrap: wrap;
@@ -204,10 +187,8 @@
         .input-box:last-child {
             margin-right: 0;
         }
-   
-        select,
-        input[type='text'],
-        input[type='date'] {
+        
+        select, input[type='text'], input[type='date'] {
             width: 100%;
             padding: 5px;
             margin-top: 5px;
@@ -225,10 +206,10 @@
         
         button {
             grid-column: span 4;
-            padding: 10px; /* Diminui o padding */
+            padding: 10px;
             background-color: #4CAF50;
             color: white;
-            font-size: 0.9rem; /* Diminui o tamanho da fonte */
+            font-size: 0.9rem;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -239,34 +220,48 @@
             background-color: #388E3C;
         }
         
-        
         @media (max-width: 768px) {
             form {
                 grid-template-columns: 1fr;
             }
-        
+            
             button {
                 grid-column: span 1;
             }
-        
+            
             textarea {
                 grid-column: span 1;
             }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-card {
-                flex: 1 1 calc(50% - 40px);
+            
+            .container {
+                width: 90%;
+            }
+            
+            .container-blue {
+                width: 100%;
             }
         }
-
+        
         @media (max-width: 480px) {
-            .dashboard-card {
-                flex: 1 1 100%;
+            .content {
+                flex-direction: column;
+            }
+            
+            .navbar a {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .carreta-table {
+                font-size: 12px;
             }
         }
-
     </style>
+    
 </head>
 <div>
    
