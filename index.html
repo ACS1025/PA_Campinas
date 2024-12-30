@@ -43,6 +43,14 @@
     }
 
     .icon-link {
+        margin-right: 20px; /* Espaço à direita entre os divs */
+    }
+    
+    .icon-link:last-child {
+        margin-right: 0; /* Remove o espaço extra no último item */
+    }
+
+    .icon-link {
         margin: 10px 0;
         text-align: center;
         background-color: transparent; /* Remove qualquer fundo da div */
@@ -74,29 +82,20 @@
         box-shadow: none; /* Remove qualquer sombra */
         outline: none; /* Remove qualquer outline ao focar */
     }
+    .icon-link img {
+        width: 80px; /* Aumente se necessário */
+        height: 80px;
+        margin-bottom: 5px; /* Espaço entre a imagem e o texto */
+}
 
     .dashboard {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 20px;
+        padding: 80px;
     }
 
-    .dashboard-card {
-        flex: 1 1 calc(30% - 40px);
-        margin: 20px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.9);
-        text-align: center;
-        color: #333;
-        padding: 20px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        transition: transform 0.3s;
-    }   
-
+   
     .dashboard-card {
         max-height: 150px; /* Define uma altura fixa */
         overflow-y: auto;  /* Adiciona a barra de rolagem vertical quando o conteúdo exceder a altura */
@@ -139,30 +138,67 @@
         color: #333;
     }
 
-    .carreta-table {
+    .dashboard {
+        transition: transform 0.3s ease; /* Para uma transição suave */
+        cursor: pointer; /* Indica que o item é clicável */
+      }
+      
+    .dashboard:hover {
+        transform: scale(1.1); /* Aumenta o tamanho em 10% ao passar o mouse */
+      }
+      
+    .dashboard-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .dashboard {
         width: 100%;
-        background-color: rgba(255, 255, 0, 0.4); /* Fundo amarelo transparente */
-        border-collapse: collapse;
-        text-align: center;
+        height: 300px;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
     }
-
-    .carreta-table th, .carreta-table td {
+    
+    .dashboard:hover {
+        transform: scale(1.05); /* Zoom de 5% */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dashboard-title {
+        position: center;
+        top: 0;
+        left: 0;
+        width: 100%;
         padding: 10px;
-        border: 1px solid #000; /* Adiciona bordas */
+        font-size: 16px;
+        font-weight: bold;
+        background-color: rgba(92, 9, 9, 0.7);
+        color: #fff;
+        text-align: ;
+        z-index: 10;
     }
-
-    .carreta-table th {
-        background-color: rgba(255, 255, 0, 0.6); /* Fundo amarelo um pouco mais opaco para o cabeçalho */
+    
+    
+    .dashboard iframe {
+        border: none;
+        width: 100%;
+        height: calc(100% - 30px); /* Ajuste para acomodar o link */
     }
-
-    h3 {
-        margin: 0;
-        padding: 0;
+    
+    iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+        display: block;
     }
+    
 
-    h4 {
-        display: none; /* Esconde o h4 original */
-    } 
                  
     @media (max-width: 768px) {
         .dashboard-card {
@@ -238,7 +274,16 @@
             gap: 10px;
         }
     }
-
+    @media (max-width: 480px) {
+        .sidebar {
+            display: flex;
+            flex-direction: row; /* Ícones lado a lado */
+            overflow-x: auto; /* Adiciona barra de rolagem horizontal */
+        }
+        .icon-link {
+            margin: 0 5px;
+        }
+    }
     /* Adicionando um espaçamento superior ao conteúdo para não ficar embaixo da navbar fixa */
     .content {
         padding-top: 60px;
@@ -316,11 +361,11 @@
                 </a>
                 <p>Coletas SSonic</p>
             </div>
-
+            
             <div class="icon-link">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiYzAwNzBhM2EtOTBkYS00ZDI2LTg5NjItOTg5Yzc1Njc4ZjA3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiY2MyZmJiOTMtMzQyNy00MmJkLWJlNTgtYzYyODM5MmU0MTY3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
                     <img src="src/img/KMDPbix.gif" alt="Relatorio"></a>
-                <p>Relatório Mensal</p>
+                <p>Relatório</p>
             </div>
             <div class="icon-link">
                 <a href="relatorio4.html"><img src="src/img/KMDPbix.gif" alt="Relatório 4"></a>
@@ -333,99 +378,34 @@
         </div>
 
 <!-- Conteúdo central -->
-<div class="content">
-    
-    <div class="dashboard">
-        <!-- Tabela para Escoltas em Andamento -->
-        <div class="dashboard-card" id="solicitacao-card">
-            <h3>Escoltas em Andamento</h3>
-            <table id="escoltasTable" border="1">
-                <thead>
-                    <tr>
-                        <th>Veículo</th>
-                        <th>Status</th>
-                        <th>Ponto de encontro</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><h5><b> </b></h5></td>
-                        <td> </td>
-                        <td> </td> 
-                    </tr>
-                    
-                   
-                        
-                        
-                </tbody>
-            </table>
+<div class="dashboard-container">
+    <!-- Primeiro Dashboard -->
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiY2MyZmJiOTMtMzQyNy00MmJkLWJlNTgtYzYyODM5MmU0MTY3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=0cbf69e80d9189c50699" target="_blank">
+        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Acompanhamento Carreta Solar</div>
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiY2MyZmJiOTMtMzQyNy00MmJkLWJlNTgtYzYyODM5MmU0MTY3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=0cbf69e80d9189c50699" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
         </div>
+    </a>
 
-
-        <!-- Tabela para Acompanhamento Santarém -->
-        <div class="dashboard-card" id="distancia-card">
-            <h3>Acompanhamento Santarém</h3>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Veículo</th>
-                        <th>Status</th>
-                        <th>Data atualizada</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><h5><b></b></h5></td>
-                        <td> </td>
-                        <td> </td>
-                    </tr>
-                    
-            </table>
+    <!-- Segundo Dashboard -->
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank">
+        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Acompanhamento Coleta SSonic</div>
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
         </div>
-
-        <!-- Tabela para Liberação Carreta Manaus -->
-        <div class="dashboard-card" id="lista-card">
-            <table class="carreta-table">
-                <thead>
-                    <tr>
-                        <th colspan="2">
-                            <h3>LIBERAÇÃO CARRETA MANAUS</h3>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>BXF-3839</td></tr>
-                    <tr><td>CBS-3C61</td></tr>
-                    <tr><td>CBS-3F97</td></tr>
-                    <tr><td>CGR-1D60</td></tr>
-                    <tr><td>CGR-1E80</td></tr>
-                    <tr><td>CZB-3689</td></tr>
-                    <tr><td>CZB-4H16</td></tr>
-                    <tr><td>DAJ-0432</td></tr>
-                    <tr><td>DAJ-0B20</td></tr>
-                    <tr><td>DBC-6E71</td></tr>
-                    <tr><td>DBC-7434</td></tr>
-                    <tr><td>DBS-6E35</td></tr>
-                    <tr><td>DPB-3234</td></tr>
-                    <tr><td>DPC-3652</td></tr>
-                    <tr><td>DPC-3929</td></tr>
-                    <tr><td>JWX-1691</td></tr>
-                    <tr><td>JWX-1941</td></tr>
-                    <tr><td>JXA-3A72</td></tr>
-                    <tr><td>JXA-3A82</td></tr>
-                    <tr><td>JXA-3H85</td></tr>
-                    <tr><td>JXA-3D66</td></tr>
-                    <tr><td>JXA-3E96</td></tr>
-                    <tr><td>JXG-3158</td></tr>
-                    <tr><td>JXG-4766</td></tr>
-                    <tr><td>JXJ-2903</td></tr>
-                    <tr><td>JXP-3669</td></tr>
-                    <tr><td>NBL-3A05</td></tr>
-                    <tr><td>NBQ-5F96</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    </a>
 </div>
         <!-- Coluna direita -->
         <div class="sidebar">
@@ -493,5 +473,18 @@
             }
         }
     }
+      
     </script>
     
+    <script>
+        // Função para alternar tela cheia
+        function toggleFullscreen(element) {
+            if (!document.fullscreenElement) {
+                element.requestFullscreen().catch(err => {
+                    console.error(`Erro ao entrar em tela cheia: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
