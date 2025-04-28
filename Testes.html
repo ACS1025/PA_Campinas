@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Cultural</title>
+    <style>
+        /* CSS que já ajustamos com animações */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            height: 100vh;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .sidebar {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .sidebar img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sidebar img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideInUp 1.2s ease-out forwards;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1000px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        .dashboard:hover {
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        iframe:hover {
+            transform: scale(1.01);
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsivo */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+                height: auto;
+            }
+
+            .sidebar {
+                flex-direction: row;
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            .sidebar img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .content {
+                width: 100%;
+                padding: 10px;
+            }
+
+            iframe {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-title {
+                font-size: 18px;
+            }
+
+            iframe {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <!-- Coloque os ícones que você quiser -->
+            <img src="https://img.icons8.com/ios-filled/50/home.png" alt="Home">
+            <img src="https://img.icons8.com/ios-filled/50/settings.png" alt="Settings">
+            <img src="https://img.icons8.com/ios-filled/50/help.png" alt="Help">
+        </div>
+
+        <div class="content">
+            <div class="dashboard-container">
+                <div class="dashboard">
+                    <div class="dashboard-title">Dashboard de Projetos Culturais</div>
+                    <!-- Insira o link do seu dashboard do PowerBI, Google Data Studio, etc -->
+                    <iframe src="https://datastudio.google.com/embed/reporting/1aBcDeFGhIJKlmNoPqRS/view" allowfullscreen></iframe>
+                </div>
+
+                <div class="dashboard">
+                    <div class="dashboard-title">Relatório Financeiro</div>
+                    <iframe src="https://datastudio.google.com/embed/reporting/2xYZbLmNoPqRSstuVWX/view" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
