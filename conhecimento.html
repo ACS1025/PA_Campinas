@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -39,17 +38,17 @@
             font-size: 18px;
             color: #333;
             margin-top: 10px;
-            text-align: center; /* Coloca a saudação no centro */
+            text-align: center;
         }
         .form-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px; /* Ajuste de espaçamento entre as colunas e linhas */
-            row-gap: 25px; /* Espaçamento entre linhas */
+            gap: 20px;
+            row-gap: 25px;
         }
         .form-group {
-            flex: 1 1 calc(25% - 10px); /* Cada grupo ocupa 25% da largura */
-            min-width: 180px; /* Largura mínima para não ficar muito pequeno */
+            flex: 1 1 calc(25% - 10px);
+            min-width: 180px;
         }
         label {
             display: block;
@@ -65,26 +64,23 @@
         }
         textarea {
             resize: vertical;
-            padding: 10px; /* Maior espaçamento interno */
-            font-size: 14px; /* Tamanho uniforme do texto */
+            padding: 10px;
+            font-size: 14px;
         }
-
         .full-width {
-            grid-column: span 4; /* Faz com que os campos ocupem a largura completa */
-            width: 85%; /* Garante que os campos tenham largura total */
+            grid-column: span 4;
+            width: 85%;
             margin-bottom: 15px;
         }
-
         .navbar {
             display: flex;
             justify-content: center;
             background-color: #444;
             position: fixed;
-            top: 0%; /* Adiciona espaço para o header */
+            top: 0%;
             width: 100%;
             z-index: 1000;
         }
-
         .navbar a {
             color: rgb(252, 254, 255);
             padding: 14px 20px;
@@ -92,27 +88,25 @@
             text-align: center;
             display: block;
         }
-
         .navbar a:hover {
             background-color: #555;
         }
-
         button {
             background-color: #007bff;
             color: #fff;
-            padding: 8px 16px; /* Reduzindo o padding */
-            width: auto; /* Ajuste do tamanho do botão */
+            padding: 8px 16px;
+            width: auto;
             border: none;
             border-radius: 5px;
-            font-size: 14px; /* Fonte menor */
+            font-size: 14px;
             cursor: pointer;
             margin-top: 20px;
             grid-column: span 4;
-            transition: background-color 0.3s, transform 0.3s; /* Transição para o hover */
+            transition: background-color 0.3s, transform 0.3s;
         }
         button:hover {
             background-color: #0056b3;
-            transform: scale(1.05); /* Efeito de leve aumento no hover */
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -123,12 +117,11 @@
         <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
         <a href="conhecimento.html" class="active">Para conhecimento</a>
         <a href="convite.html">Convite Motorista</a>
-        <a href="videos.html">Galeria de Vídeos</a></li>
+        <a href="videos.html">Galeria de Vídeos</a>
     </div>
     
     <div class="container">
         <h1>Para Conhecimento</h1>
-        <!-- Saudação colocada aqui, abaixo do título -->
         <div class="greeting">
             <span id="greetingMessage"></span>
         </div>
@@ -242,9 +235,9 @@
             const descricaoSituacao = document.getElementById("descricaoSituacao").value;
             const ocorrencia = document.getElementById("ocorrencia").value;
 
-            const mensagem = `*Para conhecimento*\*\n\n` +
-                             `${greeting}\n\n` +  // Saudação adicionada
-                             `*Data/Hora:* ${dataFormatada}\*\n\n` +
+            const mensagem = `*Para conhecimento*\n\n` +
+                             `${greeting}\n\n` +
+                             `*Data/Hora:* ${dataFormatada}\n\n` +
                              `*Ocorrência:* ${ocorrencia}\n` +
                              `*SM:* ${sm}\n` +
                              `*Veículo:* ${veiculo}\n` +
@@ -257,6 +250,32 @@
                              `*Posto/Ponto de Apoio:* ${postoApoio}\n` +
                              `*Situação/Descrição:* ${descricaoSituacao}`;
 
+            // Envia os dados para a planilha
+            fetch('https://script.google.com/macros/s/AKfycbzzVAAGIvOIlTl2EhEmsYdou7z1W_mUjdp2pyRzvQGIAdyWAzWp8gc9WtNLV9qsESBe/exec', {
+                method: 'POST',
+                body: JSON.stringify({
+                    dataHora: dataHoraInput,
+                    ocorrencia,
+                    sm,
+                    veiculo,
+                    motorista,
+                    embarcador,
+                    valor,
+                    rota,
+                    ultimaPosicao,
+                    latLong,
+                    postoApoio,
+                    descricaoSituacao
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => console.log('Enviado para planilha:', data))
+            .catch(error => console.error('Erro no envio para planilha:', error));
+
+            // Abre o WhatsApp
             const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
             window.open(url, '_blank');
         }
