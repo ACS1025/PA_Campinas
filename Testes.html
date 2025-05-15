@@ -1,182 +1,350 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Cultural</title>
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Para conhecimento</title>
     <style>
-        /* CSS que já ajustamos com animações */
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fafafa;
-        }
-
-        .container {
+            background-color: #f7f7f7;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 20px;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            box-sizing: border-box;
-            animation: fadeIn 1s ease-out forwards;
+            margin: 0;
+            background-image: url('src/img/Registro de Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
-
-        .sidebar {
-            width: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            animation: slideInLeft 1s ease-out forwards;
-        }
-
-        .sidebar img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .sidebar img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .content {
-            flex: 2;
+        .container {
+            background: #fff;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: slideInUp 1.2s ease-out forwards;
-        }
-
-        .dashboard-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .dashboard {
+            max-width: 900px;
+            margin: 0 auto;
             width: 100%;
-            max-width: 1000px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-            transition: box-shadow 0.3s ease;
-            animation: fadeIn 1.5s ease-out forwards;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
         }
-
-        .dashboard:hover {
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
-        }
-
-        .dashboard-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            font-weight: bold;
+        h1 {
             text-align: center;
+            color: #333;
+            margin-bottom: 20px;
         }
-
-        iframe {
+        .greeting {
+            font-size: 18px;
+            color: #333;
+            margin-top: 10px;
+            text-align: center; /* Coloca a saudação no centro */
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px; /* Ajuste de espaçamento entre as colunas e linhas */
+            row-gap: 25px; /* Espaçamento entre linhas */
+        }
+        .form-group {
+            flex: 1 1 calc(25% - 10px); /* Cada grupo ocupa 25% da largura */
+            min-width: 180px; /* Largura mínima para não ficar muito pequeno */
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], select, textarea, input[type="datetime-local"] {
             width: 100%;
-            height: 500px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            padding: 10px; /* Maior espaçamento interno */
+            font-size: 14px; /* Tamanho uniforme do texto */
+        }
+
+        .full-width {
+            grid-column: span 4; /* Faz com que os campos ocupem a largura completa */
+            width: 85%; /* Garante que os campos tenham largura total */
+            margin-bottom: 15px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 0%; /* Adiciona espaço para o header */
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: rgb(252, 254, 255);
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px; /* Reduzindo o padding */
+            width: auto; /* Ajuste do tamanho do botão */
             border: none;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
+            border-radius: 5px;
+            font-size: 14px; /* Fonte menor */
+            cursor: pointer;
+            margin-top: 20px;
+            grid-column: span 4;
+            transition: background-color 0.3s, transform 0.3s; /* Transição para o hover */
         }
-
-        iframe:hover {
-            transform: scale(1.01);
-        }
-
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideInLeft {
-            from { transform: translateX(-50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideInUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Responsivo */
-        @media (max-width: 1024px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-                height: auto;
-            }
-
-            .sidebar {
-                flex-direction: row;
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
-
-            .sidebar img {
-                width: 40px;
-                height: 40px;
-            }
-
-            .content {
-                width: 100%;
-                padding: 10px;
-            }
-
-            iframe {
-                height: 400px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .dashboard-title {
-                font-size: 18px;
-            }
-
-            iframe {
-                height: 300px;
-            }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05); /* Efeito de leve aumento no hover */
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <!-- Coloque os ícones que você quiser -->
-            <img src="https://img.icons8.com/ios-filled/50/home.png" alt="Home">
-            <img src="https://img.icons8.com/ios-filled/50/settings.png" alt="Settings">
-            <img src="https://img.icons8.com/ios-filled/50/help.png" alt="Help">
-        </div>
-
-        <div class="content">
-            <div class="dashboard-container">
-                <div class="dashboard">
-                    <div class="dashboard-title">Dashboard de Projetos Culturais</div>
-                    <!-- Insira o link do seu dashboard do PowerBI, Google Data Studio, etc -->
-                    <iframe src="https://datastudio.google.com/embed/reporting/1aBcDeFGhIJKlmNoPqRS/view" allowfullscreen></iframe>
-                </div>
-
-                <div class="dashboard">
-                    <div class="dashboard-title">Relatório Financeiro</div>
-                    <iframe src="https://datastudio.google.com/embed/reporting/2xYZbLmNoPqRSstuVWX/view" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="registro-saidas.html">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+        <a href="conhecimento.html" class="active">Para conhecimento</a>
+        <a href="convite.html">Convite Motorista</a>
+        <a href="videos.html">Galeria de Vídeos</a></li>
     </div>
-</body>
-</html>
+    
+    <div class="container">
+        <h1>Para Conhecimento</h1>
+        <!-- Saudação colocada aqui, abaixo do título -->
+        <div class="greeting">
+            <span id="greetingMessage"></span>
+        </div>
 
+        <form id="formOcorrencia">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="dataHora">Data/Hora</label>
+                    <input type="datetime-local" id="dataHora" name="dataHora" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="ocorrencia">Ocorrência</label>
+                    <select id="ocorrencia" name="ocorrencia">
+                        <option value="PERDA DE SINAL">PERDA DE SINAL</option>
+                        <option value="ALERTA DESENGATE">ALERTA DESENGATE</option>
+                        <option value="FALHA NO EQUIPAMENTO">FALHA NO EQUIPAMENTO</option>
+                        <option value="ENVOLVIDO EM SINISTRO">ENVOLVIDO EM SINISTRO</option>
+                        <option value="PARADA PARA MANUTENÇÃO">PARADA PARA MANUTENÇÃO</option>
+                        <option value="VEÍCULO QUEBRADO">VEÍCULO QUEBRADO</option>
+                        <option value="VEÍCULO QUEBRADO NA VIA">VEÍCULO QUEBRADO NA VIA</option>
+                        <option value="VEÍCULO EM MANUTENÇÃO">VEÍCULO EM MANUTENÇÃO</option>
+                        <option value="DESCUMPRIMENTO DE NORMAS DE GR">DESCUMPRIMENTO DE NORMAS DE GR</option>
+                        <option value="PARADA FERIADO">PARADA FERIADO</option>
+                        <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sm">SM</label>
+                    <input type="text" id="sm" name="sm" placeholder="Digite o SM">
+                </div>
+
+                <div class="form-group">
+                    <label for="veiculo">Veículo</label>
+                    <input type="text" id="veiculo" name="veiculo" placeholder="Digite o Veículo">
+                </div>
+
+                <div class="form-group">
+                    <label for="motorista">Motorista</label>
+                    <input type="text" id="motorista" name="motorista" placeholder="Digite o nome do Motorista">
+                </div>
+
+                <div class="form-group">
+                    <label for="embarcador">Embarcador</label>
+                    <input type="text" id="embarcador" name="embarcador" placeholder="Digite o Embarcador">
+                </div>
+
+                <div class="form-group">
+                    <label for="valor">Valor</label>
+                    <input type="text" id="valor" name="valor" placeholder="Digite o Valor">
+                </div>
+
+                <div class="form-group">
+                    <label for="rota">Rota</label>
+                    <input type="text" id="rota" name="rota" placeholder="Digite a Rota">
+                </div>
+
+                <div class="form-group">
+                    <label for="ultimaPosicao">Última Posição</label>
+                    <input type="text" id="ultimaPosicao" name="ultimaPosicao" placeholder="Digite">
+                </div>
+
+                <div class="form-group">
+                    <label for="latLong">Lat/Long</label>
+                    <input type="text" id="latLong" name="latLong" placeholder="Digite Lat/Long">
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="postoApoio">Posto/ Ponto de apoio próximo:</label>
+                    <textarea id="postoApoio" name="postoApoio" rows="4" placeholder="Informe se há posto ou ponto de apoio próximo a localização"></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="descricaoSituacao">Situação/Descrição</label>
+                    <textarea id="descricaoSituacao" name="descricaoSituacao" rows="4" placeholder="Descreva a situação"></textarea>
+                </div>
+
+                <button type="button" onclick="enviarWhatsApp()">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "Bom dia!" : (hour < 18 ? "Boa tarde!" : "Boa noite!");
+        document.getElementById("greetingMessage").textContent = greeting;
+
+        document.getElementById("dataHora").value = new Date().toISOString().slice(0, 16);
+
+        function enviarWhatsApp() {
+            const dataHoraInput = document.getElementById("dataHora").value;
+            const dataHora = new Date(dataHoraInput);
+            dataHora.setHours(dataHora.getHours() - 3);
+
+            const dataFormatada = `${String(dataHora.getDate()).padStart(2, '0')}/` +
+                                  `${String(dataHora.getMonth() + 1).padStart(2, '0')}/` +
+                                  `${dataHora.getFullYear()} ` +
+                                  `${String(dataHora.getHours()).padStart(2, '0')}:` +
+                                  `${String(dataHora.getMinutes()).padStart(2, '0')}`;
+
+            const sm = document.getElementById("sm").value;
+            const veiculo = document.getElementById("veiculo").value;
+            const motorista = document.getElementById("motorista").value;
+            const embarcador = document.getElementById("embarcador").value;
+            const valor = document.getElementById("valor").value;
+            const rota = document.getElementById("rota").value;
+            const ultimaPosicao = document.getElementById("ultimaPosicao").value;
+            const latLong = document.getElementById("latLong").value;
+            const postoApoio = document.getElementById("postoApoio").value;
+            const descricaoSituacao = document.getElementById("descricaoSituacao").value;
+            const ocorrencia = document.getElementById("ocorrencia").value;
+
+            const mensagem = `*Para conhecimento*\*\n\n` +
+                             `${greeting}\n\n` +  // Saudação adicionada
+                             `*Data/Hora:* ${dataFormatada}\*\n\n` +
+                             `*Ocorrência:* ${ocorrencia}\n` +
+                             `*SM:* ${sm}\n` +
+                             `*Veículo:* ${veiculo}\n` +
+                             `*Motorista:* ${motorista}\n` +
+                             `*Embarcador:* ${embarcador}\n` +
+                             `*Valor:* ${valor}\n` +
+                             `*Rota:* ${rota}\n` +
+                             `*Última Posição:* ${ultimaPosicao}\n` +
+                             `*Lat/Long:* ${latLong}\n` +
+                             `*Posto/Ponto de Apoio:* ${postoApoio}\n` +
+                             `*Situação/Descrição:* ${descricaoSituacao}`;
+
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+
+    <script>
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "Bom dia!" : (hour < 18 ? "Boa tarde!" : "Boa noite!");
+        document.getElementById("greetingMessage").textContent = greeting;
+        document.getElementById("dataHora").value = new Date().toISOString().slice(0, 16);
+    
+        function enviarWhatsApp() {
+            const dataHoraInput = document.getElementById("dataHora").value;
+            const dataHora = new Date(dataHoraInput);
+            dataHora.setHours(dataHora.getHours() - 3);
+    
+            const dataFormatada = `${String(dataHora.getDate()).padStart(2, '0')}/` +
+                                  `${String(dataHora.getMonth() + 1).padStart(2, '0')}/` +
+                                  `${dataHora.getFullYear()} ` +
+                                  `${String(dataHora.getHours()).padStart(2, '0')}:` +
+                                  `${String(dataHora.getMinutes()).padStart(2, '0')}`;
+    
+            const sm = document.getElementById("sm").value;
+            const veiculo = document.getElementById("veiculo").value;
+            const motorista = document.getElementById("motorista").value;
+            const embarcador = document.getElementById("embarcador").value;
+            const valor = document.getElementById("valor").value;
+            const rota = document.getElementById("rota").value;
+            const ultimaPosicao = document.getElementById("ultimaPosicao").value;
+            const latLong = document.getElementById("latLong").value;
+            const postoApoio = document.getElementById("postoApoio").value;
+            const descricaoSituacao = document.getElementById("descricaoSituacao").value;
+            const ocorrencia = document.getElementById("ocorrencia").value;
+    
+            const formData = {
+                dataHora: dataFormatada,
+                ocorrencia,
+                sm,
+                veiculo,
+                motorista,
+                embarcador,
+                valor,
+                rota,
+                ultimaPosicao,
+                latLong,
+                postoApoio,
+                descricaoSituacao
+            };
+    
+            fetch('https://script.google.com/macros/s/AKfycbxaIWkgcyijtGns2c8h7wKg8RXYMSgDem7J7N9pmSqPR197O6F7JfdKVFdb9m9MT3Dp/exec', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.result === 'success') {
+                    alert("Dados enviados com sucesso!");
+                } else {
+                    alert('Erro ao enviar dados: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao enviar os dados:', error);
+                alert('Erro ao enviar os dados para a planilha.');
+            });
+    
+            const mensagem = `*Para conhecimento*\n\n` +
+                             `${greeting}\n\n` +
+                             `*Data/Hora:* ${dataFormatada}\n` +
+                             `*Ocorrência:* ${ocorrencia}\n` +
+                             `*SM:* ${sm}\n` +
+                             `*Veículo:* ${veiculo}\n` +
+                             `*Motorista:* ${motorista}\n` +
+                             `*Embarcador:* ${embarcador}\n` +
+                             `*Valor:* ${valor}\n` +
+                             `*Rota:* ${rota}\n` +
+                             `*Última Posição:* ${ultimaPosicao}\n` +
+                             `*Lat/Long:* ${latLong}\n` +
+                             `*Posto/Ponto de Apoio:* ${postoApoio}\n` +
+                             `*Situação/Descrição:* ${descricaoSituacao}`;
+    
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>    
+
+    
