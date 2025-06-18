@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dados da Planilha</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dados da Planilha</h1>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Protocolo</th>
+        <th>Status</th>
+        <th>Renovação?</th>
+        <th>N RENOVAÇÃO</th>
+        <th>Gera fat.</th>
+        <th>N GERA FAT</th>
+        <th>Urgente?</th>
+        <th>Razão social cliente</th>
+        <th>CNPJ</th>
+        <th>Placa veículo</th>
+        <th>Tipo veículo</th>
+        <th>Perfil veículo</th>
+        <th>Usuário solicitante</th>
+        <th>E-mail solicitante</th>
+        <th>Data consulta</th>
+        <th>Data validade</th>
+        <th>Data resposta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dados da planilha serão inseridos aqui -->
+    </tbody>
+  </table>
+
+  <script>
+    const sheetDataUrl = 'https://script.google.com/macros/s/AKfycbzQGxhgzJRqnVWAXtIO8pX5b_l7s2WJVLe0djY_ss4TPmlV-dbuZCaiUFAh6ht3SUz4/exec'; // Sua URL do Web App
+
+    // Função para carregar os dados da planilha
+    function loadData() {
+      fetch(sheetDataUrl)
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('#dataTable tbody');
+          tableBody.innerHTML = ''; // Limpa a tabela antes de preencher
+
+          data.forEach(row => {
+            const tableRow = document.createElement('tr');
+            for (const key in row) {
+              const cell = document.createElement('td');
+              cell.textContent = row[key] || ''; // Preenche com a célula ou com uma string vazia
+              tableRow.appendChild(cell);
+            }
+            tableBody.appendChild(tableRow);
+          });
+        })
+        .catch(error => console.error('Erro ao carregar os dados:', error));
+    }
+
+    // Carregar os dados quando a página for carregada
+    window.onload = loadData;
+  </script>
+
+</body>
+</html>
