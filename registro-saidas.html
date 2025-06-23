@@ -100,6 +100,8 @@ let listaNomes = [];
       lista.appendChild(li);
     });
   }
+
+  
 </script>
 
     <style>
@@ -977,6 +979,17 @@ let listaNomes = [];
                 lista.style.display = 'none';
             }
         }
+
+         function atualizarCarretaStatus() {
+                var docSaida = document.getElementById('doc_saida').value;
+                var carretaStatus = document.getElementById('doc_carreta_status');
+                 // Se 'MANIFESTO' for selecionado, o status da carreta será 'CARREGADO', caso contrário, será 'VAZIO'
+                if (docSaida === 'MANIFESTO') {
+         carretaStatus.value = 'CARREGADO';
+            } else {
+         carretaStatus.value = 'VAZIO';
+     }
+ }    
         
         function selecionarClientes(cliente) {
             document.getElementById('doc_cliente').value = cliente;
