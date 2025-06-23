@@ -6658,9 +6658,11 @@ const scriptProp = PropertiesService.getScriptProperties();
          
          function enviarFormulario() {
                 let formData = new FormData();
-                formData.append('doc_origem', document.getElementById('doc_origem').value);
-                formData.append('doc_destino', document.getElementById('doc_destino').value);
-                formData.append('rota', document.getElementById('rota').value);
+                    formData.append('doc_origem', document.getElementById('doc_placa').value);
+                    formData.append('doc_origem', document.getElementById('doc_carreta').value); 
+                    formData.append('doc_origem', document.getElementById('doc_origem').value);
+                    formData.append('doc_destino', document.getElementById('doc_destino').value);
+                    formData.append('rota', document.getElementById('rota').value);
               
          fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
             method: 'POST',
