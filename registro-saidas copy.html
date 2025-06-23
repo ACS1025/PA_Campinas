@@ -13,8 +13,6 @@
 let listaCarretas = [];
 let listaNomes = [];
 
-
-  // Carregar placas e carretas
   fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
   .then(response => response.json())
   .then(data => {
@@ -6654,25 +6652,34 @@ const scriptProp = PropertiesService.getScriptProperties();
 
              function doGet(e) {
                 return HtmlService.createHtmlOutput('Hello, world!');
-         }            
-              
+         }          
+            function enviarFormulario() {
+             let formData = new FormData();
+                 formData.append('doc_placa', document.getElementById('doc_placa').value);
+                 formData.append('frota', document.getElementById('frota').value);
+                 formData.append('doc_carreta', document.getElementById('doc_carreta').value);
+                 formData.append('doc_cliente', document.getElementById('doc_cliente').value);
+                 formData.append('doc_motorista', document.getElementById('doc_motorista').value);
+
          fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
-            method: 'POST',
-            body: formData // Certifique-se de que formData contém os dados do formulário
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.result === 'success') {
-                window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html'; // Redirecionar
-            } else {
-                alert('Erro ao enviar dados: ' + result.error); // Mostra o erro recebido
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao enviar os dados:', error);
-            alert('Ocorreu um erro. Tente novamente.');
-        });
-        
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.result === 'success') {
+            window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html';
+        } else {
+            alert('Erro ao enviar dados: ' + result.error);
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao enviar os dados:', error);
+        alert('Ocorreu um erro. Tente novamente.');
+    });
+}
+
+
             
         </script>
 
