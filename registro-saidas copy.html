@@ -350,7 +350,7 @@
                     <input type='text' id='ordem' name='ordem'>
                 </div>
             
-                 <div class="input-wrapper">
+                 <div class="input-box">
                         <label for="doc_placa">Placa:</label><br />
                         <input type="text" id="doc_placa" autocomplete="off" oninput="buscarPlacas(this.value)" />
                         <ul id="lista-placa" class="autocomplete-list"></ul>
@@ -361,16 +361,16 @@
                 </div>
           
 
-                <div class="input-wrapper">
+                <div class="input-box">
                         <label for="doc_carreta">Carreta:</label><br />
                         <input type="text" id="doc_carreta" autocomplete="off" oninput="buscarCarretas(this.value)" />
                         <ul id="lista-carreta" class="autocomplete-list"></ul>
                 </div>
             
-                <div class="input-wrapper">
-                    <label for="doc_motorista">Motorista:</label><br />
-                    <input type="text" id="doc_motorista" autocomplete="off" oninput="buscarMotoristas(this.value)" />
-                    <ul id="lista-motorista" class="autocomplete-list"></ul>
+                <div class='input-box'>
+                    <label for='doc_motorista'>Motorista:</label>
+                    <input type='text' id='doc_motorista' name='doc_motorista' placeholder='Digite o nome do motorista' oninput='buscarMotoristas(this.value)'>
+                    <ul id='lista-motorista' class='autocomplete-list'></ul>
                 </div>
 
                 <div class='input-box'>
