@@ -4,6 +4,8 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <title>Registro de Saídas - PA-Campinas</title>
     <style>
         body {
@@ -67,7 +69,7 @@
             box-sizing: border-box;
             width: 70%;
         }
-        
+      
         .container-blue {
             background-color: transparent;
             border-radius: 12px;
@@ -310,7 +312,8 @@
         <div class='container'>
             <div class='form-image'>
                 <img src='src/img/supersonic.png' alt='Supersonic'>
-            </div>
+            </div> 
+
   
             <h2>Registro de saídas</h2>
             <br>
@@ -644,9 +647,8 @@
             .catch(error => console.error('Erro ao carregar motoristas:', error));
 
        
-            // Carregar Cidades      
-
-            fetch('https://drive.google.com/uc?export=download&id=1mmEZURw7s9WFTJ3xnlDbMYEpSFlwdlW7')
+           // Carregar cidades via JSON da aba IBGE
+            fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
             .then(response => response.json())
             .then(data => {
                 listaCidades = data;
@@ -674,6 +676,52 @@
                 lista.appendChild(li);
             });
             }
+
+            // Variável para armazenar o mapa
+let mapaLeaflet = L.map('mapa-rota').setView([-15, -55], 4);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(mapaLeaflet);
+
+let camadaRota;
+
+// Função para buscar coordenadas no JSON pelo nome cidade/ estado
+function buscarCoordenadas(nomeCidadeEstado) {
+  return listaCidades.find(item => item['cidade/ estado'].toLowerCase() === nomeCidadeEstado.toLowerCase());
+}
+
+// Função para desenhar a rota no mapa
+function desenharRota() {
+  const valorRota = document.getElementById('rota').value;
+  if (!valorRota) return;
+
+  const cidades = valorRota.split(' X ').map(c => c.trim());
+  const pontos = cidades.map(buscarCoordenadas).filter(Boolean);
+
+  if (pontos.length !== cidades.length) {
+    console.warn('Algumas cidades da rota não foram encontradas no JSON.');
+    return;
+  }
+
+  const latLngs = pontos.map(p => [parseFloat(p.latitude), parseFloat(p.longitude)]);
+
+  if (camadaRota) {
+    mapaLeaflet.removeLayer(camadaRota);
+  }
+
+  camadaRota = L.polyline(latLngs, {color: 'blue'}).addTo(mapaLeaflet);
+  mapaLeaflet.fitBounds(camadaRota.getBounds());
+  camadaRota.bindPopup(`Rota: ${valorRota}`).openPopup();
+}
+
+// Chamar essa função toda vez que o campo 'rota' for atualizado
+document.getElementById('rota').addEventListener('change', desenharRota);
+document.getElementById('rota').addEventListener('input', desenharRota);
+
+// Opcional: desenhar rota inicial, se campo já estiver preenchido
+window.addEventListener('load', desenharRota);
+
                            
                             
                             
@@ -899,6 +947,22 @@ function formatarMoeda(elemento) {
     valor = 'R$ ' + valor.replace('.', ','); // Troca o ponto por vírgula e adiciona 'R$ '
     elemento.value = valor;
 }
+
+function autoPreencherTurno() {
+  const turnoSelect = document.getElementById('doc_turno');
+  const now = new Date();
+  const hour = now.getHours();
+
+  if (hour >= 6 && hour < 18) {
+    turnoSelect.value = 'T1';
+  } else {
+    turnoSelect.value = 'T2';
+  }
+}
+
+// Chama a função quando a página carregar
+window.addEventListener('load', autoPreencherTurno);
+
 
 // Adiciona evento para atualizar rota ao mudar origem/destino
 document.getElementById('doc_origem').addEventListener('change', updateRoute);
