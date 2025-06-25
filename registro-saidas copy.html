@@ -605,19 +605,24 @@
 
     
          <script>
-// Função para atualizar o status da carreta com base no tipo de saída
-    function atualizarCarretaStatus() {
-        var docSaida = document.getElementById('doc_saida').value;
-        var carretaStatus = document.getElementById('doc_carreta_status');
-     if (docSaida === 'MANIFESTO') {
-        carretaStatus.value = 'CARREGADO';
-    } else {
-        carretaStatus.value = 'VAZIO';
-    }   
-}
-
-
-        // Listas globais
+        function atualizarStatus() {
+              var docSaida = document.getElementById('doc_saida')?.value;
+              var carretaStatus = document.getElementById('doc_carreta_status');
+                    
+              if (!carretaStatus) return;
+                    
+              // Define o status com base no tipo de saída
+              if (docSaida === 'MANIFESTO') {
+                carretaStatus.value = 'CARREGADO';
+              } else if (docSaida) {
+                carretaStatus.value = 'VAZIO';
+              } else {
+                carretaStatus.value = '';
+              }
+            }
+            
+        
+            // Listas globais
         let listaPlacas = [];
         let listaCarretas = [];
         let listaNomes = [];
