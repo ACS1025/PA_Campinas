@@ -354,11 +354,11 @@
                     <input type='text' id='ordem' name='ordem'>
                 </div>
             
-                <div class="input-box">
-                    <label for="doc_placa">Placa:</label>
-                    <input type="text" id="doc_placa" name="doc_placa" autocomplete="off" oninput="buscarPlacas(this.value)" />
-                    <ul id="lista-placa" class="autocomplete-list"></ul>
-                </div>
+               <div class="input-box">
+                 <label for="doc_placa">Placa:</label>
+                 <input type="text" id="doc_placa" name="placa" autocomplete="off" oninput="buscarPlacas(this.value)" />
+                 <ul id="lista-placa" class="autocomplete-list"></ul>
+               </div>
                 
                     <div class='input-box'>
                     <label for='frota'>Frota:</label>
@@ -607,137 +607,114 @@
 
     
          <script>
-// Função para atualizar o status da carreta com base no tipo de saída
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para atualizar o status da carreta com base no tipo de saída
     function atualizarCarretaStatus() {
         var docSaida = document.getElementById('doc_saida').value;
         var carretaStatus = document.getElementById('doc_carreta_status');
-     if (docSaida === 'MANIFESTO') {
-        carretaStatus.value = 'CARREGADO';
-    } else {
-        carretaStatus.value = 'VAZIO';
-    }   
-}
+        if (docSaida === 'MANIFESTO') {
+            carretaStatus.value = 'CARREGADO';
+        } else {
+            carretaStatus.value = 'VAZIO';
+        }
+    }
 
+    // Função para preencher o turno automaticamente
+    function autoPreencherTurno() {
+        const turnoSelect = document.getElementById('doc_turno');
+        if (!turnoSelect) return;
+        const now = new Date();
+        const hour = now.getHours();
+        if (hour >= 6 && hour < 18) {
+            turnoSelect.value = 'T1';
+        } else {
+            turnoSelect.value = 'T2';
+        }
+    }
 
-        // Listas globais
-        let listaPlacas = [];
-        let listaCarretas = [];
-        let listaNomes = [];
-        let listaCidades = [];
-        
+    // Função para preencher a data de saída automaticamente
+    function autoPreencherDataSaida() {
+        const campoData = document.getElementById('data_saida');
+        if (!campoData) return;
+        const dataAtual = new Date();
+        const ano = dataAtual.getFullYear();
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+        const dia = String(dataAtual.getDate()).padStart(2, '0');
+        campoData.value = `${ano}-${mes}-${dia}`;
+    }
 
-        // Carregar placas e carretas
-        fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
-            .then(response => response.json())
-            .then(data => {
-           listaPlacas = data.cavalos || [];
-           listaCarretas = data.carretas || [];
-            console.log('Placas carregadas:', listaPlacas);
-            console.log('Carretas carregadas:', listaCarretas);
-            })
-            .catch(error => console.error('Erro ao carregar placas/carretas:', error));
+    // Listas globais para autocomplete
+    let listaPlacas = [];
+    let listaCarretas = [];
+    let listaNomes = [];
+    let listaCidades = [];
 
-        // Carregar motoristas
-        fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
-            .then(response => response.json())
-            .then(data => {
+    // Carregar placas e carretas
+    fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
+        .then(response => response.json())
+        .then(data => {
+            listaPlacas = data.cavalos || [];
+            listaCarretas = data.carretas || [];
+        });
+
+    // Carregar motoristas
+    fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
+        .then(response => response.json())
+        .then(data => {
             listaNomes = data.nomes || [];
-            console.log('Motoristas carregados:', listaNomes);
-            })
-            .catch(error => console.error('Erro ao carregar motoristas:', error));
+        });
 
-       
-           // Carregar cidades via JSON da aba IBGE
-            fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
-            .then(response => response.json())
-            .then(data => {
-                listaCidades = data;
-                console.log('Cidades carregadas:', listaCidades);
-            })
-            .catch(error => console.error('Erro ao carregar cidades:', error));
+    // Carregar cidades
+    fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
+        .then(response => response.json())
+        .then(data => {
+            listaCidades = data;
+        });
 
-            function buscarCidades(valor) {
-            const lista = document.getElementById('lista-cidade');
-            lista.innerHTML = '';
-            if (!valor) return;
-
-            const valorLower = valor.toLowerCase();
-            const resultados = listaCidades.filter(cidade =>
-                cidade.toLowerCase().startsWith(valorLower)
-            );
-
-            resultados.forEach(cidade => {
-                const li = document.createElement('li');
-                li.textContent = cidade;
-                li.onclick = () => {
-                document.getElementById('doc_cidade').value = cidade;
+    // Função autocomplete para placas
+    window.buscarPlacas = function(valor) {
+        const lista = document.getElementById('lista-placa');
+        lista.innerHTML = '';
+        if (!valor) return;
+        const valorLower = valor.toLowerCase();
+        const resultados = listaPlacas.filter(placa => placa.toLowerCase().startsWith(valorLower));
+        resultados.forEach(placa => {
+            const li = document.createElement('li');
+            li.textContent = placa;
+            li.onclick = () => {
+                document.getElementById('doc_placa').value = placa;
                 lista.innerHTML = '';
-                };
-                lista.appendChild(li);
-            });
-            }
+            };
+            lista.appendChild(li);
+        });
+    };
 
-            // Variável para armazenar o mapa
-let mapaLeaflet = L.map('mapa-rota').setView([-15, -55], 4);
+    // Função autocomplete para carretas
+    window.buscarCarretas = function(valor) {
+        const lista = document.getElementById('lista-carreta');
+        lista.innerHTML = '';
+        if (!valor) return;
+        const valorLower = valor.toLowerCase();
+        const resultados = listaCarretas.filter(carreta => carreta.toLowerCase().startsWith(valorLower));
+        resultados.forEach(carreta => {
+            const li = document.createElement('li');
+            li.textContent = carreta;
+            li.onclick = () => {
+                document.getElementById('doc_carreta').value = carreta;
+                lista.innerHTML = '';
+            };
+            lista.appendChild(li);
+        });
+    };
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-}).addTo(mapaLeaflet);
-
-let camadaRota;
-
-// Função para buscar coordenadas no JSON pelo nome cidade/ estado
-function buscarCoordenadas(nomeCidadeEstado) {
-  return listaCidades.find(item => item['cidade/ estado'].toLowerCase() === nomeCidadeEstado.toLowerCase());
-}
-
-// Função para desenhar a rota no mapa
-function desenharRota() {
-  const valorRota = document.getElementById('rota').value;
-  if (!valorRota) return;
-
-  const cidades = valorRota.split(' X ').map(c => c.trim());
-  const pontos = cidades.map(buscarCoordenadas).filter(Boolean);
-
-  if (pontos.length !== cidades.length) {
-    console.warn('Algumas cidades da rota não foram encontradas no JSON.');
-    return;
-  }
-
-  const latLngs = pontos.map(p => [parseFloat(p.latitude), parseFloat(p.longitude)]);
-
-  if (camadaRota) {
-    mapaLeaflet.removeLayer(camadaRota);
-  }
-
-  camadaRota = L.polyline(latLngs, {color: 'blue'}).addTo(mapaLeaflet);
-  mapaLeaflet.fitBounds(camadaRota.getBounds());
-  camadaRota.bindPopup(`Rota: ${valorRota}`).openPopup();
-}
-
-// Chamar essa função toda vez que o campo 'rota' for atualizado
-document.getElementById('rota').addEventListener('change', desenharRota);
-document.getElementById('rota').addEventListener('input', desenharRota);
-
-// Opcional: desenhar rota inicial, se campo já estiver preenchido
-window.addEventListener('load', desenharRota);
-
-                           
-                            
-                            
-                                                                             
-        // Função autocomplete para motoristas
-        function buscarMotoristas(valor) {
-            const lista = document.getElementById('lista-motorista');
-            lista.innerHTML = '';
-
-            if (!valor) return;
-
-            const valorLower = valor.toLowerCase();
-
-            const resultados = listaNomes.filter(nome => nome.toLowerCase().startsWith(valorLower));
-
-            resultados.forEach(nome => {
+    // Função autocomplete para motoristas
+    window.buscarMotoristas = function(valor) {
+        const lista = document.getElementById('lista-motorista');
+        lista.innerHTML = '';
+        if (!valor) return;
+        const valorLower = valor.toLowerCase();
+        const resultados = listaNomes.filter(nome => nome.toLowerCase().startsWith(valorLower));
+        resultados.forEach(nome => {
             const li = document.createElement('li');
             li.textContent = nome;
             li.onclick = () => {
@@ -745,263 +722,116 @@ window.addEventListener('load', desenharRota);
                 lista.innerHTML = '';
             };
             lista.appendChild(li);
-            });
-        }
-
-        // Função autocomplete para placas
-
-        const inputPlaca = document.getElementById('doc_placa');
-        const listaPlaca = document.getElementById('lista-placa');
-        let selecionadoIndexPlaca = -1;
-
-        inputPlaca.addEventListener('input', () => {
-        const valor = inputPlaca.value.trim().toLowerCase();
-        listaPlaca.innerHTML = '';
-        selecionadoIndexPlaca = -1;
-
-        if (!valor) {
-            listaPlaca.style.display = 'none';
-            return;
-        }
-
-        const resultados = listaPlacas.filter(p => p.toLowerCase().startsWith(valor));
-
-        if (resultados.length === 0) {
-            listaPlaca.style.display = 'none';
-            return;
-        }
-
-    resultados.forEach((placa, i) => {
-        const li = document.createElement('li');
-        li.textContent = placa;
-        li.addEventListener('click', () => {
-        inputPlaca.value = placa;
-        listaPlaca.innerHTML = '';
-        listaPlaca.style.display = 'none';
-        selecionadoIndexPlaca = -1;
         });
-        listaPlaca.appendChild(li);
-    });
-  
-    listaPlaca.style.display = 'block';
-    });
-    
-    inputPlaca.addEventListener('keydown', e => {
-    const items = listaPlaca.querySelectorAll('li');
-    if (listaPlaca.style.display === 'none' || items.length === 0) return;
-    
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        selecionadoIndexPlaca = (selecionadoIndexPlaca + 1) % items.length;
-        atualizarSelecaoPlaca(items);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        selecionadoIndexPlaca = (selecionadoIndexPlaca - 1 + items.length) % items.length;
-        atualizarSelecaoPlaca(items);
-    } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (selecionadoIndexPlaca >= 0 && selecionadoIndexPlaca < items.length) {
-        inputPlaca.value = items[selecionadoIndexPlaca].textContent;
-        listaPlaca.innerHTML = '';
-        listaPlaca.style.display = 'none';
-        selecionadoIndexPlaca = -1;
-        }
-    } else if (e.key === 'Escape') {
-        listaPlaca.innerHTML = '';
-        listaPlaca.style.display = 'none';
-        selecionadoIndexPlaca = -1;
-    }
-    });
-    
-    function atualizarSelecaoPlaca(items) {
-    items.forEach((item, idx) => {
-        item.classList.toggle('active', idx === selecionadoIndexPlaca);
-    });
-    }        
-                // Função autocomplete para carretas
-            function buscarCarretas(valor) {
-                const lista = document.getElementById('lista-carreta');
-                lista.innerHTML = '';
-            
-                if (!valor) return;
-            
-                const valorLower = valor.toLowerCase();
-            
-                const resultados = listaCarretas.filter(carreta => carreta.toLowerCase().startsWith(valorLower));
-            
-                resultados.forEach(carreta => {
-                const li = document.createElement('li');
-                li.textContent = carreta;
-                li.onclick = () => {
-                    document.getElementById('doc_carreta').value = carreta;
-                    lista.innerHTML = '';
-                };
-                lista.appendChild(li);
+    };
+
+    // Função autocomplete para cidades (origem/destino)
+    window.buscarCidades = function(input, tipo) {
+        const listaOrigem = document.getElementById('lista-origem');
+        const listaDestino = document.getElementById('lista-destino');
+        let lista = tipo === 'origem' ? listaOrigem : listaDestino;
+        lista.innerHTML = '';
+        if (input.length > 0) {
+            const cidadesFiltradas = listaCidades.filter(cidade => cidade.toLowerCase().includes(input.toLowerCase()));
+            if (cidadesFiltradas.length > 0) {
+                lista.style.display = 'block';
+                cidadesFiltradas.forEach(cidade => {
+                    const li = document.createElement('li');
+                    li.textContent = cidade;
+                    li.onclick = () => selecionarCidade(cidade, tipo);
+                    lista.appendChild(li);
                 });
+            } else {
+                lista.style.display = 'none';
             }
-
-            function atualizarCarretaStatus() {
-                var docSaida = document.getElementById('doc_saida').value;
-                var carretaStatus = document.getElementById('doc_carreta_status');
-        
-                // Se 'MANIFESTO' for selecionado, o status da carreta será 'CARREGADO', caso contrário, será 'VAZIO'
-                if (docSaida === 'MANIFESTO') {
-                    carretaStatus.value = 'CARREGADO';
-                } else {
-                    carretaStatus.value = 'VAZIO';
-                }
-            }    
-
-                 // Obtém a data atual
-                const dataAtual = new Date();
-    
-                 // Formata a data para o padrão AAAA-MM-DD exigido pelo campo de data
-                const ano = dataAtual.getFullYear();
-                const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-                const dia = String(dataAtual.getDate()).padStart(2, '0');
-    
-                // Preenche os dois campos com a data atual
-    
-        
-             document.getElementById('data_saida').value = `${ano}-${mes}-${dia}`;           
-             
-        const listaClientes= [
-        '3M',
-        'ENVISION',
-        'ZILIA'
-        ];
-
-        
-        
-        
-        function selecionarClientes(cliente) {
-            document.getElementById('doc_cliente').value = cliente;
-            document.getElementById('lista-cliente').innerHTML = '';
-            document.getElementById('lista-cliente').style.display = 'none';
-        }
- // Função para buscar cidades e exibir resultados de autocomplete
-function buscarCidades(input, tipo) {
-    const listaOrigem = document.getElementById('lista-origem');
-    const listaDestino = document.getElementById('lista-destino');
-    let lista = tipo === 'origem' ? listaOrigem : listaDestino;
-
-    lista.innerHTML = '';
-    if (input.length > 0) {
-        const cidadesFiltradas = listaCidades.filter(cidade => cidade.toLowerCase().includes(input.toLowerCase()));
-        if (cidadesFiltradas.length > 0) {
-            lista.style.display = 'block'; // Exibe a lista se houver resultados
-            cidadesFiltradas.forEach(cidade => {
-                const li = document.createElement('li');
-                li.textContent = cidade;
-                li.onclick = () => selecionarCidade(cidade, tipo);
-                lista.appendChild(li);
-            });
         } else {
-            lista.style.display = 'none'; // Oculta a lista se não houver resultados
+            lista.style.display = 'none';
         }
-    } else {
-        lista.style.display = 'none'; // Oculta a lista se o campo estiver vazio
-    }
-}
+    };
 
-// Função para selecionar uma cidade no autocomplete
-function selecionarCidade(cidade, tipo) {
-    const campo = tipo === 'origem' ? document.getElementById('doc_origem') : document.getElementById('doc_destino');
-    campo.value = cidade;
-    document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').innerHTML = '';
-    document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').style.display = 'none'; // Oculta a lista após a seleção
-}
+    window.selecionarCidade = function(cidade, tipo) {
+        const campo = tipo === 'origem' ? document.getElementById('doc_origem') : document.getElementById('doc_destino');
+        campo.value = cidade;
+        document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').innerHTML = '';
+        document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').style.display = 'none';
+    };
 
-// Eventos para buscar cidades enquanto o usuário digita
-document.getElementById('doc_origem').addEventListener('input', function() {
-    buscarCidades(this.value, 'origem');
-});
-
-document.getElementById('doc_destino').addEventListener('input', function() {
-    buscarCidades(this.value, 'destino');
-});
-
-     // Função para atualizar a rota com base na origem e destino
+    // Função para atualizar a rota
     function updateRoute() {
         var origem = document.getElementById('doc_origem').value;
         var destino = document.getElementById('doc_destino').value;
-
-        // Concatena a rota
         var rota = '';
         if (origem && destino) {
-            rota = 'XX ' + origem + ' X ' + destino; // Formato: XX ORIGEM X DESTINO
+            rota = 'XX ' + origem + ' X ' + destino;
         } else if (origem || destino) {
-            rota = (origem || 'XX') + ' X ' + (destino || 'XX'); // Formato: ORIGEM X DESTINO, substituindo vazio por XX
+            rota = (origem || 'XX') + ' X ' + (destino || 'XX');
         } else {
-            rota = 'XX'; // Se nenhum campo estiver preenchido, mostrar XX como padrão
+            rota = 'XX';
+        }
+        document.getElementById('rota').value = rota;
+    }
+
+    // Função para formatar moeda
+    window.formatarMoeda = function(elemento) {
+        var valor = elemento.value;
+        valor = valor.replace(/\D/g, '');
+        valor = (parseFloat(valor) / 100).toFixed(2);
+        valor = 'R$ ' + valor.replace('.', ',');
+        elemento.value = valor;
+    };
+
+    // Chama as funções de preenchimento automático ao carregar a página
+    autoPreencherTurno();
+    autoPreencherDataSaida();
+
+    // Eventos
+    document.getElementById('doc_saida').addEventListener('change', atualizarCarretaStatus);
+    document.getElementById('doc_origem').addEventListener('change', updateRoute);
+    document.getElementById('doc_destino').addEventListener('change', updateRoute);
+
+    document.getElementById('doc_origem').addEventListener('input', function() {
+        buscarCidades(this.value, 'origem');
+        updateRoute();
+    });
+    document.getElementById('doc_destino').addEventListener('input', function() {
+        buscarCidades(this.value, 'destino');
+        updateRoute();
+    });
+
+    // Manipula o envio do formulário para evitar erro de variável indefinida
+    document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
+        const inputPlaca = document.getElementById('doc_placa');
+        const placaValue = inputPlaca.value.trim();
+
+        if (!placaValue) {
+            e.preventDefault();
+            alert('Por favor, selecione ou digite uma placa válida.');
+            inputPlaca.focus();
+            return;
         }
 
-        document.getElementById('rota').value = rota; // Atualiza o campo Rota
-    }
+        const formData = new FormData(this);
 
-// Formata o valor como moeda
-function formatarMoeda(elemento) {
-    var valor = elemento.value;
-    valor = valor.replace(/\D/g, ''); // Remove tudo que não é número
-    valor = (parseFloat(valor) / 100).toFixed(2); // Converte para float e fixa em 2 casas decimais
-    valor = 'R$ ' + valor.replace('.', ','); // Troca o ponto por vírgula e adiciona 'R$ '
-    elemento.value = valor;
-}
+        fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.result === 'success') {
+                window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
+            } else {
+                alert('Erro ao enviar dados: ' + result.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao enviar os dados:', error);
+            alert('Ocorreu um erro. Tente novamente.');
+        });
+    });
 
-function autoPreencherTurno() {
-  const turnoSelect = document.getElementById('doc_turno');
-  const now = new Date();
-  const hour = now.getHours();
-
-  if (hour >= 6 && hour < 18) {
-    turnoSelect.value = 'T1';
-  } else {
-    turnoSelect.value = 'T2';
-  }
-}
-
-// Chama a função quando a página carregar
-window.addEventListener('load', autoPreencherTurno);
-
-
-// Adiciona evento para atualizar rota ao mudar origem/destino
-document.getElementById('doc_origem').addEventListener('change', updateRoute);
-document.getElementById('doc_destino').addEventListener('change', updateRoute);
-
-// Manipula o envio do formulário para evitar erro de variável indefinida
-
-document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const placaValue = document.getElementById('doc_placa').value.trim();
-  if (!placaValue) {
-    alert('Por favor, selecione ou digite uma placa válida.');
-    document.getElementById('doc_placa').focus();
-    return;
-  }
-
-  const formData = new FormData(this);
-  fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.result === 'success') {
-      window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html';
-    } else {
-      alert('Erro ao enviar dados: ' + result.error);
-    }
-  })
-  .catch(error => {
-    console.error('Erro ao enviar os dados:', error);
-    alert('Ocorreu um erro. Tente novamente.');
-  });
+    // Outras funções e inicializações que você já possui podem ser mantidas aqui
 });
-
-
-document.getElementById('doc_saida').addEventListener('change', atualizarCarretaStatus);
-
 </script>
 
          <footer>
