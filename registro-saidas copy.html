@@ -336,8 +336,8 @@
             
                 <div class='input-box'>
                     <label for='doc_saida'>Doc. saída:</label>
-                    <select id='doc_saida' name='doc_saida' onchange='atualizarStatus()' required>
-                        <option value=''>Selecione tipo de saída</option>
+                    <select id='doc_saida' name='doc_saida' onchange='atualizarCarretaStatus()' required>
+                    <option value=''>Selecione tipo de saída</option>
                         <option value='ORDEM DE COLETA'>ORDEM DE COLETA</option>
                         <option value='AUT. SAÍDA'>AUT. SAÍDA</option>
                         <option value='AUTORIZAÇÃO DE SAÍDA'>AUTORIZAÇÃO DE SAÍDA</option>
@@ -494,7 +494,6 @@
             
         </div>
 
-        <!-- Coluna direita -->
         <!-- Tabela para Liberação Carreta Manaus -->
         <div class="container-blue">  
         <div class='dashboard-card' id='lista-card'>
@@ -605,24 +604,19 @@
 
     
          <script>
-        function atualizarStatus() {
-              var docSaida = document.getElementById('doc_saida')?.value;
-              var carretaStatus = document.getElementById('doc_carreta_status');
-                    
-              if (!carretaStatus) return;
-                    
-              // Define o status com base no tipo de saída
-              if (docSaida === 'MANIFESTO') {
-                carretaStatus.value = 'CARREGADO';
-              } else if (docSaida) {
-                carretaStatus.value = 'VAZIO';
-              } else {
-                carretaStatus.value = '';
-              }
-            }
-            
-        
-            // Listas globais
+// Função para atualizar o status da carreta com base no tipo de saída
+    function atualizarCarretaStatus() {
+        var docSaida = document.getElementById('doc_saida').value;
+        var carretaStatus = document.getElementById('doc_carreta_status');
+     if (docSaida === 'MANIFESTO') {
+        carretaStatus.value = 'CARREGADO';
+    } else {
+        carretaStatus.value = 'VAZIO';
+    }   
+}
+
+
+        // Listas globais
         let listaPlacas = [];
         let listaCarretas = [];
         let listaNomes = [];
@@ -649,38 +643,41 @@
             })
             .catch(error => console.error('Erro ao carregar motoristas:', error));
 
-        // Carregar Cidades
-        fetch('https://drive.google.com/uc?export=download&id=1mmEZURw7s9WFTJ3xnlDbMYEpSFlwdlW7')
+       
+            // Carregar Cidades      
 
-        .then(response => response.json())
-        .then(data => {
-            listaCidades = data;
-            console.log('Cidades carregadas:', listaCidades);
-        })
-        .catch(error => console.error('Erro ao carregar cidades:', error));
+            fetch('https://drive.google.com/uc?export=download&id=1mmEZURw7s9WFTJ3xnlDbMYEpSFlwdlW7')
+            .then(response => response.json())
+            .then(data => {
+                listaCidades = data;
+                console.log('Cidades carregadas:', listaCidades);
+            })
+            .catch(error => console.error('Erro ao carregar cidades:', error));
 
-        function buscarCidades(valor) {
-        const lista = document.getElementById('lista-cidade');
-        lista.innerHTML = '';
-        if (!valor) return;
-
-        const valorLower = valor.toLowerCase();
-        const resultados = listaCidades.filter(cidade =>
-            cidade.toLowerCase().startsWith(valorLower)
-        );
-
-        resultados.forEach(cidade => {
-            const li = document.createElement('li');
-            li.textContent = cidade;
-            li.onclick = () => {
-            document.getElementById('doc_cidade').value = cidade;
+            function buscarCidades(valor) {
+            const lista = document.getElementById('lista-cidade');
             lista.innerHTML = '';
-            };
-            lista.appendChild(li);
-        });
-        }
-        
+            if (!valor) return;
 
+            const valorLower = valor.toLowerCase();
+            const resultados = listaCidades.filter(cidade =>
+                cidade.toLowerCase().startsWith(valorLower)
+            );
+
+            resultados.forEach(cidade => {
+                const li = document.createElement('li');
+                li.textContent = cidade;
+                li.onclick = () => {
+                document.getElementById('doc_cidade').value = cidade;
+                lista.innerHTML = '';
+                };
+                lista.appendChild(li);
+            });
+            }
+                           
+                            
+                            
+                                                                             
         // Função autocomplete para motoristas
         function buscarMotoristas(valor) {
             const lista = document.getElementById('lista-motorista');
@@ -704,48 +701,96 @@
         }
 
         // Função autocomplete para placas
-        function buscarPlacas(valor) {
-            const lista = document.getElementById('lista-placa');
-            lista.innerHTML = '';
 
-            if (!valor) return;
+        const inputPlaca = document.getElementById('doc_placa');
+        const listaPlaca = document.getElementById('lista-placa');
+        let selecionadoIndexPlaca = -1;
 
-            const valorLower = valor.toLowerCase();
+        inputPlaca.addEventListener('input', () => {
+        const valor = inputPlaca.value.trim().toLowerCase();
+        listaPlaca.innerHTML = '';
+        selecionadoIndexPlaca = -1;
 
-            const resultados = listaPlacas.filter(placa => placa.toLowerCase().startsWith(valorLower));
-
-            resultados.forEach(placa => {
-            const li = document.createElement('li');
-            li.textContent = placa;
-            li.onclick = () => {
-                document.getElementById('doc_placa').value = placa;
-                lista.innerHTML = '';
-            };
-            lista.appendChild(li);
-            });
+        if (!valor) {
+            listaPlaca.style.display = 'none';
+            return;
         }
 
-        // Função autocomplete para carretas
-        function buscarCarretas(valor) {
-            const lista = document.getElementById('lista-carreta');
-            lista.innerHTML = '';
+        const resultados = listaPlacas.filter(p => p.toLowerCase().startsWith(valor));
 
-            if (!valor) return;
-
-            const valorLower = valor.toLowerCase();
-
-            const resultados = listaCarretas.filter(carreta => carreta.toLowerCase().startsWith(valorLower));
-
-            resultados.forEach(carreta => {
-            const li = document.createElement('li');
-            li.textContent = carreta;
-            li.onclick = () => {
-                document.getElementById('doc_carreta').value = carreta;
-                lista.innerHTML = '';
-            };
-            lista.appendChild(li);
-            });
+        if (resultados.length === 0) {
+            listaPlaca.style.display = 'none';
+            return;
         }
+
+    resultados.forEach((placa, i) => {
+        const li = document.createElement('li');
+        li.textContent = placa;
+        li.addEventListener('click', () => {
+        inputPlaca.value = placa;
+        listaPlaca.innerHTML = '';
+        listaPlaca.style.display = 'none';
+        selecionadoIndexPlaca = -1;
+        });
+        listaPlaca.appendChild(li);
+    });
+  
+    listaPlaca.style.display = 'block';
+    });
+    
+    inputPlaca.addEventListener('keydown', e => {
+    const items = listaPlaca.querySelectorAll('li');
+    if (listaPlaca.style.display === 'none' || items.length === 0) return;
+    
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selecionadoIndexPlaca = (selecionadoIndexPlaca + 1) % items.length;
+        atualizarSelecaoPlaca(items);
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selecionadoIndexPlaca = (selecionadoIndexPlaca - 1 + items.length) % items.length;
+        atualizarSelecaoPlaca(items);
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (selecionadoIndexPlaca >= 0 && selecionadoIndexPlaca < items.length) {
+        inputPlaca.value = items[selecionadoIndexPlaca].textContent;
+        listaPlaca.innerHTML = '';
+        listaPlaca.style.display = 'none';
+        selecionadoIndexPlaca = -1;
+        }
+    } else if (e.key === 'Escape') {
+        listaPlaca.innerHTML = '';
+        listaPlaca.style.display = 'none';
+        selecionadoIndexPlaca = -1;
+    }
+    });
+    
+    function atualizarSelecaoPlaca(items) {
+    items.forEach((item, idx) => {
+        item.classList.toggle('active', idx === selecionadoIndexPlaca);
+    });
+    }        
+                // Função autocomplete para carretas
+            function buscarCarretas(valor) {
+                const lista = document.getElementById('lista-carreta');
+                lista.innerHTML = '';
+            
+                if (!valor) return;
+            
+                const valorLower = valor.toLowerCase();
+            
+                const resultados = listaCarretas.filter(carreta => carreta.toLowerCase().startsWith(valorLower));
+            
+                resultados.forEach(carreta => {
+                const li = document.createElement('li');
+                li.textContent = carreta;
+                li.onclick = () => {
+                    document.getElementById('doc_carreta').value = carreta;
+                    lista.innerHTML = '';
+                };
+                lista.appendChild(li);
+                });
+            }
 
             function atualizarCarretaStatus() {
                 var docSaida = document.getElementById('doc_saida').value;
@@ -774,250 +819,6 @@
              
         const listaClientes= [
         '3M',
-        'ADATA ELECTRONICS',
-        'ADRIANA - JORGE TEXEIRA',
-        'AGÊNCIA ADVENTISTA',
-        'ALI INDUSTRIA BRASILEIRA DE BEBIDAS',
-        'AM COMERCIO',
-        'AMAZON',
-        'AMAZONAS DISTRIBUIDORA',
-        'AMBEV S/A',
-        'AMERICANAS S/A',
-        'ARCON TUBE',
-        'ARCOR',
-        'ARDAGH',
-        'ARMAZEM MONACO',
-        'ARTHUR LUNDGREN',
-        'ASMPT',
-        'ATACADÃO S/A',
-        'AZUL LINHAS AEREAS',
-        'B2 POLIMEROS',
-        'BALL',
-        'BANDAG',
-        'BANDEIRA DE MELO E FILHOS',
-        'BARDELLA',
-        'BB SUPERMERCADO',
-        'BEMOL',
-        'BEVERLY HILLS',
-        'BIG AMIGAO',
-        'BIG TRADING',
-        'BOA VISTA',
-        'BOM SAMARITANO',
-        'BOREALIS',
-        'BR CAMPOS',
-        'BRAGA DISTRIBUIDORA',
-        'BRIDGESTONE DO BRASIL',
-        'CAL CENTER CALÇADOS',
-        'CAL-COMP',
-        'CALLETER',
-        'CALOI NORTE S/A',
-        'CAMPONEL',
-        'CARREFOUR',
-        'CASAN',
-        'CASAS BAHIA',
-        'CB COMERCIO',
-        'CDL',
-        'CEMIG',
-        'CENTER TCL',
-        'CERVEJARIA CIDADE IMPERIAL S.A.',
-        'CHIBATÃO',
-        'CLARO',
-        'COCA-COLA',
-        'COEMA',
-        'COLORTECH',
-        'COMERCIAL NOVA ESPERANÇA',
-        'COMPAG AMAZONAS',
-        'COMPAL',
-        'COMPALED',
-        'COMPASS',
-        'COMPEÇAS',
-        'COMPONEL',
-        'CONCAP',
-        'CONEXÃO MINAS',
-        'COPAG',
-        'CRALL',
-        'CROWN',
-        'DAIKIN AR CONDICIONADO',
-        'DELL',
-        'DB SUPERMERCADOS',
-        'DIGIBOARD',
-        'DISTRIBUIDORA',
-        'DISTRIBUIDORA FARIAS',
-        'DISTRIBUIDORA LONDRINA',
-        'DIVERSOS',
-        'DOHLER',
-        'DORI ALIMENTOS',
-        'DRUGOVICH',
-        'DU NORTE',
-        'DUCATI',
-        'DURÃES',
-        'EBD',
-        'ELECTROLUX DO BRASIL S/A',
-        'ELGIN',
-        'ENVISION',
-        'ESB',
-        'ESCANDINAVIA',
-        'ESTRELA DO NORTE',
-        'FILIAL SUPERSONIC',
-        'FIRESTONE',
-        'FORTNORT',
-        'FRACIONADA VERKO',
-        'FRANCISCO ARAUJO',
-        'FREITAS COMERCIO',
-        'FRIGELAR',
-        'FROTTY',
-        'FXLIED',
-        'G.O COMERCIO',
-        'GARANTIA TOTAL',
-        'GIGA',
-        'GLACIAL',
-        'GLADSON',
-        'GMR COMERCIO',
-        'GOL LOG',
-        'GUARIZZO',
-        'HARMAN DA AMAZONIA',
-        'HD TRANSPORTE',
-        'HENKEL',
-        'HG MARQUES',
-        'HILEIA',
-        'IDEMITSU',
-        'INDUSTRIA REUNIDAS',
-        'INFOSTORE',
-        'INGREDION',
-        'IRMÃOS LIMA',
-        'ISOTECH',
-        'ISOTOAT',
-        'JABIL',
-        'JACOBS DOUWE EGBERTS',
-        'JAKS',
-        'JB',
-        'JF OLIVEIRA NAVEGAÇÃO (BALSA)',
-        'JFDINIZ',
-        'JRMS COMERCIO',
-        'JRODRIGUES',
-        'JT MOREIRA',
-        'KLEBER MACIEL',
-        'LA TRANSPORTES',
-        'LATAM',
-        'LATAS INDUSTRIA DE EMBALAGENS',
-        'LAVAR CARRETA',
-        'LENOVO',
-        'LG',
-        'LIGHT S/A',
-        'LITE-ON MOBILE',
-        'LM SERVIÇOS',
-        'LOJAS AMERICANAS',
-        'LOPES',
-        'LUPO',
-        'LUZ DE SAO MANUEL',
-        'MAGAZINE LUIZA',
-        'MANAUS COMERCIO',
-        'MANOEL CUNHA DA MOTA',
-        'MANUTENÇÃO',
-        'MARCEL',
-        'MARISA',
-        'MARQUES E MELO',
-        'MARTIS',
-        'MASTERCARD',
-        'MERCANTIL NOVA ERA',
-        'METROBAS',
-        'MG COMERCIO',
-        'MIGUEL CEZAR',
-        'MILLHOMES',
-        'MIR',
-        'MIRA',
-        'MULTILASER',
-        'OUTROS',
-        'NANSEN',
-        'NATUREZA',
-        'NC VIANA',
-        'NESTLE',
-        'NEW HORIZON',
-        'NEXANS BRASIL S/A',
-        'NG SILVA',
-        'NICOLUCCI',
-        'NIDALA',
-        'NISSIN',
-        'NORCAPE',
-        'NOVA ERA',
-        'NOVA ESPERANÇA',
-        'NOVAMED',
-        'NOVELIS',
-        'NUTRIMENTAL',
-        'OCRIM',
-        'OLIVEIRA E LIMA',
-        'PAES MONTEIRO',
-        'PB KIDS',
-        'PCE',
-        'PET CARE',
-        'PET CENTER',
-        'PIARARA DIST ALIMENTOS',
-        'PLACIBRAS',
-        'PLASUTIL',
-        'PORTO MANAUS',
-        'PRESTIGE',
-        'PS',
-        'RA',
-        'RAVIBRÁS',
-        'REAL COMERCIO',
-        'RECONSTRUTECK',
-        'RECPLAN',
-        'RECUP',
-        'RI HAPPY',
-        'RLX FLUOROCHEMICAL',
-        'ROCHA E PAIVA',
-        'RODOBANKER',
-        'RODOCAMP',
-        'RODRIGUES',
-        'ROMA',
-        'ROSEEILA',
-        'ROSSI',
-        'RUFINO',
-        'SAGEMCOM BRASIL',
-        'SAMSUNG',
-        'SANEPAR',
-        'SARAIVA LIVRARIA',
-        'SAT BRAS',
-        'SENA',
-        'SENDAS',
-        'SMART MODULAR',
-        'SSA',
-        'STECK',
-        'SUFRAMA - VISTORIA',
-        'SUPER CANCUN',
-        'SUPERSINGLE',
-        'SUPERSONIC',
-        'SUZANO',
-        'SUZANO PAPEL',
-        'SX LED LIGHTING',
-        'TAPAJOS',
-        'TAURUS',
-        'TCL',
-        'TECA',
-        'TECH',
-        'TEKA TECELAGEM',
-        'TEKSEA',
-        'TELLESCOM',
-        'THERMOMECANICA',
-        'TORQUE',
-        'TORRA TORRA',
-        'TPV DO BRASIL',
-        'TUPILAST',
-        'UCB',
-        'UCB INDUSTRIA',
-        'UNIAR',
-        'UNICAP',
-        'UNICHARM',
-        'UNICOBA',
-        'USINA FORTALEZA',
-        'VENEZA',
-        'VIRACOPOS',
-        'WALFF',
-        'WASION',
-        'WENGER',
-        'WILD AMAZON FLAVORS',
-        'WINITY',
-        'YUSEN',
         'ENVISION',
         'ZILIA'
         ];
@@ -1104,26 +905,39 @@ document.getElementById('doc_origem').addEventListener('change', updateRoute);
 document.getElementById('doc_destino').addEventListener('change', updateRoute);
 
 // Manipula o envio do formulário para evitar erro de variável indefinida
+
 document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.result === 'success') {
-            window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html';
-        } else {
-            alert('Erro ao enviar dados: ' + result.error);
-        }
-    })
-    .catch(error => {
-        console.error('Erro ao enviar os dados:', error);
-        alert('Ocorreu um erro. Tente novamente.');
-    });
+  e.preventDefault();
+
+  const placaValue = document.getElementById('doc_placa').value.trim();
+  if (!placaValue) {
+    alert('Por favor, selecione ou digite uma placa válida.');
+    document.getElementById('doc_placa').focus();
+    return;
+  }
+
+  const formData = new FormData(this);
+  fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.result === 'success') {
+      window.location.href = 'https://acs1025.github.io/PA_Campinas/index.html';
+    } else {
+      alert('Erro ao enviar dados: ' + result.error);
+    }
+  })
+  .catch(error => {
+    console.error('Erro ao enviar os dados:', error);
+    alert('Ocorreu um erro. Tente novamente.');
+  });
 });
+
+
+document.getElementById('doc_saida').addEventListener('change', atualizarCarretaStatus);
+
 </script>
 
          <footer>
