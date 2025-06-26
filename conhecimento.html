@@ -214,6 +214,8 @@
         document.getElementById("dataHora").value = new Date().toISOString().slice(0, 16);
 
         function enviarWhatsApp() {
+             const btn = document.querySelector('button[onclick="enviarWhatsApp()"]');
+    btn.disabled = true;
             const dataHoraInput = document.getElementById("dataHora").value;
             const dataHora = new Date(dataHoraInput);
             dataHora.setHours(dataHora.getHours() - 3);
@@ -251,39 +253,40 @@
                              `*Posto/Ponto de Apoio:* ${postoApoio}\n` +
                              `*Situação/Descrição:* ${descricaoSituacao}`;
 
-            // Envia os dados para a planilha
-            fetch('https://script.google.com/macros/s/AKfycbwy6VJRPmWWj-k8-YenSMqofLyxu1JPHWNUaO2V72u7cib33nAMH8u0TbiQGu5jIkbm/exec', {
-                method: 'POST',
-                body: JSON.stringify({
-                    dataHora: dataHoraInput,
-                    ocorrencia,
-                    sm,
-                    veiculo,
-                    motorista,
-                    embarcador,
-                    valor,
-                    rota,
-                    ultimaPosicao,
-                    latLong,
-                    postoApoio,
-                    descricaoSituacao
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-.then(response => response.json())
-.then(data => {
-    console.log('Enviado para planilha:', data);
-    alert('Retorno do Apps Script: ' + JSON.stringify(data));
-    
-})
-.catch(error => console.error('Erro no envio para planilha:', error));
-
-            // Abre o WhatsApp
-            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
+ fetch('https://script.google.com/macros/s/AKfycbwy6VJRPmWWj-k8-YenSMqofLyxu1JPHWNUaO2V72u7cib33nAMH8u0TbiQGu5jIkbm/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+            dataHora: dataHoraInput,
+            ocorrencia,
+            sm,
+            veiculo,
+            motorista,
+            embarcador,
+            valor,
+            rota,
+            ultimaPosicao,
+            latLong,
+            postoApoio,
+            descricaoSituacao
+        }),
+        headers: {
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => response.json())
+    .then(data => {
+        btn.disabled = false;
+        alert('Retorno do Apps Script: ' + JSON.stringify(data));
+    })
+    .catch(error => {
+        btn.disabled = false;
+        console.error('Erro no envio para planilha:', error);
+    });
+                                                                                                                                                                                
+    // Abre o WhatsApp
+    const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, '_blank');
+}
     </script>
 </body>
 </html>
