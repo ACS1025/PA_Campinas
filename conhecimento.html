@@ -282,6 +282,34 @@
         btn.disabled = false;
         console.error('Erro no envio para planilha:', error);
     });
+
+    const formData = new FormData();
+formData.append('dataHora', dataHoraInput);
+formData.append('ocorrencia', ocorrencia);
+formData.append('sm', sm);
+formData.append('veiculo', veiculo);
+formData.append('motorista', motorista);
+formData.append('embarcador', embarcador);
+formData.append('valor', valor);
+formData.append('rota', rota);
+formData.append('ultimaPosicao', ultimaPosicao);
+formData.append('latLong', latLong);
+formData.append('postoApoio', postoApoio);
+formData.append('descricaoSituacao', descricaoSituacao);
+
+fetch('https://script.google.com/macros/s/AKfycbwy6VJRPmWWj-k8-YenSMqofLyxu1JPHWNUaO2V72u7cib33nAMH8u0TbiQGu5jIkbm/exec', {
+  method: 'POST',
+  body: formData
+})
+.then(response => response.json())
+.then(data => {
+    btn.disabled = false;
+    alert('Retorno do Apps Script: ' + JSON.stringify(data));
+})
+.catch(error => {
+    btn.disabled = false;
+    console.error('Erro no envio para planilha:', error);
+});
                                                                                                                                                                                 
     // Abre o WhatsApp
     const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
