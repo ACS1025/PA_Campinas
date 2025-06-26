@@ -272,9 +272,13 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(data => console.log('Enviado para planilha:', data))
-            .catch(error => console.error('Erro no envio para planilha:', error));
+.then(response => response.json())
+.then(data => {
+    console.log('Enviado para planilha:', data);
+    alert('Retorno do Apps Script: ' + JSON.stringify(data));
+    
+})
+.catch(error => console.error('Erro no envio para planilha:', error));
 
             // Abre o WhatsApp
             const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
