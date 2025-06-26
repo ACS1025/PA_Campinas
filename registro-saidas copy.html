@@ -303,7 +303,7 @@
         <a href='solicitacao-escolta.html'>Solicitação de Escolta</a>
         <a href='conhecimento.html'>Para conhecimento</a>
         <a href='convite.html'>Convite Motorista</a>
-        <a href="videos.html">Galeria de Vídeos</a></li>
+        <a href="videos.html">Galeria de Vídeos</a>
     </div>
 
 
@@ -316,9 +316,11 @@
 
   
             <h2>Registro de saídas</h2>
-            <br>
-            <form id='registro-saidas-form' action='https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec' method='POST'>
-                <input type='hidden' name='linkBase' value='PA_Campinas'>
+            <br> 
+               <form id="registro-saidas-form" action="https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec" method="POST">
+        <input type="hidden" name="linkBase" value="PA_Campinas">
+                           
+                      
             
                 <div class='input-box'>
                     <label for='responsavel'>Responsável pelo registro:</label>
@@ -377,13 +379,16 @@
                     <input type='text' id='doc_motorista' name='doc_motorista' placeholder='Digite o nome do motorista' oninput='buscarMotoristas(this.value)'>
                     <ul id='lista-motorista' class='autocomplete-list'></ul>
                 </div>
-
-                <div class='input-box'>
-                    <label for='doc_cliente'>Cliente:</label>
-                    <input type='text' id='doc_cliente' name='doc_cliente' placeholder='Digite a cliente' 
-                           oninput="buscarClientes(this.value, 'cliente')">
-                    <ul id='lista-cliente'></ul>
-                </div>
+                 
+                <div class="input-box">
+          <label for="doc_cliente">Cliente:</label>
+          <input type="text" id="clienteInput" name="doc_cliente" required oninput="buscarClientes(this.value, 'cliente')" />
+          <ul id="lista-cliente" class="autocomplete-list"></ul>
+        </div>
+                           
+                             
+                               
+                               
             
                 <div class='input-box'>
                     <label for='filial'>Filial:</label>
@@ -481,6 +486,7 @@
                             <option value='ROGÉRIO'>ROGÉRIO</option>
                             <option value='RONEY CASSIO'>RONEY CASSIO</option>
                             <option value='RUY'>RUY</option>
+                            <option value='CARLOS'>CARLOS</option>
                             <option value='TARSICIO'>TARSICIO</option>
                         </select>
                 </div>
@@ -509,95 +515,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>BTA-2016</td></tr>
-                    <tr><td>BTS-6620</td></tr>
-                    <tr><td>BXF-3839</td></tr>
-                    <tr><td>CBS-2I31</td></tr>
-                    <tr><td>CBS-3C61</td></tr>
-                    <tr><td>CBS-3F93</td></tr>
-                    <tr><td>CBS-3F97</td></tr>
-                    <tr><td>CGR-1D60</td></tr>
-                    <tr><td>CGR-1E80</td></tr>
-                    <tr><td>CGR-1F10</td></tr>
-                    <tr><td>CZB-3689</td></tr>
-                    <tr><td>CZB-4E60</td></tr>
-                    <tr><td>CZB-4H16</td></tr>
-                    <tr><td>DAJ-0432</td></tr>
-                    <tr><td>DAJ-0B16</td></tr>
-                    <tr><td>DAJ-0B20</td></tr>
-                    <tr><td>DBC-6867</td></tr>
-                    <tr><td>DBC-6E54</td></tr>
-                    <tr><td>DBC-6E59</td></tr>
-                    <tr><td>DBC-6E71</td></tr>
-                    <tr><td>DBC-6E87</td></tr>
-                    <tr><td>DBC-7434</td></tr>
-                    <tr><td>DBS-6E35</td></tr>
-                    <tr><td>DPB-3234</td></tr>
-                    <tr><td>DPB-3234</td></tr>
-                    <tr><td>DPC-3652</td></tr>
-                    <tr><td>DPC-3929</td></tr>
-                    <tr><td>GSV-9520</td></tr>
-                    <tr><td>JWT-4706</td></tr>
-                    <tr><td>JWT-5706</td></tr>
-                    <tr><td>JWX-1011</td></tr>
-                    <tr><td>JWX-1691</td></tr>
-                    <tr><td>JWX-1901</td></tr>
-                    <tr><td>JWX-1941</td></tr>
-                    <tr><td>JWX-2481</td></tr>
-                    <tr><td>JXA-3819</td></tr>
-                    <tr><td>JXA-3A26</td></tr>
-                    <tr><td>JXA-3A72</td></tr>
-                    <tr><td>JXA-3A82</td></tr>
-                    <tr><td>JXA-3D66</td></tr>
-                    <tr><td>JXA-3E96</td></tr>
-                    <tr><td>JXA-3F53</td></tr>
-                    <tr><td>JXA-3H64</td></tr>
-                    <tr><td>JXA-3H85</td></tr>
-                    <tr><td>JXA-4283</td></tr>
-                    <tr><td>JXA-4408</td></tr>
-                    <tr><td>JXA-4A07</td></tr>
-                    <tr><td>JXA-6000</td></tr>
-                    <tr><td>JXA-6360</td></tr>
-                    <tr><td>JXB-0F31</td></tr>
-                    <tr><td>JXB-1391</td></tr>
-                    <tr><td>JXG-3158</td></tr>
-                    <tr><td>JXG-4766</td></tr>
-                    <tr><td>JXI-6416</td></tr>
-                    <tr><td>JXJ-2903</td></tr>
-                    <tr><td>JXP-3669</td></tr>
-                    <tr><td>JXP-3669</td></tr>
-                    <tr><td>NBQ-5F96</td></tr>
-                   <tr><td> CZB-4E46</td></tr>
-                   <tr><td> DAJ-0B21</td></tr>
-                   <tr><td> DAJ-0C17</td></tr>
-                   <tr><td> DTC-7J35</td></tr>
-                   <tr><td> ESU-9988</td></tr>
-                   <tr><td> EXU-2358</td></tr>
-                   <tr><td> EZU-6640</td></tr>
-                   <tr><td> INW-8J93</td></tr>
-                   <tr><td> JWZ-0867</td></tr>
-                   <tr><td> NST-0488</td></tr>
-                   <tr><td> NST-0608 </td></tr>
-                   <tr><td> NST-0888</td></tr>
-                   <tr><td> PHU-6A16</td></tr>
-                   <tr><td>ALW-0286</td></tr>
-                   <tr><td>BTA-1F57</td></tr>
-                   <tr><td>DPC-4072</td></tr>
-                   <tr><td>DPC-4073</td></tr>
-                   <tr><td>EFW-0234</td></tr>
-                   <tr><td>EZX-5329</td></tr>
-                   <tr><td>GSH-7491</td></tr>
-                   <tr><td>JXA-3J36</td></tr>
-                   <tr><td>JXB-8B76</td></tr>
-                   <tr><td>JXE-6E98</td></tr>
-                   <tr><td>JXN-8438</td></tr>
-                   <tr><td>JXN-8E28</td></tr>
-                   <tr><td>JXQ-7678</td></tr>
-                   <tr><td>OAH-9608</td></tr>
-                   <tr><td>OAI-7736</td></tr>
-                   <tr><td>OAI-7836</td></tr>
-                   <tr><td>OAI-8666</td></tr>
-                   <tr><td>PHU-5J26</td></tr>
+                    <tr><td>SAÍDA ESPORÁDICA</td></tr>
                 </tbody>
             </table>
         </div>
@@ -606,237 +524,191 @@
 </div>
 
     
-         <script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Função para atualizar o status da carreta com base no tipo de saída
-    function atualizarCarretaStatus() {
-        var docSaida = document.getElementById('doc_saida').value;
-        var carretaStatus = document.getElementById('doc_carreta_status');
-        if (docSaida === 'MANIFESTO') {
-            carretaStatus.value = 'CARREGADO';
-        } else {
-            carretaStatus.value = 'VAZIO';
-        }
-    }
+  // Torna global
+  window.atualizarCarretaStatus = function () {
+    const docSaida = document.getElementById('doc_saida').value;
+    const carretaStatus = document.getElementById('doc_carreta_status');
+    carretaStatus.value = (docSaida === 'MANIFESTO') ? 'CARREGADO' : 'VAZIO';
+  };
 
-    // Função para preencher o turno automaticamente
-    function autoPreencherTurno() {
-        const turnoSelect = document.getElementById('doc_turno');
-        if (!turnoSelect) return;
-        const now = new Date();
-        const hour = now.getHours();
-        if (hour >= 6 && hour < 18) {
-            turnoSelect.value = 'T1';
-        } else {
-            turnoSelect.value = 'T2';
-        }
-    }
+  function autoPreencherTurno() {
+    const turnoSelect = document.getElementById('doc_turno');
+    if (!turnoSelect) return;
+    const hour = new Date().getHours();
+    turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
+  }
 
-    // Função para preencher a data de saída automaticamente
-    function autoPreencherDataSaida() {
-        const campoData = document.getElementById('data_saida');
-        if (!campoData) return;
-        const dataAtual = new Date();
-        const ano = dataAtual.getFullYear();
-        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-        const dia = String(dataAtual.getDate()).padStart(2, '0');
-        campoData.value = `${ano}-${mes}-${dia}`;
-    }
+  function autoPreencherDataSaida() {
+    const campoData = document.getElementById('data_saida');
+    if (!campoData) return;
+    const dataAtual = new Date();
+    const ano = dataAtual.getFullYear();
+    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+    const dia = String(dataAtual.getDate()).padStart(2, '0');
+    campoData.value = `${ano}-${mes}-${dia}`;
+  }
 
-    // Listas globais para autocomplete
-    let listaPlacas = [];
-    let listaCarretas = [];
-    let listaNomes = [];
-    let listaCidades = [];
+  // Listas globais
+  let listaPlacas = [], listaCarretas = [], listaNomes = [], listaCidades = [], listaClientes = [];
 
-    // Carregar placas e carretas
-    fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
-        .then(response => response.json())
-        .then(data => {
-            listaPlacas = data.cavalos || [];
-            listaCarretas = data.carretas || [];
-        });
-
-    // Carregar motoristas
-    fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
-        .then(response => response.json())
-        .then(data => {
-            listaNomes = data.nomes || [];
-        });
-
-    // Carregar cidades
-    fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
-        .then(response => response.json())
-        .then(data => {
-            listaCidades = data;
-        });
-
-    // Função autocomplete para placas
-    window.buscarPlacas = function(valor) {
-        const lista = document.getElementById('lista-placa');
-        lista.innerHTML = '';
-        if (!valor) return;
-        const valorLower = valor.toLowerCase();
-        const resultados = listaPlacas.filter(placa => placa.toLowerCase().startsWith(valorLower));
-        resultados.forEach(placa => {
-            const li = document.createElement('li');
-            li.textContent = placa;
-            li.onclick = () => {
-                document.getElementById('doc_placa').value = placa;
-                lista.innerHTML = '';
-            };
-            lista.appendChild(li);
-        });
-    };
-
-    // Função autocomplete para carretas
-    window.buscarCarretas = function(valor) {
-        const lista = document.getElementById('lista-carreta');
-        lista.innerHTML = '';
-        if (!valor) return;
-        const valorLower = valor.toLowerCase();
-        const resultados = listaCarretas.filter(carreta => carreta.toLowerCase().startsWith(valorLower));
-        resultados.forEach(carreta => {
-            const li = document.createElement('li');
-            li.textContent = carreta;
-            li.onclick = () => {
-                document.getElementById('doc_carreta').value = carreta;
-                lista.innerHTML = '';
-            };
-            lista.appendChild(li);
-        });
-    };
-
-    // Função autocomplete para motoristas
-    window.buscarMotoristas = function(valor) {
-        const lista = document.getElementById('lista-motorista');
-        lista.innerHTML = '';
-        if (!valor) return;
-        const valorLower = valor.toLowerCase();
-        const resultados = listaNomes.filter(nome => nome.toLowerCase().startsWith(valorLower));
-        resultados.forEach(nome => {
-            const li = document.createElement('li');
-            li.textContent = nome;
-            li.onclick = () => {
-                document.getElementById('doc_motorista').value = nome;
-                lista.innerHTML = '';
-            };
-            lista.appendChild(li);
-        });
-    };
-
-    // Função autocomplete para cidades (origem/destino)
-    window.buscarCidades = function(input, tipo) {
-        const listaOrigem = document.getElementById('lista-origem');
-        const listaDestino = document.getElementById('lista-destino');
-        let lista = tipo === 'origem' ? listaOrigem : listaDestino;
-        lista.innerHTML = '';
-        if (input.length > 0) {
-            const cidadesFiltradas = listaCidades.filter(cidade => cidade.toLowerCase().includes(input.toLowerCase()));
-            if (cidadesFiltradas.length > 0) {
-                lista.style.display = 'block';
-                cidadesFiltradas.forEach(cidade => {
-                    const li = document.createElement('li');
-                    li.textContent = cidade;
-                    li.onclick = () => selecionarCidade(cidade, tipo);
-                    lista.appendChild(li);
-                });
-            } else {
-                lista.style.display = 'none';
-            }
-        } else {
-            lista.style.display = 'none';
-        }
-    };
-
-    window.selecionarCidade = function(cidade, tipo) {
-        const campo = tipo === 'origem' ? document.getElementById('doc_origem') : document.getElementById('doc_destino');
-        campo.value = cidade;
-        document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').innerHTML = '';
-        document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino').style.display = 'none';
-    };
-
-    // Função para atualizar a rota
-    function updateRoute() {
-        var origem = document.getElementById('doc_origem').value;
-        var destino = document.getElementById('doc_destino').value;
-        var rota = '';
-        if (origem && destino) {
-            rota = 'XX ' + origem + ' X ' + destino;
-        } else if (origem || destino) {
-            rota = (origem || 'XX') + ' X ' + (destino || 'XX');
-        } else {
-            rota = 'XX';
-        }
-        document.getElementById('rota').value = rota;
-    }
-
-    // Função para formatar moeda
-    window.formatarMoeda = function(elemento) {
-        var valor = elemento.value;
-        valor = valor.replace(/\D/g, '');
-        valor = (parseFloat(valor) / 100).toFixed(2);
-        valor = 'R$ ' + valor.replace('.', ',');
-        elemento.value = valor;
-    };
-
-    // Chama as funções de preenchimento automático ao carregar a página
-    autoPreencherTurno();
-    autoPreencherDataSaida();
-
-    // Eventos
-    document.getElementById('doc_saida').addEventListener('change', atualizarCarretaStatus);
-    document.getElementById('doc_origem').addEventListener('change', updateRoute);
-    document.getElementById('doc_destino').addEventListener('change', updateRoute);
-
-    document.getElementById('doc_origem').addEventListener('input', function() {
-        buscarCidades(this.value, 'origem');
-        updateRoute();
-    });
-    document.getElementById('doc_destino').addEventListener('input', function() {
-        buscarCidades(this.value, 'destino');
-        updateRoute();
+  fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
+    .then(res => res.json()).then(data => {
+      listaPlacas = data.cavalos || [];
+      listaCarretas = data.carretas || [];
     });
 
-    // Manipula o envio do formulário para evitar erro de variável indefinida
-    document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
-        const inputPlaca = document.getElementById('doc_placa');
-        const placaValue = inputPlaca.value.trim();
+  fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
+    .then(res => res.json()).then(data => listaNomes = data.nomes || []);
 
-        if (!placaValue) {
-            e.preventDefault();
-            alert('Por favor, selecione ou digite uma placa válida.');
-            inputPlaca.focus();
-            return;
-        }
+  fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
+    .then(res => res.json()).then(data => listaCidades = data);
 
-        const formData = new FormData(this);
+  fetch('https://drive.google.com/uc?export=download&id=1xmohBNnPTx-o8wwKOcFNExryEFV16Mhi')
+    .then(res => res.json()).then(data => listaClientes = data)
+    .catch(err => console.error('Erro ao carregar clientes:', err));
 
-        fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.result === 'success') {
-                window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
-            } else {
-                alert('Erro ao enviar dados: ' + result.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao enviar os dados:', error);
-            alert('Ocorreu um erro. Tente novamente.');
-        });
+  window.buscarPlacas = function(valor) {
+    const lista = document.getElementById('lista-placa');
+    lista.innerHTML = '';
+    if (!valor) return;
+    listaPlacas.filter(p => p.toLowerCase().startsWith(valor.toLowerCase()))
+      .forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p;
+        li.onclick = () => { document.getElementById('doc_placa').value = p; lista.innerHTML = ''; };
+        lista.appendChild(li);
+      });
+  };
+
+  window.buscarCarretas = function(valor) {
+    const lista = document.getElementById('lista-carreta');
+    lista.innerHTML = '';
+    if (!valor) return;
+    listaCarretas.filter(c => c.toLowerCase().startsWith(valor.toLowerCase()))
+      .forEach(c => {
+        const li = document.createElement('li');
+        li.textContent = c;
+        li.onclick = () => { document.getElementById('doc_carreta').value = c; lista.innerHTML = ''; };
+        lista.appendChild(li);
+      });
+  };
+
+  window.buscarMotoristas = function(valor) {
+    const lista = document.getElementById('lista-motorista');
+    lista.innerHTML = '';
+    if (!valor) return;
+    listaNomes.filter(n => n.toLowerCase().startsWith(valor.toLowerCase()))
+      .forEach(n => {
+        const li = document.createElement('li');
+        li.textContent = n;
+        li.onclick = () => { document.getElementById('doc_motorista').value = n; lista.innerHTML = ''; };
+        lista.appendChild(li);
+      });
+  };
+
+  window.buscarCidades = function(input, tipo) {
+    const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
+    lista.innerHTML = '';
+    if (!input) return lista.style.display = 'none';
+    const filtradas = listaCidades.filter(c => c.toLowerCase().includes(input.toLowerCase()));
+    if (!filtradas.length) return lista.style.display = 'none';
+    lista.style.display = 'block';
+    filtradas.forEach(cidade => {
+      const li = document.createElement('li');
+      li.textContent = cidade;
+      li.onclick = () => selecionarCidade(cidade, tipo);
+      lista.appendChild(li);
     });
+  };
 
-    // Outras funções e inicializações que você já possui podem ser mantidas aqui
+  window.selecionarCidade = function(cidade, tipo) {
+    const campo = document.getElementById(tipo === 'origem' ? 'doc_origem' : 'doc_destino');
+    campo.value = cidade;
+    const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
+    lista.innerHTML = '';
+    lista.style.display = 'none';
+  };
+
+  window.buscarClientes = function(input, tipo) {
+    const lista = document.getElementById('lista-cliente');
+    lista.innerHTML = '';
+    if (!input) return lista.style.display = 'none';
+    const filtradas = listaClientes.filter(c => c.toLowerCase().includes(input.toLowerCase()));
+    if (!filtradas.length) return lista.style.display = 'none';
+    lista.style.display = 'block';
+    filtradas.forEach(cliente => {
+      const li = document.createElement('li');
+      li.textContent = cliente;
+      li.onclick = () => selecionarCliente(cliente);
+      lista.appendChild(li);
+    });
+  };
+
+  window.selecionarCliente = function(cliente) {
+    document.getElementById('clienteInput').value = cliente;
+    document.getElementById('lista-cliente').style.display = 'none';
+  };
+
+  window.updateRoute = function() {
+    const origem = document.getElementById('doc_origem').value;
+    const destino = document.getElementById('doc_destino').value;
+    let rota = 'XX';
+    if (origem && destino) rota = 'XX ' + origem + ' X ' + destino;
+    else if (origem || destino) rota = (origem || 'XX') + ' X ' + (destino || 'XX');
+    document.getElementById('rota').value = rota;
+  };
+
+  window.formatarMoeda = function(elemento) {
+    let valor = elemento.value.replace(/\D/g, '');
+    valor = (parseFloat(valor) / 100).toFixed(2);
+    elemento.value = 'R$ ' + valor.replace('.', ',');
+  };
+
+  autoPreencherTurno();
+  autoPreencherDataSaida();
+
+  document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const btn = this.querySelector('button[type="submit"]');
+  btn.disabled = true;
+
+  const placa = document.getElementById('doc_placa').value.trim();
+  if (!placa) {
+    alert('Por favor, preencha a placa.');
+    btn.disabled = false;
+    return;
+  }
+
+  const formData = new FormData(this);
+
+  fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.result === 'success') {
+      window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
+    } else {
+      alert('Erro ao enviar os dados: ' + (result.error || 'Erro desconhecido'));
+      btn.disabled = false;
+    }
+  })
+  .catch(error => {
+    console.error('Erro ao enviar os dados:', error);
+    alert('Ocorreu um erro. Tente novamente.');
+    btn.disabled = false;
+  });
 });
+}); // <-- Adiciona esta linha para fechar o addEventListener
 </script>
+
 
          <footer>
             <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
         </footer>
-
- </body>
+    </body>
 </html>
