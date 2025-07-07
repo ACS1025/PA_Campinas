@@ -541,9 +541,13 @@ document.addEventListener('DOMContentLoaded', function() {
     turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
   }
 
-  window.onload = function () {
-    document.getElementById('doc_viagem_rastreada').value = 'KMD';
-  };
+  // Aguarda o carregamento da página e define 'KMD' como valor padrão
+    window.addEventListener('DOMContentLoaded', function () {
+      const select = document.getElementById('doc_viagem_rastreada');
+      if (select && select.value === '') {
+        select.value = 'KMD';
+      }
+    });
 
   function autoPreencherDataSaida() {
     const campoData = document.getElementById('data_saida');
