@@ -421,7 +421,7 @@
                 <div class='input-box'>
                     <label for='doc_viagem_rastreada'>Viagem rastreada:</label>
                     <select id='doc_viagem_rastreada' name='doc_viagem_rastreada'>
-                        <option value=''>KMD</option>
+                        <option value=''>Selecione GR</option>
                         <option value='KMD'>KMD</option>
                         <option value='BR RISK'>BR RISK</option>
                         <option value='KRONA'>KRONA</option>
@@ -539,6 +539,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const hour = new Date().getHours();
     turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
   }
+  
+  window.onload = function () {
+    document.getElementById('doc_viagem_rastreada').value = 'KMD';
+  };
 
   function autoPreencherDataSaida() {
     const campoData = document.getElementById('data_saida');
