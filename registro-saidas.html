@@ -422,7 +422,7 @@
                     <label for='doc_viagem_rastreada'>Viagem rastreada:</label>
                     <select id='doc_viagem_rastreada' name='doc_viagem_rastreada'>
                         <option value=''>Selecione GR</option>
-                        <option value='KMD'>KMD</option>
+                        <option value='KMD' selected>KMD</option>
                         <option value='BR RISK'>BR RISK</option>
                         <option value='KRONA'>KRONA</option>
                         <option value='OPENTECH'>OPENTECH</option>
@@ -430,6 +430,7 @@
                         <option value='TECNORISK'>TECNORISK</option>
                     </select>
                 </div>
+
             
                 <div class='input-box'>
                     <label for='valor'>Valor:</label>
@@ -539,7 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const hour = new Date().getHours();
     turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
   }
-  
+
   window.onload = function () {
     document.getElementById('doc_viagem_rastreada').value = 'KMD';
   };
