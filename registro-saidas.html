@@ -488,7 +488,66 @@
                         <option value='RONEY_CASSIO'>RONEY CASSIO</option>
                         <option value='RUY'>RUY</option>
                         <option value='TARSICIO'>TARSICIO</option>
-                        <option value='CARLOS'>CARLOS</option>
+                                       // ...existing code...
+                          document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
+                            e.preventDefault();
+                        
+                            const btn = this.querySelector('button[type="submit"]');
+                        
+                            // evita envios duplicados rápidos
+                            if (btn.dataset.sending === '1') return;
+                            btn.disabled = true;
+                            btn.dataset.sending = '1';
+                        
+                            const placa = document.getElementById('doc_placa').value.trim();
+                            if (!placa) {
+                              alert('Por favor, preencha a placa.');
+                              btn.disabled = false;
+                              btn.dataset.sending = '0';
+                              return;
+                            }
+                        
+                            const formData = new FormData(this);
+                            const url = 'https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec';
+                        
+                            fetch(url, {
+                              method: 'POST',
+                              body: formData
+                            })
+                            .then(async response => {
+                              const text = await response.text();
+                              let data;
+                              try {
+                                data = JSON.parse(text);
+                              } catch (err) {
+                                // resposta não JSON
+                                data = { result: 'error', raw: text, status: response.status };
+                              }
+                        
+                              if (!response.ok) {
+                                // erro HTTP
+                                throw data;
+                              }
+                        
+                              if (data.result === 'success') {
+                                // sucesso -> redireciona
+                                window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
+                                return;
+                              } else {
+                                // servidor retornou JSON com erro
+                                throw data;
+                              }
+                            })
+                            .catch(err => {
+                              console.error('Erro ao enviar os dados:', err);
+                              // tenta extrair mensagem útil
+                              const msg = (err && (err.error || err.message)) || err.raw || ('Status: ' + (err.status || 'desconhecido'));
+                              alert('Erro ao enviar os dados: ' + msg + '\nVerifique logs do Apps Script e se o WebApp está publicado.');
+                              btn.disabled = false;
+                              btn.dataset.sending = '0';
+                            });
+                          });
+                        // ...existing code...         <option value='CARLOS'>CARLOS</option>
                     </select>
                 </div>
                           
@@ -679,39 +738,63 @@ document.addEventListener('DOMContentLoaded', function() {
   autoPreencherDataSaida();
 
   document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const btn = this.querySelector('button[type="submit"]');
-  btn.disabled = true;
+    const btn = this.querySelector('button[type="submit"]');
 
-  const placa = document.getElementById('doc_placa').value.trim();
-  if (!placa) {
-    alert('Por favor, preencha a placa.');
-    btn.disabled = false;
-    return;
-  }
+    // evita envios duplicados rápidos
+    if (btn.dataset.sending === '1') return;
+    btn.disabled = true;
+    btn.dataset.sending = '1';
 
-  const formData = new FormData(this);
-
-  fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.result === 'success') {
-      window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
-    } else {
-      alert('Erro ao enviar os dados: ' + (result.error || 'Erro desconhecido'));
+    const placa = document.getElementById('doc_placa').value.trim();
+    if (!placa) {
+      alert('Por favor, preencha a placa.');
       btn.disabled = false;
+      btn.dataset.sending = '0';
+      return;
     }
-  })
-  .catch(error => {
-    console.error('Erro ao enviar os dados:', error);
-    alert('Ocorreu um erro. Tente novamente.');
-    btn.disabled = false;
+
+    const formData = new FormData(this);
+    const url = 'https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec';
+
+    fetch(url, {
+      method: 'POST',
+      body: formData
+    })
+    .then(async response => {
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        // resposta não JSON
+        data = { result: 'error', raw: text, status: response.status };
+      }
+
+      if (!response.ok) {
+        // erro HTTP
+        throw data;
+      }
+
+      if (data.result === 'success') {
+        // sucesso -> redireciona
+        window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
+        return;
+      } else {
+        // servidor retornou JSON com erro
+        throw data;
+      }
+    })
+    .catch(err => {
+      console.error('Erro ao enviar os dados:', err);
+      // tenta extrair mensagem útil
+      const msg = (err && (err.error || err.message)) || err.raw || ('Status: ' + (err.status || 'desconhecido'));
+      alert('Erro ao enviar os dados: ' + msg + '\nVerifique logs do Apps Script e se o WebApp está publicado.');
+      btn.disabled = false;
+      btn.dataset.sending = '0';
+    });
   });
-});
 });
 </script>
 
