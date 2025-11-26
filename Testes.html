@@ -4,281 +4,486 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
-    <title>Para conhecimento</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Home - PA-Campinas</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+    /* Estilos principais */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: url('src/img/Registro\ de\ Saidas.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        max-width: 1200px;
+        margin: auto;
+        background-color: transparent;
+        border-radius: 10px;
+    }
+
+    .content {
+        flex: 2;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .sidebar {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .icon-link {
+        margin-right: 20px; /* Espaço à direita entre os divs */
+    }
+    
+    .icon-link:last-child {
+        margin-right: 0; /* Remove o espaço extra no último item */
+    }
+
+    .icon-link {
+        margin: 10px 0;
+        text-align: center;
+        background-color: transparent; /* Remove qualquer fundo da div */
+        list-style-type: none; /* Remove o marcador do <li> */
+    }
+
+    .icon-link img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: transparent; /* Remove o fundo branco da imagem */
+    }
+
+    .icon-link li {
+        display: inline-block; /* Mantém o <li> inline, mas tratado como bloco */
+        background-color: transparent;
+    }
+    .icon-link a.pdf:hover {
+        background-color: red; /* Fundo vermelho ao passar o mouse */
+        border-radius: 50%; /* Mantém o formato redondo */
+        padding: 10px; /* Espaço ao redor do ícone */
+        transition: background-color 0.3s ease; /* Transição suave */
+    }
+    .icon-link a.pdf img {
+        border: none; /* Remove qualquer borda ao redor da imagem */
+        background-color: transparent; /* Remove qualquer fundo que a imagem possa ter */
+        padding: 0; /* Remove qualquer preenchimento ao redor da imagem */
+        box-shadow: none; /* Remove qualquer sombra */
+        outline: none; /* Remove qualquer outline ao focar */
+    }
+    .icon-link img {
+        width: 80px; /* Aumente se necessário */
+        height: 80px;
+        margin-bottom: 5px; /* Espaço entre a imagem e o texto */
+}
+
+    .dashboard {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 80px;
+    }
+
+   
+    .dashboard-card {
+        max-height: 150px; /* Define uma altura fixa */
+        overflow-y: auto;  /* Adiciona a barra de rolagem vertical quando o conteúdo exceder a altura */
+    }
+
+    .dashboard-card table {
+     width: 100%; /* Define a largura da tabela */
+     border-collapse: collapse; /* Remove espaços entre as bordas */
+    }
+
+    .dashboard-card th {
+        background-color: #f2f2f2; /* Cor de fundo dos cabeçalhos */
+        font-size: 1.2em; /* Tamanho da fonte dos cabeçalhos */
+    }
+
+    .dashboard-card td {
+        font-size: 1em; /* Tamanho da fonte das células */
+    }
+
+    /* Para ajustar o tamanho da fonte dos veículos */
+    .dashboard-card h5 {
+        font-size: 0.9em; /* Ajuste o tamanho conforme necessário */
+        margin: 0; /* Remove margens */
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+    }
+
+    #solicitacao-card {
+        background-color: #FFF4E5; /* Um leve fundo laranja */
+    }
+
+    #distancia-card {
+        background-color: #E5F5FF; /* Um leve fundo azul */
+    }
+
+    h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .dashboard {
+        transition: transform 0.3s ease; /* Para uma transição suave */
+        cursor: pointer; /* Indica que o item é clicável */
+      }
+      
+    .dashboard:hover {
+        transform: scale(1.1); /* Aumenta o tamanho em 10% ao passar o mouse */
+      }
+      
+    .dashboard-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .dashboard {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .dashboard:hover {
+        transform: scale(1.05); /* Zoom de 5% */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dashboard-title {
+        position: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: rgba(92, 9, 9, 0.7);
+        color: #fff;
+        text-align:center;
+        z-index: 10;
+    }
+    
+    
+    .dashboard iframe {
+        border: none;
+        width: 100%;
+        height: calc(100% - 30px); /* Ajuste para acomodar o link */
+    }
+    
+    iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+    
+
+                 
+    @media (max-width: 768px) {
+        .dashboard-card {
+            flex: 1 1 calc(50% - 40px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .dashboard-card {
+            flex: 1 1 100%;
+        }
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+    }
+
+    .header {
+        text-align: center;
+        padding: 60px;
+        background-color: A5896;
+        color: white;
+    }
+
+   
+    /* Navbar */
+    nav {
+        width: 100%;
+        background-color: transparent;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        text-align: center;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    nav ul li {
+        display: inline-block;
+    }
+    nav ul li a {
+        color: rgb(27, 27, 29);
+        text-decoration: none;
+        font-size: 16px;
+        padding: 10px 18px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    nav ul li a:hover {
+        background-color: #1717af70;
+    }
+
+    /* Ajuste responsivo para a navbar em telas menores */
+    @media (max-width: 768px) {
+        nav ul {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+    @media (max-width: 480px) {
+        .sidebar {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-image: url('src/img/Registro de Saidas.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            flex-direction: row; /* Ícones lado a lado */
+            overflow-x: auto; /* Adiciona barra de rolagem horizontal */
         }
-        .container {
-            background: #fff;
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            font-family: Arial, sans-serif;
+        .icon-link {
+            margin: 0 5px;
         }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .greeting {
-            font-size: 18px;
-            color: #333;
-            margin-top: 10px;
-            text-align: center;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            row-gap: 25px;
-        }
-        .form-group {
-            flex: 1 1 calc(25% - 10px);
-            min-width: 180px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            color: #555;
-        }
-        input[type="text"], select, textarea, input[type="datetime-local"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        textarea {
-            resize: vertical;
-            padding: 10px;
-            font-size: 14px;
-        }
-        .full-width {
-            grid-column: span 4;
-            width: 85%;
-            margin-bottom: 15px;
-        }
-        .navbar {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            position: fixed;
-            top: 0%;
-            width: 100%;
-            z-index: 1000;
-        }
-        .navbar a {
-            color: rgb(252, 254, 255);
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-            display: block;
-        }
-        .navbar a:hover {
-            background-color: #555;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-            padding: 8px 16px;
-            width: auto;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 20px;
-            grid-column: span 4;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-    </style>
+    }
+    /* Adicionando um espaçamento superior ao conteúdo para não ficar embaixo da navbar fixa */
+    .content {
+        padding-top: 60px;
+    }
+
+   
+    .content {
+        padding-top: 60px;
+    }
+
+    .icon-link {
+        display: inline-block; /* Faz com que o link trate o espaço como um bloco */
+        text-align: center;   /* Centraliza o conteúdo do link */
+        text-decoration: none; /* Remove sublinhado dos links */
+    }
+
+    .icon-link a:hover {
+        background-color: white; /* Cor de fundo ao passar o mouse */
+        border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
+        padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
+        transition: background-color 0.3s ease; /* Transição suave */
+    }
+
+    .filters {
+        margin-bottom: 15px;
+        margin-left: 30px; /* Ajuste conforme desejado */
+        padding: 10px; /* Adiciona um pouco de espaço interno */
+        background-color: rgb(42, 78, 158); /* Fundo branco para destacar a sombra */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+        border-radius: 5px; /* Bordas arredondadas (opcional) */
+    }
+
+    footer {
+        text-align: center;
+        padding: 10px;
+        background-color: transparent;
+        color: grey;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }
+</style>
+
 </head>
 <body>
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="registro-saidas.html">Registro de Saídas</a>
-        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
-        <a href="conhecimento.html" class="active">Para conhecimento</a>
-        <a href="convite.html">Convite Motorista</a>
-        <a href="videos.html">Galeria de Vídeos</a>
-    </div>
-    
+  <!-- Navbar -->
+  <nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+        <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+        <li><a href="conhecimento.html">Para conhecimento</a></li>
+        <li><a href="convite.html" class="active">Convite Motorista</a></li>
+    </ul>
+</nav>
+
+<!-- Cabeçalho com título principal -->
+<header class="header">
+    <h1>- MONITORAMENTO - <br>PA-Campinas</h1>
+</header>
+
     <div class="container">
-        <h1>Para Conhecimento</h1>
-        <div class="greeting">
-            <span id="greetingMessage"></span>
+        <!-- Coluna esquerda -->
+        <div class="sidebar">
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank" rel="noopener noreferrer">
+                    <img src="src/img/KMDPbix.gif" alt="PA Campinas">
+                </a>
+                <p>PA Campinas</p>
+            </div>
+            
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank" rel="noopener noreferrer">                 
+                    <img src="src/img/KMDPbix.gif" alt="Coletas">
+                </a>
+                <p>Coletas SSonic</p>
+            </div>
+            
+            <div class="icon-link">
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiYzAwNzBhM2EtOTBkYS00ZDI2LTg5NjItOTg5Yzc1Njc4ZjA3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
+                    <img src="src/img/KMDPbix.gif" alt="Relatorio"></a>
+                <p>Relatório Mensal</p>
+            </div>
+            <div class="icon-link">
+                <a href="relatorio4.html"><img src="src/img/KMDPbix.gif" alt="Relatório 4"></a>
+                <p>Relatório 4</p>
+            </div>
+            <div class="icon-link">
+                <a href="briefing.html"><img src="src/img/KMDPbix.gif" alt="briefing"></a>
+                <p>Briefing de Viagem</p>
+            </div>
         </div>
 
-        <form id="formOcorrencia">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="dataHora">Data/Hora</label>
-                    <input type="datetime-local" id="dataHora" name="dataHora" readonly>
-                </div>
+<!-- Conteúdo central -->
+<div class="dashboard-container">
+    <!-- Primeiro Dashboard -->
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank">
+        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Escoltas em Andamento</div>
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiZTg4OTI3ZmYtYzk1Zi00ZGYxLTlmMDctZWI4MmQ1NjkxNTM4IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
+        </div>
+    </a>
 
-                <div class="form-group">
-                    <label for="ocorrencia">Ocorrência</label>
-                    <select id="ocorrencia" name="ocorrencia">
-                        <option value="PERDA DE SINAL">PERDA DE SINAL</option>
-                        <option value="ALERTA DESENGATE">ALERTA DESENGATE</option>
-                        <option value="FALHA NO EQUIPAMENTO">FALHA NO EQUIPAMENTO</option>
-                        <option value="ENVOLVIDO EM SINISTRO">ENVOLVIDO EM SINISTRO</option>
-                        <option value="PARADA PARA MANUTENÇÃO">PARADA PARA MANUTENÇÃO</option>
-                        <option value="VEÍCULO QUEBRADO">VEÍCULO QUEBRADO</option>
-                        <option value="VEÍCULO QUEBRADO NA VIA">VEÍCULO QUEBRADO NA VIA</option>
-                        <option value="VEÍCULO EM MANUTENÇÃO">VEÍCULO EM MANUTENÇÃO</option>
-                        <option value="DESCUMPRIMENTO DE NORMAS DE GR">DESCUMPRIMENTO DE NORMAS DE GR</option>
-                        <option value="PARADA FERIADO">PARADA FERIADO</option>
-                        <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="sm">SM</label>
-                    <input type="text" id="sm" name="sm" placeholder="Digite o SM">
-                </div>
-
-                <div class="form-group">
-                    <label for="veiculo">Veículo</label>
-                    <input type="text" id="veiculo" name="veiculo" placeholder="Digite o Veículo">
-                </div>
-
-                <div class="form-group">
-                    <label for="motorista">Motorista</label>
-                    <input type="text" id="motorista" name="motorista" placeholder="Digite o nome do Motorista">
-                </div>
-
-                <div class="form-group">
-                    <label for="embarcador">Embarcador</label>
-                    <input type="text" id="embarcador" name="embarcador" placeholder="Digite o Embarcador">
-                </div>
-
-                <div class="form-group">
-                    <label for="valor">Valor</label>
-                    <input type="text" id="valor" name="valor" placeholder="Digite o Valor">
-                </div>
-
-                <div class="form-group">
-                    <label for="rota">Rota</label>
-                    <input type="text" id="rota" name="rota" placeholder="Digite a Rota">
-                </div>
-
-                <div class="form-group">
-                    <label for="ultimaPosicao">Última Posição</label>
-                    <input type="text" id="ultimaPosicao" name="ultimaPosicao" placeholder="Digite">
-                </div>
-
-                <div class="form-group">
-                    <label for="latLong">Lat/Long</label>
-                    <input type="text" id="latLong" name="latLong" placeholder="Digite Lat/Long">
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="postoApoio">Posto/ Ponto de apoio próximo:</label>
-                    <textarea id="postoApoio" name="postoApoio" rows="4" placeholder="Informe se há posto ou ponto de apoio próximo a localização"></textarea>
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="descricaoSituacao">Situação/Descrição</label>
-                    <textarea id="descricaoSituacao" name="descricaoSituacao" rows="4" placeholder="Descreva a situação"></textarea>
-                </div>
-
-                <button type="button" onclick="enviarWhatsApp()">Enviar</button>
+    <!-- Segundo Dashboard -->
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank">
+        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Acompanhamento Carreta Solar</div>
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
+        </div>
+    </a>
+</div>
+        <!-- Coluna direita -->
+        <div class="sidebar">
+            <!-- Novos Ícones GIF -->
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeEGaGLqegml3MhhjjD_LOrn6SecC0tYEJ9I9wNq8OjACgXww/viewform?embedded=true" target="_blank">
+                    <img src="src/img/checklist.gif" alt="Icon 1">
+                </a>
+                <p>Checklist presencial</p>
             </div>
-        </form>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc3SvaWWqrfbBmxj6TdLDr5AbkuF6QD0Fm9kGrwQ0mracRxqw/viewform?embedded=true" target="_blank">
+                    <img src="src/img/briefing.gif" alt="Icon 2">
+                </a>
+                <p>Briefing digital</p>
+            </div>
+
+            <div class="icon-link">
+                <a href="https://docs.google.com/presentation/d/e/2PACX-1vRA6jDzcE_wYCi9tPomaGZol04jb6UspexRU1P_5cBtywUg4frobdVOWUj0bAr8l-B-F2lx4sF8aTsI/pub?start=false&loop=false&delayms=3000" target="_blank">
+                    <img src="src/img/treinamento.gif" alt="Icon 3">
+                </a>
+                <p>Treinamento motorista</p>
+            </div>
+            <div class="icon-link">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIvZGFCID_1TmfICBGlqWn1AZXAZu-9WIjuBCw3RRxU98F9g/viewform?embedded=true" target="_blank">
+                    <img src="src/img/dica.gif" alt="Icon 4">
+                </a>
+                <p>Dica</p>
+            </div>
+
+            <div class="icon-link">
+                <li>
+                    <a href="src/pdf/Checklist Presencial - Modelo.pdf" target="_blank" class="pdf">
+                        <img src="src/img/dica.gif" alt="Icon 4">
+                    </a>
+                </li>
+                <p>Checklist presencial</p>
+                </div>
+        </div>
     </div>
 
-    <script>
-        const hour = new Date().getHours();
-        const greeting = hour < 12 ? "Bom dia!" : (hour < 18 ? "Boa tarde!" : "Boa noite!");
-        document.getElementById("greetingMessage").textContent = greeting;
-
-        document.getElementById("dataHora").value = new Date().toISOString().slice(0, 16);
-
-        function enviarWhatsApp() {
-            const dataHoraInput = document.getElementById("dataHora").value;
-            const dataHora = new Date(dataHoraInput);
-            dataHora.setHours(dataHora.getHours() - 3);
-
-            const dataFormatada = `${String(dataHora.getDate()).padStart(2, '0')}/` +
-                                  `${String(dataHora.getMonth() + 1).padStart(2, '0')}/` +
-                                  `${dataHora.getFullYear()} ` +
-                                  `${String(dataHora.getHours()).padStart(2, '0')}:` +
-                                  `${String(dataHora.getMinutes()).padStart(2, '0')}`;
-
-            const sm = document.getElementById("sm").value;
-            const veiculo = document.getElementById("veiculo").value;
-            const motorista = document.getElementById("motorista").value;
-            const embarcador = document.getElementById("embarcador").value;
-            const valor = document.getElementById("valor").value;
-            const rota = document.getElementById("rota").value;
-            const ultimaPosicao = document.getElementById("ultimaPosicao").value;
-            const latLong = document.getElementById("latLong").value;
-            const postoApoio = document.getElementById("postoApoio").value;
-            const descricaoSituacao = document.getElementById("descricaoSituacao").value;
-            const ocorrencia = document.getElementById("ocorrencia").value;
-
-            const mensagem = `*Para conhecimento*\n\n` +
-                             `${greeting}\n\n` +
-                             `*Data/Hora:* ${dataFormatada}\n\n` +
-                             `*Ocorrência:* ${ocorrencia}\n` +
-                             `*SM:* ${sm}\n` +
-                             `*Veículo:* ${veiculo}\n` +
-                             `*Motorista:* ${motorista}\n` +
-                             `*Embarcador:* ${embarcador}\n` +
-                             `*Valor:* ${valor}\n` +
-                             `*Rota:* ${rota}\n` +
-                             `*Última Posição:* ${ultimaPosicao}\n` +
-                             `*Lat/Long:* ${latLong}\n` +
-                             `*Posto/Ponto de Apoio:* ${postoApoio}\n` +
-                             `*Situação/Descrição:* ${descricaoSituacao}`;
-
-            // Envia os dados para a planilha
-            fetch('https://script.google.com/macros/s/AKfycbzzVAAGIvOIlTl2EhEmsYdou7z1W_mUjdp2pyRzvQGIAdyWAzWp8gc9WtNLV9qsESBe/exec', {
-                method: 'POST',
-                body: JSON.stringify({
-                    dataHora: dataHoraInput,
-                    ocorrencia,
-                    sm,
-                    veiculo,
-                    motorista,
-                    embarcador,
-                    valor,
-                    rota,
-                    ultimaPosicao,
-                    latLong,
-                    postoApoio,
-                    descricaoSituacao
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => console.log('Enviado para planilha:', data))
-            .catch(error => console.error('Erro no envio para planilha:', error));
-
-            // Abre o WhatsApp
-            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
-        }
-    </script>
+    <footer>
+        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados. by ACS</p>
+    </footer>
 </body>
 </html>
+
+<script>
+    function filterTable() {
+        const filter = document.getElementById("statusFilter").value;
+        const table = document.getElementById("escoltasTable");
+        const rows = table.getElementsByTagName("tr");
+        
+        for (let i = 1; i < rows.length; i++) { // Começa de 1 para ignorar o cabeçalho
+            const statusCell = rows[i].getElementsByTagName("td")[1]; // Coluna do Status
+            if (statusCell) {
+                const statusText = statusCell.textContent || statusCell.innerText;
+                if (filter === "all" || statusText === filter) {
+                    rows[i].style.display = ""; // Mostra a linha
+                } else {
+                    rows[i].style.display = "none"; // Esconde a linha
+                }
+            }
+        }
+    }
+      
+    </script>
+    
+    <script>
+        // Função para alternar tela cheia
+        function toggleFullscreen(element) {
+            if (!document.fullscreenElement) {
+                element.requestFullscreen().catch(err => {
+                    console.error(`Erro ao entrar em tela cheia: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
