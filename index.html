@@ -386,6 +386,126 @@
             document.exitFullscreen();
         }
     }
+
+  // URL FIXA do seu WebApp
+  const endpointBase = "https://script.google.com/macros/s/AKfycbxmPtxbxQHWQP0-o2VAtPrmT6Qta-bpTjUPtLsYnDLSsmmxKuVv-Y2kWSL-WwLSnGri/exec";
+
+  // listas carregadas do WebApp (?list=...)
+  let listaNomes = [], listaPlacas = [], listaCarretas = [];
+
+  // carrega listas ao abrir (única vez)
+  (async function loadLists(){
+    try {
+      const r1 = await fetch(endpointBase + '?list=motoristas');
+      listaNomes = await r1.json();
+    } catch(e){ console.error('Erro ao carregar motoristas:', e); }
+    try {
+      const r2 = await fetch(endpointBase + '?list=placas');
+      listaPlacas = await r2.json();
+    } catch(e){ console.error('Erro ao carregar placas:', e); }
+    try {
+      const r3 = await fetch(endpointBase + '?list=carretas');
+      listaCarretas = await r3.json();
+    } catch(e){ console.error('Erro ao carregar carretas:', e); }
+  })();
+
+  // helpers autocomplete
+  function showList(containerId, items) {
+    const ul = document.getElementById(containerId);
+    if (!ul) return;
+    ul.innerHTML = '';
+    if(!items || items.length === 0){ ul.style.display = 'none'; return; }
+    items.forEach(it => {
+      const li = document.createElement('li');
+      li.textContent = it;
+      li.onclick = () => {
+        if(containerId === 'lista-motorista') document.getElementById('motorista').value = it;
+        if(containerId === 'lista-placa') document.getElementById('placa_cavalo').value = it;
+        if(containerId === 'lista-carreta') document.getElementById('placa_carreta').value = it;
+        ul.innerHTML = '';
+        ul.style.display = 'none';
+      };
+      ul.appendChild(li);
+    });
+    ul.style.display = 'block';
+  }
+
+  const motoristaInput = document.getElementById('motorista');
+  if (motoristaInput) {
+    motoristaInput.addEventListener('input', function(){
+      const v = this.value.trim();
+      if(!v){ showList('lista-motorista', []); return; }
+      const matches = listaNomes.filter(n => n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
+      showList('lista-motorista', matches);
+    });
+  }
+
+  const placaCavaloInput = document.getElementById('placa_cavalo');
+  if (placaCavaloInput) {
+    placaCavaloInput.addEventListener('input', function(){
+      const v = this.value.trim();
+      if(!v){ showList('lista-placa', []); return; }
+      const matches = listaPlacas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
+      showList('lista-placa', matches);
+    });
+  }
+
+  const placaCarretaInput = document.getElementById('placa_carreta');
+  if (placaCarretaInput) {
+    placaCarretaInput.addEventListener('input', function(){
+      const v = this.value.trim();
+      if(!v){ showList('lista-carreta', []); return; }
+      const matches = listaCarretas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
+      showList('lista-carreta', matches);
+    });
+  }
+
+  // envio
+  const btnEnviar = document.getElementById('btnEnviar');
+  if (btnEnviar) {
+    btnEnviar.addEventListener('click', async function(){
+      const btn = this;
+      const data = {
+        sm: document.getElementById('sm').value.trim(),
+        embarcador: document.getElementById('embarcador').value.trim(),
+        transportador: document.getElementById('transportador').value.trim(),
+        equipamento: document.getElementById('equipamento').value.trim(),
+        motorista: document.getElementById('motorista').value.trim(),
+        placa_cavalo: document.getElementById('placa_cavalo').value.trim(),
+        placa_carreta: document.getElementById('placa_carreta').value.trim(),
+        rota: document.getElementById('rota').value.trim(),
+        cliente: document.getElementById('cliente').value.trim()
+      };
+
+      // validações mínimas
+      if(!data.sm){ alert('Preencha o Código SM.'); return; }
+      if(!data.motorista){ if(!confirm('Motorista vazio. Deseja continuar?')) return; }
+
+      btn.disabled = true;
+      const params = new URLSearchParams(data).toString();
+
+      try {
+        const res = await fetch(endpointBase, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: params
+        });
+        const json = await res.json();
+        if(json.ok){
+          document.getElementById('resultado').innerHTML =
+            '<div class="link">Link gerado: <a href="'+json.link+'" target="_blank">'+json.link+'</a></div>' +
+            '<div style="margin-top:12px;color:#fff">Enviar por WhatsApp: <a target="_blank" href="https://wa.me/?text='+encodeURIComponent('Olá, '+ (data.motorista||'') +'. Confira seu briefing: '+json.link)+'">Enviar WhatsApp</a></div>';
+        } else {
+          document.getElementById('resultado').innerText = 'Erro: ' + (json.error || JSON.stringify(json));
+        }
+      } catch (err){
+        console.error('Erro:', err);
+        document.getElementById('resultado').innerText = 'Erro no envio: ' + (err.message || err);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
 </script>
 
 </body>

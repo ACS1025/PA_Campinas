@@ -323,8 +323,30 @@
   </div>
 
   <script>
-    // endpoint base (o mesmo URL do Web App)
-    const endpointBase = window.location.href.replace(/\?.*$/, '');
+
+    <script>
+  // URL FIXA do seu WebApp — agora correta e permanente
+  const endpointBase = "https://script.google.com/macros/s/AKfycbxmPtxbxQHWQP0-o2VAtPrmT6Qta-bpTjUPtLsYnDLSsmmxKuVv-Y2kWSL-WwLSnGri/exec";
+
+  let listaNomes = [], listaPlacas = [], listaCarretas = [];
+
+  // carregamento das listas
+  (async function loadLists() {
+    try {
+      listaNomes = await (await fetch(endpointBase + "?list=motoristas")).json();
+    } catch (e) { console.error("Motoristas:", e); }
+
+    try {
+      listaPlacas = await (await fetch(endpointBase + "?list=placas")).json();
+    } catch (e) { console.error("Placas:", e); }
+
+    try {
+      listaCarretas = await (await fetch(endpointBase + "?list=carretas")).json();
+    } catch (e) { console.error("Carretas:", e); }
+  })();
+
+  // Funções autocomplete permanecem iguais...
+    
 
     // listas carregadas do WebApp (?list=...)
     let listaNomes = [], listaPlacas = [], listaCarretas = [];
