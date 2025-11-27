@@ -7,15 +7,12 @@
   <base target="_top">
   <title>Enviar Briefing</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
-      background-image: url('src/img/Registro\ de\ Saidas.png');
+      /* usei aspas e o nome exato do arquivo com espaço — mantém seu background */
+      background-image: url("src/img/Registro de Saidas.png");
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -25,6 +22,7 @@
       align-items: center;
       padding: 20px;
       margin-top: 70px;
+      color: white;
     }
 
     .container {
@@ -98,9 +96,7 @@
       flex-wrap: wrap;
     }
 
-    nav ul li {
-      display: inline-block;
-    }
+    nav ul li { display: inline-block; }
 
     nav ul li a {
       color: rgb(252, 254, 255);
@@ -111,24 +107,13 @@
       transition: background-color 0.3s ease;
     }
 
-    nav ul li a:hover {
-      background-color: rgba(23, 23, 175, 0.44);
-    }
+    nav ul li a:hover { background-color: rgba(23, 23, 175, 0.44); }
 
-    nav ul li a.active {
-      background-color: rgba(23, 23, 175, 0.7);
-    }
+    nav ul li a.active { background-color: rgba(23, 23, 175, 0.7); }
 
-    .row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    .col {
-      flex: 1 1 220px;
-      min-width: 160px;
-    }
+    .col { flex: 1 1 220px; min-width: 160px; }
 
     button {
       margin-top: 20px;
@@ -146,19 +131,9 @@
       width: 100%;
     }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+    button:active { transform: translateY(0); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .link {
       margin-top: 20px;
@@ -170,19 +145,10 @@
       color: #fff;
     }
 
-    .link a {
-      color: #ffd700;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    .link a { color: #ffd700; text-decoration: none; font-weight: bold; }
+    .link a:hover { text-decoration: underline; }
 
-    .link a:hover {
-      text-decoration: underline;
-    }
-
-    .input-box {
-      position: relative;
-    }
+    .input-box { position: relative; }
 
     ul.autocomplete-list {
       position: absolute;
@@ -208,49 +174,23 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    ul.autocomplete-list li:last-child {
-      border-bottom: none;
-    }
+    ul.autocomplete-list li:last-child { border-bottom: none; }
 
     ul.autocomplete-list li:hover {
       background: rgba(102, 126, 234, 0.2);
       color: #667eea;
     }
 
-    #resultado {
-      margin-top: 20px;
-    }
+    #resultado { margin-top: 20px; }
 
     @media (max-width: 768px) {
-      body {
-        margin-top: 120px;
-      }
-
-      .container {
-        padding: 20px;
-      }
-
-      h3 {
-        font-size: 22px;
-        margin-bottom: 20px;
-      }
-
-      .row {
-        flex-direction: column;
-      }
-
-      .col {
-        flex: 1 1 100%;
-      }
-
-      nav ul {
-        gap: 10px;
-      }
-
-      nav ul li a {
-        font-size: 14px;
-        padding: 8px 12px;
-      }
+      body { margin-top: 120px; }
+      .container { padding: 20px; }
+      h3 { font-size: 22px; margin-bottom: 20px; }
+      .row { flex-direction: column; }
+      .col { flex: 1 1 100%; }
+      nav ul { gap: 10px; }
+      nav ul li a { font-size: 14px; padding: 8px 12px; }
     }
   </style>
 </head>
@@ -323,30 +263,8 @@
   </div>
 
   <script>
-
-    <script>
-  // URL FIXA do seu WebApp — agora correta e permanente
-  const endpointBase = "https://script.google.com/macros/s/AKfycbxmPtxbxQHWQP0-o2VAtPrmT6Qta-bpTjUPtLsYnDLSsmmxKuVv-Y2kWSL-WwLSnGri/exec";
-
-  let listaNomes = [], listaPlacas = [], listaCarretas = [];
-
-  // carregamento das listas
-  (async function loadLists() {
-    try {
-      listaNomes = await (await fetch(endpointBase + "?list=motoristas")).json();
-    } catch (e) { console.error("Motoristas:", e); }
-
-    try {
-      listaPlacas = await (await fetch(endpointBase + "?list=placas")).json();
-    } catch (e) { console.error("Placas:", e); }
-
-    try {
-      listaCarretas = await (await fetch(endpointBase + "?list=carretas")).json();
-    } catch (e) { console.error("Carretas:", e); }
-  })();
-
-  // Funções autocomplete permanecem iguais...
-    
+    // === ALTERAÇÃO: endpoint fixo para evitar problemas no Live Server
+    const endpointBase = "https://script.google.com/macros/s/AKfycbxmPtxbxQHWQP0-o2VAtPrmT6Qta-bpTjUPtLsYnDLSsmmxKuVv-Y2kWSL-WwLSnGri/exec";
 
     // listas carregadas do WebApp (?list=...)
     let listaNomes = [], listaPlacas = [], listaCarretas = [];
@@ -355,21 +273,23 @@
     (async function loadLists(){
       try {
         const r1 = await fetch(endpointBase + '?list=motoristas');
+        // se não vier JSON pode lançar — protegemos com try/catch
         listaNomes = await r1.json();
-      } catch(e){ console.error('Erro ao carregar motoristas:', e); }
+      } catch(e){ console.error('Erro ao carregar motoristas:', e); listaNomes = []; }
       try {
         const r2 = await fetch(endpointBase + '?list=placas');
         listaPlacas = await r2.json();
-      } catch(e){ console.error('Erro ao carregar placas:', e); }
+      } catch(e){ console.error('Erro ao carregar placas:', e); listaPlacas = []; }
       try {
         const r3 = await fetch(endpointBase + '?list=carretas');
         listaCarretas = await r3.json();
-      } catch(e){ console.error('Erro ao carregar carretas:', e); }
+      } catch(e){ console.error('Erro ao carregar carretas:', e); listaCarretas = []; }
     })();
 
     // helpers autocomplete
     function showList(containerId, items) {
       const ul = document.getElementById(containerId);
+      if(!ul) return;
       ul.innerHTML = '';
       if(!items || items.length === 0){ ul.style.display = 'none'; return; }
       items.forEach(it => {
@@ -387,71 +307,118 @@
       ul.style.display = 'block';
     }
 
-    document.getElementById('motorista').addEventListener('input', function(){
-      const v = this.value.trim();
-      if(!v){ showList('lista-motorista', []); return; }
-      const matches = listaNomes.filter(n => n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
-      showList('lista-motorista', matches);
-    });
+    // liga inputs ao autocomplete (se existirem)
+    const motoristaInput = document.getElementById('motorista');
+    if (motoristaInput) {
+      motoristaInput.addEventListener('input', function(){
+        const v = this.value.trim();
+        if(!v){ showList('lista-motorista', []); return; }
+        const matches = listaNomes.filter(n => n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
+        showList('lista-motorista', matches);
+      });
+    }
 
-    document.getElementById('placa_cavalo').addEventListener('input', function(){
-      const v = this.value.trim();
-      if(!v){ showList('lista-placa', []); return; }
-      const matches = listaPlacas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
-      showList('lista-placa', matches);
-    });
+    const placaCavaloInput = document.getElementById('placa_cavalo');
+    if (placaCavaloInput) {
+      placaCavaloInput.addEventListener('input', function(){
+        const v = this.value.trim();
+        if(!v){ showList('lista-placa', []); return; }
+        const matches = listaPlacas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
+        showList('lista-placa', matches);
+      });
+    }
 
-    document.getElementById('placa_carreta').addEventListener('input', function(){
-      const v = this.value.trim();
-      if(!v){ showList('lista-carreta', []); return; }
-      const matches = listaCarretas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
-      showList('lista-carreta', matches);
-    });
+    const placaCarretaInput = document.getElementById('placa_carreta');
+    if (placaCarretaInput) {
+      placaCarretaInput.addEventListener('input', function(){
+        const v = this.value.trim();
+        if(!v){ showList('lista-carreta', []); return; }
+        const matches = listaCarretas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
+        showList('lista-carreta', matches);
+      });
+    }
 
     // envio
-    document.getElementById('btnEnviar').addEventListener('click', async function(){
-      const btn = this;
-      const data = {
-        sm: document.getElementById('sm').value.trim(),
-        embarcador: document.getElementById('embarcador').value.trim(),
-        transportador: document.getElementById('transportador').value.trim(),
-        equipamento: document.getElementById('equipamento').value.trim(),
-        motorista: document.getElementById('motorista').value.trim(),
-        placa_cavalo: document.getElementById('placa_cavalo').value.trim(),
-        placa_carreta: document.getElementById('placa_carreta').value.trim(),
-        rota: document.getElementById('rota').value.trim(),
-        cliente: document.getElementById('cliente').value.trim()
-      };
+    const btnEnviar = document.getElementById('btnEnviar');
+    if (btnEnviar) {
+      btnEnviar.addEventListener('click', async function(){
+        const btn = this;
+        const data = {
+          sm: document.getElementById('sm').value.trim(),
+          embarcador: document.getElementById('embarcador').value.trim(),
+          transportador: document.getElementById('transportador').value.trim(),
+          equipamento: document.getElementById('equipamento').value.trim(),
+          motorista: document.getElementById('motorista').value.trim(),
+          placa_cavalo: document.getElementById('placa_cavalo').value.trim(),
+          placa_carreta: document.getElementById('placa_carreta').value.trim(),
+          rota: document.getElementById('rota').value.trim(),
+          cliente: document.getElementById('cliente').value.trim()
+        };
 
-      // validações mínimas
-      if(!data.sm){ alert('Preencha o Código SM.'); return; }
-      if(!data.motorista){ if(!confirm('Motorista vazio. Deseja continuar?')) return; }
+        // validações mínimas
+        if(!data.sm){ alert('Preencha o Código SM.'); return; }
+        if(!data.motorista){ if(!confirm('Motorista vazio. Deseja continuar?')) return; }
 
-      btn.disabled = true;
-      const params = new URLSearchParams(data).toString();
+        btn.disabled = true;
+        const params = new URLSearchParams(data).toString();
 
-      // POST para doPost
-      try {
-        const res = await fetch(endpointBase, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: params
-        });
-        const json = await res.json();
-        if(json.ok){
-          document.getElementById('resultado').innerHTML =
-            '<div class="link">Link gerado: <a href="'+json.link+'" target="_blank">'+json.link+'</a></div>' +
-            '<div style="margin-top:12px;color:#fff">Enviar por WhatsApp: <a target="_blank" href="https://wa.me/?text='+encodeURIComponent('Olá, '+ (data.motorista||'') +'. Confira seu briefing: '+json.link)+'">Enviar WhatsApp</a></div>';
-        } else {
-          document.getElementById('resultado').innerText = 'Erro: ' + (json.error || JSON.stringify(json));
+        try {
+          const res = await fetch(endpointBase, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: params
+          });
+
+          // tentativa segura de parse: se JSON falhar, mostramos o texto (ajuda debug)
+          let json;
+          try {
+            json = await res.json();
+          } catch (parseErr) {
+            const txt = await res.text();
+            console.error("Resposta inesperada do servidor:", txt);
+            document.getElementById('resultado').innerText = "Resposta inválida do servidor. Veja console.";
+            btn.disabled = false;
+            return;
+          }
+
+          if(json.ok){
+            // monta mensagem para WhatsApp
+            const whatsappMsg = `Olá, ${data.motorista || ''}. Confira seu briefing: ${json.link}`;
+
+            // mostra link e botão
+            document.getElementById('resultado').innerHTML =
+              '<div class="link">Link gerado: <a href="'+json.link+'" target="_blank">'+json.link+'</a></div>' +
+              '<div style="margin-top:12px;color:#fff">' +
+                '<a id="waLink" target="_blank" href="https://wa.me/?text='+encodeURIComponent(whatsappMsg)+'">Enviar por WhatsApp</a>' +
+                ' &nbsp; <button id="waOpen" style="margin-left:8px;padding:6px 10px;border-radius:6px;">Abrir WhatsApp</button>' +
+              '</div>';
+
+            // botão que abre o link em nova janela (útil em desktop)
+            document.getElementById('waOpen').addEventListener('click', function(){
+              window.open('https://wa.me/?text='+encodeURIComponent(whatsappMsg), '_blank');
+            });
+
+            // limpa campos (se quiser manter, remova estas linhas)
+            document.getElementById('sm').value = '';
+            document.getElementById('embarcador').value = '';
+            document.getElementById('transportador').value = '';
+            document.getElementById('equipamento').value = '';
+            document.getElementById('motorista').value = '';
+            document.getElementById('placa_cavalo').value = '';
+            document.getElementById('placa_carreta').value = '';
+            document.getElementById('rota').value = '';
+            document.getElementById('cliente').value = '';
+          } else {
+            document.getElementById('resultado').innerText = 'Erro: ' + (json.error || JSON.stringify(json));
+          }
+        } catch (err){
+          console.error('Erro:', err);
+          document.getElementById('resultado').innerText = 'Erro no envio: ' + (err.message || err);
+        } finally {
+          btn.disabled = false;
         }
-      } catch (err){
-        console.error('Erro:', err);
-        document.getElementById('resultado').innerText = 'Erro no envio: ' + err.message;
-      } finally {
-        btn.disabled = false;
-      }
-    });
+      });
+    }
   </script>
 </body>
 </html>
