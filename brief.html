@@ -11,7 +11,6 @@
 
     body {
       font-family: Arial, sans-serif;
-      /* usei aspas e o nome exato do arquivo com espaço — mantém seu background */
       background-image: url("src/img/Registro de Saidas.png");
       background-size: cover;
       background-position: center;
@@ -73,7 +72,6 @@
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
-    /* Navbar */
     nav {
       width: 100%;
       background-color: rgba(68, 68, 68, 0.95);
@@ -108,11 +106,9 @@
     }
 
     nav ul li a:hover { background-color: rgba(23, 23, 175, 0.44); }
-
     nav ul li a.active { background-color: rgba(23, 23, 175, 0.7); }
 
     .row { display: flex; gap: 12px; flex-wrap: wrap; }
-
     .col { flex: 1 1 220px; min-width: 160px; }
 
     button {
@@ -148,6 +144,9 @@
     .link a { color: #ffd700; text-decoration: none; font-weight: bold; }
     .link a:hover { text-decoration: underline; }
 
+    .link.success { background: rgba(76, 175, 80, 0.2); border-color: rgba(76, 175, 80, 0.5); }
+    .link.error { background: rgba(244, 67, 54, 0.2); border-color: rgba(244, 67, 54, 0.5); }
+
     .input-box { position: relative; }
 
     ul.autocomplete-list {
@@ -175,13 +174,9 @@
     }
 
     ul.autocomplete-list li:last-child { border-bottom: none; }
+    ul.autocomplete-list li:hover { background: rgba(102, 126, 234, 0.2); color: #667eea; }
 
-    ul.autocomplete-list li:hover {
-      background: rgba(102, 126, 234, 0.2);
-      color: #667eea;
-    }
-
-    #resultado { margin-top: 20px; }
+    #resultado { margin-top: 20px; min-height: 40px; }
 
     @media (max-width: 768px) {
       body { margin-top: 120px; }
@@ -211,8 +206,8 @@
     <h3>Enviar Briefing - Gerar Link</h3>
 
     <div>
-      <label>Código SM
-        <input id="sm" name="sm" placeholder="Ex: 1175983"/>
+      <label>Código SM *
+        <input id="sm" name="sm" placeholder="Ex: 1175983" required/>
       </label>
 
       <label>Embarcador
@@ -229,8 +224,8 @@
 
       <div class="row">
         <div class="col input-box">
-          <label>Motorista</label>
-          <input id="motorista" name="motorista" placeholder="Digite o nome (autocomplete)"/>
+          <label>Motorista *</label>
+          <input id="motorista" name="motorista" placeholder="Digite o nome (autocomplete)" required/>
           <ul id="lista-motorista" class="autocomplete-list" style="display:none"></ul>
         </div>
 
@@ -263,42 +258,86 @@
   </div>
 
   <script>
-    // === ALTERAÇÃO: endpoint fixo para evitar problemas no Live Server
-    const endpointBase = "https://script.google.com/macros/s/AKfycbxmPtxbxQHWQP0-o2VAtPrmT6Qta-bpTjUPtLsYnDLSsmmxKuVv-Y2kWSL-WwLSnGri/exec";
+    const endpointBase = "https://script.google.com/macros/s/AKfycbx8tqNoZAvSckxUPtJDR1z2HwSTs2qweJQeI42gcsOl/dev";
 
-    // listas carregadas do WebApp (?list=...)
+    const imagemPadrao = "https://acs1025.github.io/PA_Campinas/src/img/Briefing%20Kmd.jpg";
+
     let listaNomes = [], listaPlacas = [], listaCarretas = [];
 
-    // carrega listas ao abrir
+    document.addEventListener('click', (evt) => {
+      const activeLists = document.querySelectorAll('.autocomplete-list');
+      activeLists.forEach(ul => {
+        const inputId = ul.id.replace('lista-', '');
+        const inputEl = document.getElementById(inputId);
+        if (!ul.contains(evt.target) && !(inputEl && inputEl.contains(evt.target))) {
+          ul.style.display = 'none';
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        document.querySelectorAll('.autocomplete-list').forEach(ul => ul.style.display = 'none');
+      }
+    });
+
+    // ===================================================================
+    // Carrega listas do servidor
+    // ===================================================================
     (async function loadLists(){
       try {
-        const r1 = await fetch(endpointBase + '?list=motoristas');
-        // se não vier JSON pode lançar — protegemos com try/catch
+        const r1 = await fetch(endpointBase + '?list=motoristas', { headers: { 'Accept': 'application/json' }});
+        if (!r1.ok) throw new Error('Erro ao carregar motoristas: HTTP ' + r1.status);
         listaNomes = await r1.json();
-      } catch(e){ console.error('Erro ao carregar motoristas:', e); listaNomes = []; }
+        console.log('✓ Motoristas carregados:', listaNomes.length);
+      } catch(e){ 
+        console.error('Erro ao carregar motoristas:', e); 
+        listaNomes = []; 
+      }
       try {
-        const r2 = await fetch(endpointBase + '?list=placas');
+        const r2 = await fetch(endpointBase + '?list=placas', { headers: { 'Accept': 'application/json' }});
+        if (!r2.ok) throw new Error('Erro ao carregar placas: HTTP ' + r2.status);
         listaPlacas = await r2.json();
-      } catch(e){ console.error('Erro ao carregar placas:', e); listaPlacas = []; }
+        console.log('✓ Placas carregadas:', listaPlacas.length);
+      } catch(e){ 
+        console.error('Erro ao carregar placas:', e); 
+        listaPlacas = []; 
+      }
       try {
-        const r3 = await fetch(endpointBase + '?list=carretas');
+        const r3 = await fetch(endpointBase + '?list=carretas', { headers: { 'Accept': 'application/json' }});
+        if (!r3.ok) throw new Error('Erro ao carregar carretas: HTTP ' + r3.status);
         listaCarretas = await r3.json();
-      } catch(e){ console.error('Erro ao carregar carretas:', e); listaCarretas = []; }
+        console.log('✓ Carretas carregadas:', listaCarretas.length);
+      } catch(e){ 
+        console.error('Erro ao carregar carretas:', e); 
+        listaCarretas = []; 
+      }
     })();
 
-    // helpers autocomplete
+    // ===================================================================
+    // Função para exibir lista autocomplete
+    // ===================================================================
     function showList(containerId, items) {
       const ul = document.getElementById(containerId);
       if(!ul) return;
       ul.innerHTML = '';
-      if(!items || items.length === 0){ ul.style.display = 'none'; return; }
+      if(!items || items.length === 0){ 
+        ul.style.display = 'none'; 
+        return; 
+      }
       items.forEach(it => {
         const li = document.createElement('li');
         li.textContent = it;
         li.onclick = () => {
-          if(containerId === 'lista-motorista') document.getElementById('motorista').value = it;
-          if(containerId === 'lista-placa') document.getElementById('placa_cavalo').value = it;
-          if(containerId === 'lista-carreta') document.getElementById('placa_carreta').value = it;
+          if(containerId === 'lista-motorista') {
+            const el = document.getElementById('motorista'); if(el) el.value = it;
+          }
+          if(containerId === 'lista-placa') {
+            const el = document.getElementById('placa_cavalo'); if(el) el.value = it;
+          }
+          if(containerId === 'lista-carreta') {
+            const el = document.getElementById('placa_carreta'); if(el) el.value = it;
+          }
           ul.innerHTML = '';
           ul.style.display = 'none';
         };
@@ -307,7 +346,9 @@
       ul.style.display = 'block';
     }
 
-    // liga inputs ao autocomplete (se existirem)
+    // ===================================================================
+    // Event listeners para autocomplete
+    // ===================================================================
     const motoristaInput = document.getElementById('motorista');
     if (motoristaInput) {
       motoristaInput.addEventListener('input', function(){
@@ -338,82 +379,96 @@
       });
     }
 
-    // envio
+    // ===================================================================
+    // Função para exibir mensagens
+    // ===================================================================
+    function showMessage(message, type = 'success') {
+      const resultado = document.getElementById('resultado');
+      resultado.innerHTML = '<div class="link ' + type + '">' + message + '</div>';
+    }
+
+    // ===================================================================
+    // Envio do formulário
+    // ===================================================================
     const btnEnviar = document.getElementById('btnEnviar');
     if (btnEnviar) {
       btnEnviar.addEventListener('click', async function(){
         const btn = this;
+
+        // Validação obrigatória
+        const sm = document.getElementById('sm') ? document.getElementById('sm').value.trim() : '';
+        const motorista = document.getElementById('motorista') ? document.getElementById('motorista').value.trim() : '';
+
+        if(!sm){ 
+          showMessage('❌ Preencha o Código SM.', 'error');
+          return; 
+        }
+
+        if(!motorista){ 
+          showMessage('❌ Preencha o Motorista.', 'error');
+          return; 
+        }
+
+        // Coleta dados do formulário
         const data = {
-          sm: document.getElementById('sm').value.trim(),
-          embarcador: document.getElementById('embarcador').value.trim(),
-          transportador: document.getElementById('transportador').value.trim(),
-          equipamento: document.getElementById('equipamento').value.trim(),
-          motorista: document.getElementById('motorista').value.trim(),
-          placa_cavalo: document.getElementById('placa_cavalo').value.trim(),
-          placa_carreta: document.getElementById('placa_carreta').value.trim(),
-          rota: document.getElementById('rota').value.trim(),
-          cliente: document.getElementById('cliente').value.trim()
+          sm: sm,
+          embarcador: document.getElementById('embarcador') ? document.getElementById('embarcador').value.trim() : '',
+          transportador: document.getElementById('transportador') ? document.getElementById('transportador').value.trim() : '',
+          equipamento: document.getElementById('equipamento') ? document.getElementById('equipamento').value.trim() : '',
+          motorista: motorista,
+          placa_cavalo: document.getElementById('placa_cavalo') ? document.getElementById('placa_cavalo').value.trim() : '',
+          placa_carreta: document.getElementById('placa_carreta') ? document.getElementById('placa_carreta').value.trim() : '',
+          rota: document.getElementById('rota') ? document.getElementById('rota').value.trim() : '',
+          cliente: document.getElementById('cliente') ? document.getElementById('cliente').value.trim() : '',
+          imagem: imagemPadrao
         };
 
-        // validações mínimas
-        if(!data.sm){ alert('Preencha o Código SM.'); return; }
-        if(!data.motorista){ if(!confirm('Motorista vazio. Deseja continuar?')) return; }
-
         btn.disabled = true;
-        const params = new URLSearchParams(data).toString();
+        showMessage('⏳ Enviando dados...', 'success');
 
         try {
+          console.log('Enviando dados para:', endpointBase);
           const res = await fetch(endpointBase, {
             method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: params
+            headers: { 
+              'Content-Type': 'application/json', 
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
           });
 
-          // tentativa segura de parse: se JSON falhar, mostramos o texto (ajuda debug)
-          let json;
-          try {
-            json = await res.json();
-          } catch (parseErr) {
-            const txt = await res.text();
-            console.error("Resposta inesperada do servidor:", txt);
-            document.getElementById('resultado').innerText = "Resposta inválida do servidor. Veja console.";
-            btn.disabled = false;
-            return;
+          if (!res.ok) {
+            throw new Error('HTTP ' + res.status + ' - ' + res.statusText);
           }
 
-          if(json.ok){
-            // monta mensagem para WhatsApp
-            const whatsappMsg = `Olá, ${data.motorista || ''}. Confira seu briefing: ${json.link}`;
-
-            // mostra link e botão
+          const json = await res.json();
+          console.log('Resposta do servidor:', json);
+          
+          if (json.ok && json.link) {
+            // ✅ Mensagem formatada para WhatsApp
+            const msgWhats = `📋 Seu Briefing\nSM: ${sm}\nMotorista: ${motorista}\nLink: ${json.link}`;
+            
             document.getElementById('resultado').innerHTML =
-              '<div class="link">Link gerado: <a href="'+json.link+'" target="_blank">'+json.link+'</a></div>' +
-              '<div style="margin-top:12px;color:#fff">' +
-                '<a id="waLink" target="_blank" href="https://wa.me/?text='+encodeURIComponent(whatsappMsg)+'">Enviar por WhatsApp</a>' +
-                ' &nbsp; <button id="waOpen" style="margin-left:8px;padding:6px 10px;border-radius:6px;">Abrir WhatsApp</button>' +
-              '</div>';
+              '<div class="link success">✅ Briefing gerado com sucesso!</div>' +
+              '<div class="link"><a href="' + json.link + '" target="_blank" rel="noopener noreferrer">🔗 Abrir Briefing</a></div>' +
+              '<div class="link"><a target="_blank" rel="noopener noreferrer" href="https://wa.me/?text=' + encodeURIComponent(msgWhats) + '">📱 Enviar por WhatsApp</a></div>';
 
-            // botão que abre o link em nova janela (útil em desktop)
-            document.getElementById('waOpen').addEventListener('click', function(){
-              window.open('https://wa.me/?text='+encodeURIComponent(whatsappMsg), '_blank');
-            });
-
-            // limpa campos (se quiser manter, remova estas linhas)
-            document.getElementById('sm').value = '';
-            document.getElementById('embarcador').value = '';
-            document.getElementById('transportador').value = '';
-            document.getElementById('equipamento').value = '';
-            document.getElementById('motorista').value = '';
-            document.getElementById('placa_cavalo').value = '';
-            document.getElementById('placa_carreta').value = '';
-            document.getElementById('rota').value = '';
-            document.getElementById('cliente').value = '';
+            // Abre WhatsApp automaticamente (pode ser bloqueado por popup blockers)
+            try {
+              window.open("https://wa.me/?text=" + encodeURIComponent(msgWhats));
+            } catch (e) {
+              console.warn('Popup bloqueado:', e);
+            }
           } else {
-            document.getElementById('resultado').innerText = 'Erro: ' + (json.error || JSON.stringify(json));
+            showMessage('❌ Erro do servidor: ' + (json.error || 'resposta inválida'), 'error');
           }
-        } catch (err){
-          console.error('Erro:', err);
-          document.getElementById('resultado').innerText = 'Erro no envio: ' + (err.message || err);
+        } catch (err) {
+          console.error('Erro no envio:', err);
+          if (err.message && err.message.includes('Failed to fetch')) {
+            showMessage('❌ Erro de conexão. Verifique CORS e se o Apps Script está publicado.', 'error');
+          } else {
+            showMessage('❌ Erro no envio: ' + (err.message || err), 'error');
+          }
         } finally {
           btn.disabled = false;
         }
