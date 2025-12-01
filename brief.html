@@ -259,11 +259,13 @@
 
   <script>
     const endpointBase = "https://script.google.com/macros/s/AKfycbxkuAX-mpf_Yv73Pc8ddj9fX_3knScd0CDys3Luk2Uw65WiTdNVl3JEfIBIh5YR-1pTAw/exec";
-
     const imagemPadrao = "https://raw.githubusercontent.com/ACS1025/PA_Campinas/main/src/img/Briefing%20Kmd.jpg";
 
     let listaNomes = [], listaPlacas = [], listaCarretas = [];
 
+    // ===================================================================
+    // Fecha listas de autocomplete ao clicar fora ou pressionar Esc
+    // ===================================================================
     document.addEventListener('click', (evt) => {
       const activeLists = document.querySelectorAll('.autocomplete-list');
       activeLists.forEach(ul => {
@@ -282,36 +284,33 @@
     });
 
     // ===================================================================
-    // Carrega listas do servidor
+    // FUNÇÃO PARA CARREGAR LISTAS (motoristas, placas, carretas)
     // ===================================================================
-    (async function loadLists(){
+    async function loadList(tipo) {
       try {
-        const r1 = await fetch(endpointBase + '?list=motoristas', { headers: { 'Accept': 'application/json' }});
-        if (!r1.ok) throw new Error('Erro ao carregar motoristas: HTTP ' + r1.status);
-        listaNomes = await r1.json();
-        console.log('✓ Motoristas carregados:', listaNomes.length);
-      } catch(e){ 
-        console.error('Erro ao carregar motoristas:', e); 
-        listaNomes = []; 
+        const resp = await fetch(`${endpointBase}?list=${tipo}`, {
+          headers: { "Accept": "application/json" }
+        });
+        if (!resp.ok) throw new Error(`Erro ao carregar ${tipo}: HTTP ${resp.status}`);
+        return await resp.json();
+      } catch (e) {
+        console.error(`Erro ao carregar ${tipo}:`, e);
+        return [];
       }
-      try {
-        const r2 = await fetch(endpointBase + '?list=placas', { headers: { 'Accept': 'application/json' }});
-        if (!r2.ok) throw new Error('Erro ao carregar placas: HTTP ' + r2.status);
-        listaPlacas = await r2.json();
-        console.log('✓ Placas carregadas:', listaPlacas.length);
-      } catch(e){ 
-        console.error('Erro ao carregar placas:', e); 
-        listaPlacas = []; 
-      }
-      try {
-        const r3 = await fetch(endpointBase + '?list=carretas', { headers: { 'Accept': 'application/json' }});
-        if (!r3.ok) throw new Error('Erro ao carregar carretas: HTTP ' + r3.status);
-        listaCarretas = await r3.json();
-        console.log('✓ Carretas carregadas:', listaCarretas.length);
-      } catch(e){ 
-        console.error('Erro ao carregar carretas:', e); 
-        listaCarretas = []; 
-      }
+    }
+
+    // ===================================================================
+    // CARREGA TODAS AS LISTAS AO INICIAR A PÁGINA
+    // ===================================================================
+    (async function loadLists() {
+      listaNomes = await loadList("motoristas");
+      console.log("✓ Motoristas carregados:", listaNomes.length);
+
+      listaPlacas = await loadList("placas");
+      console.log("✓ Placas carregadas:", listaPlacas.length);
+
+      listaCarretas = await loadList("carretas");
+      console.log("✓ Carretas carregadas:", listaCarretas.length);
     })();
 
     // ===================================================================
@@ -388,7 +387,7 @@
     }
 
     // ===================================================================
-    // Envio do formulário
+    // ENVIO DO BRIEFING (ÚNICO EVENT LISTENER)
     // ===================================================================
     const btnEnviar = document.getElementById('btnEnviar');
     if (btnEnviar) {
