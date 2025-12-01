@@ -6,38 +6,44 @@
   <base target="_top">
   <title>Enviar Briefing</title>
   <style>
-    /* ==== MESMO ESTILO QUE VOCÊ ENVIOU ==== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background-image: url("src/img/Registro de Saidas.png"); background-size: cover; background-position: center; background-attachment: fixed; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; margin-top: 70px; color: white; }
     .container { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.2); border-radius:15px; padding:40px; max-width:900px; width:100%; box-shadow:0 8px 32px rgba(31,38,135,0.37); }
-    h3 { margin-top:0; color:#fff; text-align:center; margin-bottom:30px; font-size:28px; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
-    label { display:block; margin-top:10px; font-weight:600; color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
-    input, select, textarea { width:100%; padding:10px; box-sizing:border-box; margin-top:6px; border:1px solid rgba(255,255,255,0.3); border-radius:8px; background:rgba(255,255,255,0.95); font-family:Arial,sans-serif; font-size:14px; transition: all 0.3s ease; }
-    input:focus, select:focus, textarea:focus { outline:none; background:rgba(255,255,255,1); border-color:rgba(255,255,255,0.8); box-shadow:0 0 10px rgba(255,255,255,0.3); }
+    h3 { margin-top:0; color:#031876; text-align:center; margin-bottom:30px; font-size:28px; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
+    label { display:block; margin-top:10px; font-weight:600; color:#031876; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
+    input, select, textarea { width:100%; padding:10px; box-sizing:border-box; margin-top:6px; border:1px solid rgba(255,255,255,0.3); border-radius:8px; background:rgba(248, 247, 247, 0.95); font-family:Arial,sans-serif; font-size:14px; transition: all 0.3s ease; color: #333; }
+    input:focus, select:focus, textarea:focus { outline:none; background:rgb(246, 245, 245); border-color:rgba(255,255,255,0.8); box-shadow:0 0 10px rgba(242, 240, 240, 0.3); }
+    textarea[readonly] { background: rgba(240,240,240,0.95); color: #666; cursor: default; }
     nav { width:100%; background-color: rgba(68,68,68,0.95); padding:15px 0; position:fixed; top:0; left:0; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.3); }
     nav ul { list-style:none; padding:0; text-align:center; margin:0; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
     nav ul li { display:inline-block; }
-    nav ul li a { color: #fcfeff; text-decoration:none; font-size:16px; padding:10px 18px; border-radius:5px; transition: background-color 0.3s ease; }
+    nav ul li a { color: #dceff8; text-decoration:none; font-size:16px; padding:10px 18px; border-radius:5px; transition: background-color 0.3s ease; }
     nav ul li a:hover { background-color: rgba(23,23,175,0.44); }
     nav ul li a.active { background-color: rgba(23,23,175,0.7); }
     .row { display:flex; gap:12px; flex-wrap:wrap; }
     .col { flex:1 1 220px; min-width:160px; }
+    .full-width { flex: 1 1 100%; }
     button { margin-top:20px; padding:12px 20px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:16px; transition: all 0.3s ease; text-shadow:1px 1px 2px rgba(0,0,0,0.3); box-shadow:0 4px 15px rgba(0,0,0,0.2); width:100%; }
     button:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.3); }
     button:active { transform:translateY(0); }
     button:disabled { opacity:0.6; cursor:not-allowed; }
-    .link { margin-top:20px; background:rgba(255,255,255,0.15); padding:15px; border-radius:8px; word-break:break-all; border:1px solid rgba(255,255,255,0.3); color:#fff; }
+    .btn-secondary { background:linear-gradient(135deg,#17a2b8 0%,#138496 100%); margin-top:10px; }
+    .link { margin-top:20px; background:rgba(255,255,255,0.15); padding:15px; border-radius:8px; word-break:break-all; border:1px solid rgba(255,255,255,0.3); color:#fbf7f7; }
     .link a { color:#ffd700; text-decoration:none; font-weight:bold; }
     .link a:hover { text-decoration:underline; }
     .link.success { background: rgba(76,175,80,0.2); border-color: rgba(76,175,80,0.5); }
     .link.error { background: rgba(244,67,54,0.2); border-color: rgba(244,67,54,0.5); }
     .input-box { position: relative; }
-    ul.autocomplete-list { position:absolute; z-index:999; left:0; right:0; max-height:160px; overflow:auto; background:rgba(255,255,255,0.95); border:1px solid rgba(255,255,255,0.3); list-style:none; margin:0; padding:0; border-radius:8px; margin-top:2px; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+    ul.autocomplete-list { position:absolute; z-index:999; left:0; right:0; max-height:160px; overflow:auto; background:rgba(251, 249, 249, 0.95); border:1px solid rgba(255,255,255,0.3); list-style:none; margin:0; padding:0; border-radius:8px; margin-top:2px; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
     ul.autocomplete-list li { padding:10px; cursor:pointer; color:#333; border-bottom:1px solid rgba(0,0,0,0.1); }
     ul.autocomplete-list li:last-child { border-bottom:none; }
     ul.autocomplete-list li:hover { background: rgba(102,126,234,0.2); color:#667eea; }
+    .template-section { background: rgba(255,255,255,0.08); padding:15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); margin:15px 0; }
+    .template-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .template-btn { flex:1; min-width:120px; padding:8px 12px; background:rgba(236, 213, 6, 0.2); color:rgb(245, 8, 8); border:1px solid rgba(255,255,255,0.4); border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold; transition:all 0.3s ease; }
+    .template-btn:hover { background:rgba(255,255,255,0.3); border-color:rgba(255,255,255,0.6); }
     #resultado { margin-top:20px; min-height:40px; }
-    @media(max-width:768px) { body{margin-top:120px;} .container{padding:20px;} h3{font-size:22px; margin-bottom:20px;} .row{flex-direction:column;} .col{flex:1 1 100%;} nav ul{gap:10px;} nav ul li a{font-size:14px; padding:8px 12px;} }
+    @media(max-width:768px) { body{margin-top:120px;} .container{padding:20px;} h3{font-size:22px; margin-bottom:20px;} .row{flex-direction:column;} .col{flex:1 1 100%;} nav ul{gap:10px;} nav ul li a{font-size:14px; padding:8px 12px;} .template-buttons{flex-direction:column;} .template-btn{min-width:auto;} }
   </style>
 </head>
 <body>
@@ -54,7 +60,7 @@
   </nav>
 
   <div class="container">
-    <h3>Enviar Briefing - Gerar Link</h3>
+    <h3>Enviar Briefing via WhatsApp</h3>
     <div>
       <label>Código SM *<input id="sm" name="sm" placeholder="Ex: 1175983" required/></label>
       <label>Embarcador<input id="embarcador" name="embarcador"/></label>
@@ -85,112 +91,276 @@
 
       <label>Rota<input id="rota" name="rota" placeholder="Ex: Campinas/SP X Rio de Janeiro/RJ"/></label>
 
-      <button id="btnEnviar">Enviar e gerar link</button>
+      <!-- Modelos de Texto -->
+      <div class="template-section full-width">
+        <label>📋 Modelos de Mensagem:</label>
+        <div class="template-buttons">
+                    
+          <button type="button" class="template-btn" onclick="inserirTemplate('reciclagem')">♻️ Reciclagem</button>
+          <button type="button" class="template-btn" onclick="inserirTemplate('briefing')">📍 Briefing</button>
+          <button type="button" class="template-btn" onclick="inserirTemplate('fotos')">📸 Fotos</button>
+        </div>
+      </div>
+
+      <!-- Texto Pronto -->
+      <div class="full-width">
+        <label for="textoPronto">Mensagem para WhatsApp:</label>
+        <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
+        <button type="button" class="btn-secondary" onclick="copiarParaClipboard()">📋 Copiar Mensagem</button>
+      </div>
+
+      <button id="btnEnviar">📱 Enviar via WhatsApp</button>
       <div id="resultado"></div>
     </div>
   </div>
 
   <script>
-    const endpointBase = "https://script.google.com/macros/s/AKfycbwZEKOU7ycZdM0GJlw4yeupCDUBiFSBXVmmlK5qS1IRPMnRJodiAzjh2lc-l5MdftmH-A/exec"; // <- deploy
-    const imagemPadrao = "https://raw.githubusercontent.com/ACS1025/PA_Campinas/main/src/img/Briefing%20Kmd.jpg";
+    // ===================================================================
+    // MODELOS DE TEXTO PREDEFINIDOS
+    // ===================================================================
+    const textos = {
+        
+      reciclagem: `*Reciclagem Obrigatória*\n\nSr. Motorista.\n\nSeu checklist está suspenso para novas viagens. Será necessário reciclagem com a equipe Komando para validá-lo no sistema. Por favor, preencha os dados no formulário e compareça na unidade em horário comercial.\n\nhttps://forms.gle/tt4LVq24EjBsVC7WA\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`,
+      
+      briefing: `*Viagem Monitorada*\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link.\n\nhttps://shre.ink/briefingkomando \n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`,
+      
+      fotos: `*Confirmação de Parada/Pernoite*\n\nSr. Motorista.\n\nAo informar paradas e pernoite via macro, por favor confirme a ação em nosso WhatsApp: *(19 98103-2053)*\n\nÉ preciso que você nos envie:\n\n*→ FOTO DO BAÚ*\n*→ FOTO DOS LACRES*\n*→ FOTO DO ENGATE*\n\nEste procedimento de envio deverá ser repetido quando você reiniciar a viagem também.\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`
+    };
 
     let listaNomes=[], listaPlacas=[], listaCarretas=[];
 
-    function gerarId(){ return 'BRF-'+Date.now(); }
-    function showMessage(msg,type='success'){ document.getElementById('resultado').innerHTML = '<div class="link '+type+'">'+msg+'</div>'; }
-
-    async function loadList(tipo){
-      try{
-        const resp = await fetch(`${endpointBase}?list=${tipo}`);
-        const json = await resp.json();
-        return Array.isArray(json)? json : [];
-      }catch(e){ return []; }
+    // ===================================================================
+    // FUNÇÕES UTILITÁRIAS
+    // ===================================================================
+    function showMessage(msg, type='success'){ 
+      const resultado = document.getElementById('resultado');
+      if(resultado) {
+        resultado.innerHTML = '<div class="link '+type+'">'+msg+'</div>';
+      }
     }
 
+    // ===================================================================
+    // INSERE MODELO DE TEXTO
+    // ===================================================================
+    function inserirTemplate(tipo){
+      const textoPronto = document.getElementById('textoPronto');
+      if(textoPronto && textos[tipo]){
+        textoPronto.value = textos[tipo];
+        showMessage('✅ Modelo inserido com sucesso!', 'success');
+      }
+    }
+
+    // ===================================================================
+    // COPIA TEXTO PARA CLIPBOARD
+    // ===================================================================
+    function copiarParaClipboard(){
+      const textoPronto = document.getElementById('textoPronto');
+      if(!textoPronto.value.trim()){
+        showMessage('❌ Nenhuma mensagem para copiar', 'error');
+        return;
+      }
+      
+      navigator.clipboard.writeText(textoPronto.value)
+        .then(() => {
+          showMessage('✅ Mensagem copiada para clipboard!', 'success');
+        })
+        .catch(err => {
+          console.error('Erro ao copiar:', err);
+          showMessage('❌ Erro ao copiar mensagem', 'error');
+        });
+    }
+
+    // ===================================================================
+    // GERA MENSAGEM AUTOMATICAMENTE
+    // ===================================================================
+    function atualizarMensagem(){
+      const sm = (document.getElementById('sm')?.value || '').trim();
+      const embarcador = (document.getElementById('embarcador')?.value || '').trim();
+      const transportador = (document.getElementById('transportador')?.value || '').trim();
+      const equipamento = (document.getElementById('equipamento')?.value || '').trim();
+      const motorista = (document.getElementById('motorista')?.value || '').trim();
+      const placaCavalo = (document.getElementById('placa_cavalo')?.value || '').trim();
+      const placaCarreta = (document.getElementById('placa_carreta')?.value || '').trim();
+      const rota = (document.getElementById('rota')?.value || '').trim();
+      const cliente = (document.getElementById('cliente')?.value || '').trim();
+
+      let mensagem = '';
+
+      if(sm) mensagem += `*SM:* ${sm}\n`;
+      if(motorista) mensagem += `*Motorista:* ${motorista}\n`;
+      if(embarcador) mensagem += `*Embarcador:* ${embarcador}\n`;
+      if(transportador) mensagem += `*Transportador:* ${transportador}\n`;
+      if(equipamento) mensagem += `*Equipamento:* ${equipamento}\n`;
+      if(placaCavalo) mensagem += `*Placa Cavalo:* ${placaCavalo}\n`;
+      if(placaCarreta) mensagem += `*Placa Carreta:* ${placaCarreta}\n`;
+      if(cliente) mensagem += `*Cliente:* ${cliente}\n`;
+      if(rota) mensagem += `*Rota:* ${rota}\n`;
+
+      document.getElementById('textoPronto').value = mensagem;
+    }
+
+    // ===================================================================
+    // CARREGA LISTAS DO SERVIDOR
+    // ===================================================================
+    async function loadList(tipo){
+      try{
+        const endpointBase = "https://script.google.com/macros/s/AKfycbwZEKOU7ycZdM0GJlw4yeupCDUBiFSBXVmmlK5qS1IRPMnRJodiAzjh2lc-l5MdftmH-A/exec";
+        const resp = await fetch(`${endpointBase}?list=${tipo}`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const json = await resp.json();
+        return Array.isArray(json) ? json : [];
+      }catch(e){ 
+        console.error(`Erro ao carregar ${tipo}:`, e);
+        return []; 
+      }
+    }
+
+    // Inicializa listas ao carregar página
     (async function initLists(){
-      listaNomes = await loadList('motoristas');
-      listaPlacas = await loadList('placas');
-      listaCarretas = await loadList('carretas');
+      try {
+        listaNomes = await loadList('motoristas');
+        console.log('✓ Motoristas:', listaNomes.length);
+        
+        listaPlacas = await loadList('placas');
+        console.log('✓ Placas:', listaPlacas.length);
+        
+        listaCarretas = await loadList('carretas');
+        console.log('✓ Carretas:', listaCarretas.length);
+      } catch(e) {
+        console.error('Erro ao carregar listas:', e);
+      }
     })();
 
+    // ===================================================================
+    // AUTOCOMPLETE
+    // ===================================================================
     function showList(containerId, items){
-      const ul=document.getElementById(containerId);
-      if(!ul){return;}
+      const ul = document.getElementById(containerId);
+      if(!ul) return;
+      
       ul.innerHTML='';
-      if(!items.length){ul.style.display='none'; return;}
-      items.forEach(it=>{ const li=document.createElement('li'); li.textContent=it; li.onclick=()=>{document.getElementById(containerId.replace('lista-','')).value=it; ul.innerHTML=''; ul.style.display='none';}; ul.appendChild(li); });
+      if(!items || !items.length){ 
+        ul.style.display='none'; 
+        return;
+      }
+      
+      items.forEach(it => { 
+        const li = document.createElement('li'); 
+        li.textContent = it; 
+        li.onclick = () => {
+          const inputId = containerId.replace('lista-','');
+          const inputEl = document.getElementById(inputId);
+          if(inputEl) inputEl.value = it;
+          ul.innerHTML = ''; 
+          ul.style.display = 'none';
+          atualizarMensagem();
+        }; 
+        ul.appendChild(li); 
+      });
+      
       ul.style.display='block';
     }
 
-    document.getElementById('motorista').addEventListener('input', function(){
-      const v=this.value.trim();
-      showList('lista-motorista', listaNomes.filter(n=>n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30));
-    });
-    document.getElementById('placa_cavalo').addEventListener('input', function(){
-      const v=this.value.trim();
-      showList('lista-placa', listaPlacas.filter(n=>n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30));
-    });
-    document.getElementById('placa_carreta').addEventListener('input', function(){
-      const v=this.value.trim();
-      showList('lista-carreta', listaCarretas.filter(n=>n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30));
-    });
-
-    function montarPayload(){
-      const now=new Date();
-      return {
-        data_envio: now.toISOString(),
-        id: gerarId(),
-        codigo_sm: (document.getElementById('sm')?.value||'').trim(),
-        status:'Pendente',
-        embarcador:(document.getElementById('embarcador')?.value||'').trim(),
-        transportador:(document.getElementById('transportador')?.value||'').trim(),
-        equipamento:(document.getElementById('equipamento')?.value||'').trim(),
-        motorista:(document.getElementById('motorista')?.value||'').trim(),
-        placa_cavalo:(document.getElementById('placa_cavalo')?.value||'').trim(),
-        placa_carreta:(document.getElementById('placa_carreta')?.value||'').trim(),
-        rota:(document.getElementById('rota')?.value||'').trim(),
-        cliente:(document.getElementById('cliente')?.value||'').trim(),
-        link_unico:'',
-        data_abertura:'',
-        ip:'',
-        _imagem: imagemPadrao
-      };
+    // Event listeners para autocomplete
+    const motoristaInput = document.getElementById('motorista');
+    if(motoristaInput) {
+      motoristaInput.addEventListener('input', function(){
+        const v = this.value.trim();
+        const matches = v ? listaNomes.filter(n => n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30) : [];
+        showList('lista-motorista', matches);
+        atualizarMensagem();
+      });
     }
 
-    async function enviar(payload){
-      const res = await fetch(endpointBase,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      return await res.json();
+    const placaCavaloInput = document.getElementById('placa_cavalo');
+    if(placaCavaloInput) {
+      placaCavaloInput.addEventListener('input', function(){
+        const v = this.value.trim();
+        const matches = v ? listaPlacas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30) : [];
+        showList('lista-placa', matches);
+        atualizarMensagem();
+      });
     }
 
-    document.getElementById('btnEnviar').addEventListener('click', async function(e){
-      e.preventDefault();
-      const btn=this;
-      const sm=(document.getElementById('sm')?.value||'').trim();
-      const motorista=(document.getElementById('motorista')?.value||'').trim();
-      if(!sm){showMessage('❌ Preencha o Código SM','error'); return;}
-      if(!motorista){showMessage('❌ Preencha o Motorista','error'); return;}
-      const payload = montarPayload();
-      btn.disabled=true;
-      showMessage('⏳ Enviando dados...','success');
-      try{
-        const json = await enviar(payload);
-        if(json && json.ok){
-          const link=json.link_unico||'';
-          const msgWhats=`📋 Briefing\nSM: ${payload.codigo_sm}\nMotorista: ${payload.motorista}\nLink: ${link}\n\nVisualize: ${payload._imagem}`;
-          document.getElementById('resultado').innerHTML=
-            '<div class="link success">✅ Briefing gerado com sucesso!</div>'+
-            (link?'<div class="link"><a href="'+link+'" target="_blank">🔗 Abrir Briefing</a></div>':'')+
-            '<div class="link"><a href="https://wa.me/?text='+encodeURIComponent(msgWhats)+'" target="_blank">📱 Enviar por WhatsApp</a></div>';
-          try{ window.open("https://wa.me/?text="+encodeURIComponent(msgWhats)); }catch(e){}
-        }else{
-          showMessage('❌ Erro do servidor: '+(json.error||'resposta inválida'),'error');
+    const placaCarretaInput = document.getElementById('placa_carreta');
+    if(placaCarretaInput) {
+      placaCarretaInput.addEventListener('input', function(){
+        const v = this.value.trim();
+        const matches = v ? listaCarretas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30) : [];
+        showList('lista-carreta', matches);
+        atualizarMensagem();
+      });
+    }
+
+    // Atualiza mensagem ao modificar campos
+    const camposAtualizaveis = ['sm', 'embarcador', 'transportador', 'equipamento', 'rota', 'cliente'];
+    camposAtualizaveis.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) {
+        el.addEventListener('input', atualizarMensagem);
+        el.addEventListener('change', atualizarMensagem);
+      }
+    });
+
+    // ===================================================================
+    // EVENTO DO BOTÃO ENVIAR VIA WHATSAPP
+    // ===================================================================
+    const btnEnviar = document.getElementById('btnEnviar');
+    if(btnEnviar) {
+      btnEnviar.addEventListener('click', function(e){
+        e.preventDefault();
+        
+        const sm = (document.getElementById('sm')?.value || '').trim();
+        const motorista = (document.getElementById('motorista')?.value || '').trim();
+        const mensagem = (document.getElementById('textoPronto')?.value || '').trim();
+        
+        // Validação
+        if(!sm){ 
+          showMessage('❌ Preencha o Código SM', 'error'); 
+          return;
         }
-      }catch(err){ showMessage('❌ Erro no envio: '+err.message,'error'); }
-      finally{ btn.disabled=false; }
+        if(!motorista){ 
+          showMessage('❌ Preencha o Motorista', 'error'); 
+          return;
+        }
+        if(!mensagem){ 
+          showMessage('❌ Preencha a mensagem', 'error'); 
+          return;
+        }
+        
+        // Abre WhatsApp com a mensagem
+        const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+        
+        try {
+          window.open(urlWhatsApp, '_blank');
+          showMessage('✅ WhatsApp aberto! Envie a mensagem para o motorista.', 'success');
+        } catch(err) {
+          console.error('Erro ao abrir WhatsApp:', err);
+          showMessage('❌ Erro ao abrir WhatsApp. Copie a mensagem manualmente.', 'error');
+        }
+      });
+    }
+
+    // ===================================================================
+    // FECHA AUTOCOMPLETE AO CLICAR FORA OU PRESSIONAR ESC
+    // ===================================================================
+    document.addEventListener('click', (evt) => {
+      document.querySelectorAll('.autocomplete-list').forEach(ul => { 
+        const inputId = ul.id.replace('lista-','');
+        const inputEl = document.getElementById(inputId);
+        if(!ul.contains(evt.target) && !(inputEl && inputEl.contains(evt.target))) {
+          ul.style.display = 'none';
+        }
+      }); 
     });
 
-    document.addEventListener('click', (evt)=>{document.querySelectorAll('.autocomplete-list').forEach(ul=>{ if(!ul.contains(evt.target) && !document.getElementById(ul.id.replace('lista-','')).contains(evt.target)){ul.style.display='none';} }); });
-    document.addEventListener('keydown', (evt)=>{ if(evt.key==='Escape') document.querySelectorAll('.autocomplete-list').forEach(ul=>ul.style.display='none'); });
+    document.addEventListener('keydown', (evt) => { 
+      if(evt.key === 'Escape') {
+        document.querySelectorAll('.autocomplete-list').forEach(ul => ul.style.display = 'none'); 
+      }
+    });
   </script>
 </body>
 </html>
