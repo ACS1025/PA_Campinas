@@ -1,4 +1,3 @@
-<!-- form_public.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,186 +6,38 @@
   <base target="_top">
   <title>Enviar Briefing</title>
   <style>
+    /* ==== MESMO ESTILO QUE VOCÊ ENVIOU ==== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-image: url("src/img/Registro de Saidas.png");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      margin-top: 70px;
-      color: white;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      padding: 40px;
-      max-width: 900px;
-      width: 100%;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    }
-
-    h3 {
-      margin-top: 0;
-      color: #fff;
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 28px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: 600;
-      color: #fff;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-      margin-top: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.95);
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 1);
-      border-color: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    }
-
-    nav {
-      width: 100%;
-      background-color: rgba(68, 68, 68, 0.95);
-      padding: 15px 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    nav ul {
-      list-style: none;
-      padding: 0;
-      text-align: center;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    nav ul li { display: inline-block; }
-
-    nav ul li a {
-      color: rgb(252, 254, 255);
-      text-decoration: none;
-      font-size: 16px;
-      padding: 10px 18px;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    nav ul li a:hover { background-color: rgba(23, 23, 175, 0.44); }
-    nav ul li a.active { background-color: rgba(23, 23, 175, 0.7); }
-
-    .row { display: flex; gap: 12px; flex-wrap: wrap; }
-    .col { flex: 1 1 220px; min-width: 160px; }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      width: 100%;
-    }
-
-    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
-    button:active { transform: translateY(0); }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .link {
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.15);
-      padding: 15px;
-      border-radius: 8px;
-      word-break: break-all;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-    }
-
-    .link a { color: #ffd700; text-decoration: none; font-weight: bold; }
-    .link a:hover { text-decoration: underline; }
-
-    .link.success { background: rgba(76, 175, 80, 0.2); border-color: rgba(76, 175, 80, 0.5); }
-    .link.error { background: rgba(244, 67, 54, 0.2); border-color: rgba(244, 67, 54, 0.5); }
-
+    body { font-family: Arial, sans-serif; background-image: url("src/img/Registro de Saidas.png"); background-size: cover; background-position: center; background-attachment: fixed; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; margin-top: 70px; color: white; }
+    .container { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.2); border-radius:15px; padding:40px; max-width:900px; width:100%; box-shadow:0 8px 32px rgba(31,38,135,0.37); }
+    h3 { margin-top:0; color:#fff; text-align:center; margin-bottom:30px; font-size:28px; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
+    label { display:block; margin-top:10px; font-weight:600; color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
+    input, select, textarea { width:100%; padding:10px; box-sizing:border-box; margin-top:6px; border:1px solid rgba(255,255,255,0.3); border-radius:8px; background:rgba(255,255,255,0.95); font-family:Arial,sans-serif; font-size:14px; transition: all 0.3s ease; }
+    input:focus, select:focus, textarea:focus { outline:none; background:rgba(255,255,255,1); border-color:rgba(255,255,255,0.8); box-shadow:0 0 10px rgba(255,255,255,0.3); }
+    nav { width:100%; background-color: rgba(68,68,68,0.95); padding:15px 0; position:fixed; top:0; left:0; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.3); }
+    nav ul { list-style:none; padding:0; text-align:center; margin:0; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+    nav ul li { display:inline-block; }
+    nav ul li a { color: #fcfeff; text-decoration:none; font-size:16px; padding:10px 18px; border-radius:5px; transition: background-color 0.3s ease; }
+    nav ul li a:hover { background-color: rgba(23,23,175,0.44); }
+    nav ul li a.active { background-color: rgba(23,23,175,0.7); }
+    .row { display:flex; gap:12px; flex-wrap:wrap; }
+    .col { flex:1 1 220px; min-width:160px; }
+    button { margin-top:20px; padding:12px 20px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:16px; transition: all 0.3s ease; text-shadow:1px 1px 2px rgba(0,0,0,0.3); box-shadow:0 4px 15px rgba(0,0,0,0.2); width:100%; }
+    button:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.3); }
+    button:active { transform:translateY(0); }
+    button:disabled { opacity:0.6; cursor:not-allowed; }
+    .link { margin-top:20px; background:rgba(255,255,255,0.15); padding:15px; border-radius:8px; word-break:break-all; border:1px solid rgba(255,255,255,0.3); color:#fff; }
+    .link a { color:#ffd700; text-decoration:none; font-weight:bold; }
+    .link a:hover { text-decoration:underline; }
+    .link.success { background: rgba(76,175,80,0.2); border-color: rgba(76,175,80,0.5); }
+    .link.error { background: rgba(244,67,54,0.2); border-color: rgba(244,67,54,0.5); }
     .input-box { position: relative; }
-
-    ul.autocomplete-list {
-      position: absolute;
-      z-index: 999;
-      left: 0;
-      right: 0;
-      max-height: 160px;
-      overflow: auto;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      border-radius: 8px;
-      margin-top: 2px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    ul.autocomplete-list li {
-      padding: 10px;
-      cursor: pointer;
-      color: #333;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    ul.autocomplete-list li:last-child { border-bottom: none; }
-    ul.autocomplete-list li:hover { background: rgba(102, 126, 234, 0.2); color: #667eea; }
-
-    #resultado { margin-top: 20px; min-height: 40px; }
-
-    @media (max-width: 768px) {
-      body { margin-top: 120px; }
-      .container { padding: 20px; }
-      h3 { font-size: 22px; margin-bottom: 20px; }
-      .row { flex-direction: column; }
-      .col { flex: 1 1 100%; }
-      nav ul { gap: 10px; }
-      nav ul li a { font-size: 14px; padding: 8px 12px; }
-    }
+    ul.autocomplete-list { position:absolute; z-index:999; left:0; right:0; max-height:160px; overflow:auto; background:rgba(255,255,255,0.95); border:1px solid rgba(255,255,255,0.3); list-style:none; margin:0; padding:0; border-radius:8px; margin-top:2px; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+    ul.autocomplete-list li { padding:10px; cursor:pointer; color:#333; border-bottom:1px solid rgba(0,0,0,0.1); }
+    ul.autocomplete-list li:last-child { border-bottom:none; }
+    ul.autocomplete-list li:hover { background: rgba(102,126,234,0.2); color:#667eea; }
+    #resultado { margin-top:20px; min-height:40px; }
+    @media(max-width:768px) { body{margin-top:120px;} .container{padding:20px;} h3{font-size:22px; margin-bottom:20px;} .row{flex-direction:column;} .col{flex:1 1 100%;} nav ul{gap:10px;} nav ul li a{font-size:14px; padding:8px 12px;} }
   </style>
 </head>
 <body>
@@ -204,23 +55,11 @@
 
   <div class="container">
     <h3>Enviar Briefing - Gerar Link</h3>
-
     <div>
-      <label>Código SM *
-        <input id="sm" name="sm" placeholder="Ex: 1175983" required/>
-      </label>
-
-      <label>Embarcador
-        <input id="embarcador" name="embarcador" />
-      </label>
-
-      <label>Transportador
-        <input id="transportador" name="transportador" />
-      </label>
-
-      <label>Equipamento
-        <input id="equipamento" name="equipamento" />
-      </label>
+      <label>Código SM *<input id="sm" name="sm" placeholder="Ex: 1175983" required/></label>
+      <label>Embarcador<input id="embarcador" name="embarcador"/></label>
+      <label>Transportador<input id="transportador" name="transportador"/></label>
+      <label>Equipamento<input id="equipamento" name="equipamento"/></label>
 
       <div class="row">
         <div class="col input-box">
@@ -228,251 +67,130 @@
           <input id="motorista" name="motorista" placeholder="Digite o nome (autocomplete)" required/>
           <ul id="lista-motorista" class="autocomplete-list" style="display:none"></ul>
         </div>
-
         <div class="col input-box">
           <label>Placa Cavalo</label>
           <input id="placa_cavalo" name="placa_cavalo" placeholder="Ex: GHI-6088"/>
           <ul id="lista-placa" class="autocomplete-list" style="display:none"></ul>
         </div>
-
         <div class="col input-box">
           <label>Placa Carreta</label>
           <input id="placa_carreta" name="placa_carreta" placeholder="Ex: CWI-2880"/>
           <ul id="lista-carreta" class="autocomplete-list" style="display:none"></ul>
         </div>
-
         <div class="col">
           <label>Cliente</label>
-          <input id="cliente" name="cliente" />
+          <input id="cliente" name="cliente"/>
         </div>
       </div>
 
-      <label>Rota
-        <input id="rota" name="rota" placeholder="Ex: Campinas/ SP X Rio de Janeiro/ RJ"/>
-      </label>
+      <label>Rota<input id="rota" name="rota" placeholder="Ex: Campinas/SP X Rio de Janeiro/RJ"/></label>
 
       <button id="btnEnviar">Enviar e gerar link</button>
-
       <div id="resultado"></div>
     </div>
   </div>
 
   <script>
-    const endpointBase = "https://script.google.com/macros/s/AKfycbxkuAX-mpf_Yv73Pc8ddj9fX_3knScd0CDys3Luk2Uw65WiTdNVl3JEfIBIh5YR-1pTAw/exec";
+    const endpointBase = "https://script.google.com/macros/s/AKfycbwZEKOU7ycZdM0GJlw4yeupCDUBiFSBXVmmlK5qS1IRPMnRJodiAzjh2lc-l5MdftmH-A/exec"; // <- deploy
     const imagemPadrao = "https://raw.githubusercontent.com/ACS1025/PA_Campinas/main/src/img/Briefing%20Kmd.jpg";
 
-    let listaNomes = [], listaPlacas = [], listaCarretas = [];
+    let listaNomes=[], listaPlacas=[], listaCarretas=[];
 
-    // ===================================================================
-    // Fecha listas de autocomplete ao clicar fora ou pressionar Esc
-    // ===================================================================
-    document.addEventListener('click', (evt) => {
-      const activeLists = document.querySelectorAll('.autocomplete-list');
-      activeLists.forEach(ul => {
-        const inputId = ul.id.replace('lista-', '');
-        const inputEl = document.getElementById(inputId);
-        if (!ul.contains(evt.target) && !(inputEl && inputEl.contains(evt.target))) {
-          ul.style.display = 'none';
-        }
-      });
-    });
+    function gerarId(){ return 'BRF-'+Date.now(); }
+    function showMessage(msg,type='success'){ document.getElementById('resultado').innerHTML = '<div class="link '+type+'">'+msg+'</div>'; }
 
-    document.addEventListener('keydown', (evt) => {
-      if (evt.key === 'Escape') {
-        document.querySelectorAll('.autocomplete-list').forEach(ul => ul.style.display = 'none');
-      }
-    });
-
-    // ===================================================================
-    // FUNÇÃO PARA CARREGAR LISTAS (motoristas, placas, carretas)
-    // ===================================================================
-    async function loadList(tipo) {
-      try {
-        const resp = await fetch(`${endpointBase}?list=${tipo}`, {
-          headers: { "Accept": "application/json" }
-        });
-        if (!resp.ok) throw new Error(`Erro ao carregar ${tipo}: HTTP ${resp.status}`);
-        return await resp.json();
-      } catch (e) {
-        console.error(`Erro ao carregar ${tipo}:`, e);
-        return [];
-      }
+    async function loadList(tipo){
+      try{
+        const resp = await fetch(`${endpointBase}?list=${tipo}`);
+        const json = await resp.json();
+        return Array.isArray(json)? json : [];
+      }catch(e){ return []; }
     }
 
-    // ===================================================================
-    // CARREGA TODAS AS LISTAS AO INICIAR A PÁGINA
-    // ===================================================================
-    (async function loadLists() {
-      listaNomes = await loadList("motoristas");
-      console.log("✓ Motoristas carregados:", listaNomes.length);
-
-      listaPlacas = await loadList("placas");
-      console.log("✓ Placas carregadas:", listaPlacas.length);
-
-      listaCarretas = await loadList("carretas");
-      console.log("✓ Carretas carregadas:", listaCarretas.length);
+    (async function initLists(){
+      listaNomes = await loadList('motoristas');
+      listaPlacas = await loadList('placas');
+      listaCarretas = await loadList('carretas');
     })();
 
-    // ===================================================================
-    // Função para exibir lista autocomplete
-    // ===================================================================
-    function showList(containerId, items) {
-      const ul = document.getElementById(containerId);
-      if(!ul) return;
-      ul.innerHTML = '';
-      if(!items || items.length === 0){ 
-        ul.style.display = 'none'; 
-        return; 
-      }
-      items.forEach(it => {
-        const li = document.createElement('li');
-        li.textContent = it;
-        li.onclick = () => {
-          if(containerId === 'lista-motorista') {
-            const el = document.getElementById('motorista'); if(el) el.value = it;
-          }
-          if(containerId === 'lista-placa') {
-            const el = document.getElementById('placa_cavalo'); if(el) el.value = it;
-          }
-          if(containerId === 'lista-carreta') {
-            const el = document.getElementById('placa_carreta'); if(el) el.value = it;
-          }
-          ul.innerHTML = '';
-          ul.style.display = 'none';
-        };
-        ul.appendChild(li);
-      });
-      ul.style.display = 'block';
+    function showList(containerId, items){
+      const ul=document.getElementById(containerId);
+      if(!ul){return;}
+      ul.innerHTML='';
+      if(!items.length){ul.style.display='none'; return;}
+      items.forEach(it=>{ const li=document.createElement('li'); li.textContent=it; li.onclick=()=>{document.getElementById(containerId.replace('lista-','')).value=it; ul.innerHTML=''; ul.style.display='none';}; ul.appendChild(li); });
+      ul.style.display='block';
     }
 
-    // ===================================================================
-    // Event listeners para autocomplete
-    // ===================================================================
-    const motoristaInput = document.getElementById('motorista');
-    if (motoristaInput) {
-      motoristaInput.addEventListener('input', function(){
-        const v = this.value.trim();
-        if(!v){ showList('lista-motorista', []); return; }
-        const matches = listaNomes.filter(n => n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
-        showList('lista-motorista', matches);
-      });
+    document.getElementById('motorista').addEventListener('input', function(){
+      const v=this.value.trim();
+      showList('lista-motorista', listaNomes.filter(n=>n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30));
+    });
+    document.getElementById('placa_cavalo').addEventListener('input', function(){
+      const v=this.value.trim();
+      showList('lista-placa', listaPlacas.filter(n=>n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30));
+    });
+    document.getElementById('placa_carreta').addEventListener('input', function(){
+      const v=this.value.trim();
+      showList('lista-carreta', listaCarretas.filter(n=>n.toLowerCase().startsWith(v.toLowerCase())).slice(0,30));
+    });
+
+    function montarPayload(){
+      const now=new Date();
+      return {
+        data_envio: now.toISOString(),
+        id: gerarId(),
+        codigo_sm: (document.getElementById('sm')?.value||'').trim(),
+        status:'Pendente',
+        embarcador:(document.getElementById('embarcador')?.value||'').trim(),
+        transportador:(document.getElementById('transportador')?.value||'').trim(),
+        equipamento:(document.getElementById('equipamento')?.value||'').trim(),
+        motorista:(document.getElementById('motorista')?.value||'').trim(),
+        placa_cavalo:(document.getElementById('placa_cavalo')?.value||'').trim(),
+        placa_carreta:(document.getElementById('placa_carreta')?.value||'').trim(),
+        rota:(document.getElementById('rota')?.value||'').trim(),
+        cliente:(document.getElementById('cliente')?.value||'').trim(),
+        link_unico:'',
+        data_abertura:'',
+        ip:'',
+        _imagem: imagemPadrao
+      };
     }
 
-    const placaCavaloInput = document.getElementById('placa_cavalo');
-    if (placaCavaloInput) {
-      placaCavaloInput.addEventListener('input', function(){
-        const v = this.value.trim();
-        if(!v){ showList('lista-placa', []); return; }
-        const matches = listaPlacas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
-        showList('lista-placa', matches);
-      });
+    async function enviar(payload){
+      const res = await fetch(endpointBase,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      return await res.json();
     }
 
-    const placaCarretaInput = document.getElementById('placa_carreta');
-    if (placaCarretaInput) {
-      placaCarretaInput.addEventListener('input', function(){
-        const v = this.value.trim();
-        if(!v){ showList('lista-carreta', []); return; }
-        const matches = listaCarretas.filter(p => p.toLowerCase().startsWith(v.toLowerCase())).slice(0,30);
-        showList('lista-carreta', matches);
-      });
-    }
-
-    // ===================================================================
-    // Função para exibir mensagens
-    // ===================================================================
-    function showMessage(message, type = 'success') {
-      const resultado = document.getElementById('resultado');
-      resultado.innerHTML = '<div class="link ' + type + '">' + message + '</div>';
-    }
-
-    // ===================================================================
-    // ENVIO DO BRIEFING (ÚNICO EVENT LISTENER)
-    // ===================================================================
-    const btnEnviar = document.getElementById('btnEnviar');
-    if (btnEnviar) {
-      btnEnviar.addEventListener('click', async function(){
-        const btn = this;
-
-        // Validação obrigatória
-        const sm = document.getElementById('sm') ? document.getElementById('sm').value.trim() : '';
-        const motorista = document.getElementById('motorista') ? document.getElementById('motorista').value.trim() : '';
-
-        if(!sm){ 
-          showMessage('❌ Preencha o Código SM.', 'error');
-          return; 
+    document.getElementById('btnEnviar').addEventListener('click', async function(e){
+      e.preventDefault();
+      const btn=this;
+      const sm=(document.getElementById('sm')?.value||'').trim();
+      const motorista=(document.getElementById('motorista')?.value||'').trim();
+      if(!sm){showMessage('❌ Preencha o Código SM','error'); return;}
+      if(!motorista){showMessage('❌ Preencha o Motorista','error'); return;}
+      const payload = montarPayload();
+      btn.disabled=true;
+      showMessage('⏳ Enviando dados...','success');
+      try{
+        const json = await enviar(payload);
+        if(json && json.ok){
+          const link=json.link_unico||'';
+          const msgWhats=`📋 Briefing\nSM: ${payload.codigo_sm}\nMotorista: ${payload.motorista}\nLink: ${link}\n\nVisualize: ${payload._imagem}`;
+          document.getElementById('resultado').innerHTML=
+            '<div class="link success">✅ Briefing gerado com sucesso!</div>'+
+            (link?'<div class="link"><a href="'+link+'" target="_blank">🔗 Abrir Briefing</a></div>':'')+
+            '<div class="link"><a href="https://wa.me/?text='+encodeURIComponent(msgWhats)+'" target="_blank">📱 Enviar por WhatsApp</a></div>';
+          try{ window.open("https://wa.me/?text="+encodeURIComponent(msgWhats)); }catch(e){}
+        }else{
+          showMessage('❌ Erro do servidor: '+(json.error||'resposta inválida'),'error');
         }
+      }catch(err){ showMessage('❌ Erro no envio: '+err.message,'error'); }
+      finally{ btn.disabled=false; }
+    });
 
-        if(!motorista){ 
-          showMessage('❌ Preencha o Motorista.', 'error');
-          return; 
-        }
-
-        // Coleta dados do formulário
-        const data = {
-          sm: sm,
-          embarcador: document.getElementById('embarcador') ? document.getElementById('embarcador').value.trim() : '',
-          transportador: document.getElementById('transportador') ? document.getElementById('transportador').value.trim() : '',
-          equipamento: document.getElementById('equipamento') ? document.getElementById('equipamento').value.trim() : '',
-          motorista: motorista,
-          placa_cavalo: document.getElementById('placa_cavalo') ? document.getElementById('placa_cavalo').value.trim() : '',
-          placa_carreta: document.getElementById('placa_carreta') ? document.getElementById('placa_carreta').value.trim() : '',
-          rota: document.getElementById('rota') ? document.getElementById('rota').value.trim() : '',
-          cliente: document.getElementById('cliente') ? document.getElementById('cliente').value.trim() : '',
-          imagem: imagemPadrao
-        };
-
-        btn.disabled = true;
-        showMessage('⏳ Enviando dados...', 'success');
-
-        try {
-          console.log('Enviando dados para:', endpointBase);
-          const res = await fetch(endpointBase, {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json', 
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-
-          if (!res.ok) {
-            throw new Error('HTTP ' + res.status + ' - ' + res.statusText);
-          }
-
-          const json = await res.json();
-          console.log('Resposta do servidor:', json);
-          
-          if (json.ok && json.link) {
-            // ✅ Mensagem formatada para WhatsApp
-            const msgWhats = `📋 Seu Briefing\nSM: ${sm}\nMotorista: ${motorista}\nLink: ${json.link}`;
-            
-            document.getElementById('resultado').innerHTML =
-              '<div class="link success">✅ Briefing gerado com sucesso!</div>' +
-              '<div class="link"><a href="' + json.link + '" target="_blank" rel="noopener noreferrer">🔗 Abrir Briefing</a></div>' +
-              '<div class="link"><a target="_blank" rel="noopener noreferrer" href="https://wa.me/?text=' + encodeURIComponent(msgWhats) + '">📱 Enviar por WhatsApp</a></div>';
-
-            // Abre WhatsApp automaticamente (pode ser bloqueado por popup blockers)
-            try {
-              window.open("https://wa.me/?text=" + encodeURIComponent(msgWhats));
-            } catch (e) {
-              console.warn('Popup bloqueado:', e);
-            }
-          } else {
-            showMessage('❌ Erro do servidor: ' + (json.error || 'resposta inválida'), 'error');
-          }
-        } catch (err) {
-          console.error('Erro no envio:', err);
-          if (err.message && err.message.includes('Failed to fetch')) {
-            showMessage('❌ Erro de conexão. Verifique CORS e se o Apps Script está publicado.', 'error');
-          } else {
-            showMessage('❌ Erro no envio: ' + (err.message || err), 'error');
-          }
-        } finally {
-          btn.disabled = false;
-        }
-      });
-    }
+    document.addEventListener('click', (evt)=>{document.querySelectorAll('.autocomplete-list').forEach(ul=>{ if(!ul.contains(evt.target) && !document.getElementById(ul.id.replace('lista-','')).contains(evt.target)){ul.style.display='none';} }); });
+    document.addEventListener('keydown', (evt)=>{ if(evt.key==='Escape') document.querySelectorAll('.autocomplete-list').forEach(ul=>ul.style.display='none'); });
   </script>
 </body>
 </html>
