@@ -106,10 +106,13 @@
       <div class="full-width">
         <label for="textoPronto">Mensagem para WhatsApp:</label>
         <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
-        <button type="button" class="btn-secondary" onclick="copiarParaClipboard()">📋 Copiar Mensagem</button>
       </div>
 
-      <button id="btnEnviar">📱 Enviar via WhatsApp</button>
+      <!-- Botões de Ação -->                        
+        <div class="col">
+          <button id="btnEnviar">📱 Enviar via WhatsApp</button>
+        </div>
+      </div>
       <div id="resultado"></div>
     </div>
   </div>
@@ -127,6 +130,8 @@
       fotos: `*Confirmação de Parada/Pernoite*\n\nSr. Motorista.\n\nAo informar paradas e pernoite via macro, por favor confirme a ação em nosso WhatsApp: *(19 98103-2053)*\n\nÉ preciso que você nos envie:\n\n*→ FOTO DO BAÚ*\n*→ FOTO DOS LACRES*\n*→ FOTO DO ENGATE*\n\nEste procedimento de envio deverá ser repetido quando você reiniciar a viagem também.\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`
     };
 
+    // endpoint do Apps Script (substitua pela sua URL se necessário)
+    const endpointBase = "https://script.google.com/macros/s/AKfycbxiux1H7NSCSXlQsRIJ24QPFl_uf2bNNzEeVh4VUlC7Oe6w733uQ8YQ_v-6z2YQibJ2/exec";
     let listaNomes=[], listaPlacas=[], listaCarretas=[];
 
     // ===================================================================
@@ -148,26 +153,6 @@
         textoPronto.value = textos[tipo];
         showMessage('✅ Modelo inserido com sucesso!', 'success');
       }
-    }
-
-    // ===================================================================
-    // COPIA TEXTO PARA CLIPBOARD
-    // ===================================================================
-    function copiarParaClipboard(){
-      const textoPronto = document.getElementById('textoPronto');
-      if(!textoPronto.value.trim()){
-        showMessage('❌ Nenhuma mensagem para copiar', 'error');
-        return;
-      }
-      
-      navigator.clipboard.writeText(textoPronto.value)
-        .then(() => {
-          showMessage('✅ Mensagem copiada para clipboard!', 'success');
-        })
-        .catch(err => {
-          console.error('Erro ao copiar:', err);
-          showMessage('❌ Erro ao copiar mensagem', 'error');
-        });
     }
 
     // ===================================================================
@@ -200,11 +185,73 @@
     }
 
     // ===================================================================
+    // MONTA PAYLOAD PARA PLANILHA
+    // ===================================================================
+    function montarPayloadParaPlanilha(){
+      const now = new Date();
+      return {
+        data_envio: now.toISOString(),
+        codigo_sm: (document.getElementById('sm')?.value || '').trim(),
+        embarcador: (document.getElementById('embarcador')?.value || '').trim(),
+        transportador: (document.getElementById('transportador')?.value || '').trim(),
+        equipamento: (document.getElementById('equipamento')?.value || '').trim(),
+        motorista: (document.getElementById('motorista')?.value || '').trim(),
+        placa_cavalo: (document.getElementById('placa_cavalo')?.value || '').trim(),
+        placa_carreta: (document.getElementById('placa_carreta')?.value || '').trim(),
+        rota: (document.getElementById('rota')?.value || '').trim(),
+        cliente: (document.getElementById('cliente')?.value || '').trim(),
+        texto_pronto: (document.getElementById('textoPronto')?.value || '').trim()
+      };
+    }
+
+    // ===================================================================
+    // ENVIA DADOS PARA O APPS SCRIPT (GOOGLE SHEETS) - COM FALLBACK
+    // ===================================================================
+    async function enviarParaPlanilha(payload){
+      // Tentativa 1: POST com JSON (padrão)
+      try {
+        console.log('📤 Tentativa 1: POST JSON...');
+        const resp = await fetch(endpointBase, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'save', data: payload })
+        });
+        
+        if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const json = await resp.json();
+        console.log('✅ Sucesso:', json);
+        return json;
+      } catch(err1){
+        console.warn('⚠️ JSON falhou:', err1.message);
+        
+        // Tentativa 2: Form URL-encoded (evita CORS preflight)
+        try {
+          console.log('📤 Tentativa 2: Form URL-encoded...');
+          const formData = new URLSearchParams();
+          formData.append('action', 'save');
+          formData.append('data', JSON.stringify(payload));
+          
+          const resp = await fetch(endpointBase, {
+            method: 'POST',
+            body: formData
+          });
+          
+          if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const json = await resp.json();
+          console.log('✅ Sucesso com Form:', json);
+          return json;
+        } catch(err2){
+          console.error('❌ Ambas as tentativas falharam');
+          throw new Error('Erro de conexão - Apps Script pode estar offline ou URL incorreta');
+        }
+      }
+    }
+
+    // ===================================================================
     // CARREGA LISTAS DO SERVIDOR
     // ===================================================================
     async function loadList(tipo){
       try{
-        const endpointBase = "https://script.google.com/macros/s/AKfycbwZEKOU7ycZdM0GJlw4yeupCDUBiFSBXVmmlK5qS1IRPMnRJodiAzjh2lc-l5MdftmH-A/exec";
         const resp = await fetch(`${endpointBase}?list=${tipo}`, {
           headers: { 'Accept': 'application/json' }
         });
@@ -309,58 +356,35 @@
     // ===================================================================
     const btnEnviar = document.getElementById('btnEnviar');
     if(btnEnviar) {
-      btnEnviar.addEventListener('click', function(e){
+      btnEnviar.addEventListener('click', async function(e){
         e.preventDefault();
-        
         const sm = (document.getElementById('sm')?.value || '').trim();
         const motorista = (document.getElementById('motorista')?.value || '').trim();
         const mensagem = (document.getElementById('textoPronto')?.value || '').trim();
-        
-        // Validação
-        if(!sm){ 
-          showMessage('❌ Preencha o Código SM', 'error'); 
-          return;
-        }
-        if(!motorista){ 
-          showMessage('❌ Preencha o Motorista', 'error'); 
-          return;
-        }
-        if(!mensagem){ 
-          showMessage('❌ Preencha a mensagem', 'error'); 
-          return;
-        }
-        
-        // Abre WhatsApp com a mensagem
-        const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-        
+
+        if(!sm){ showMessage('❌ Preencha o Código SM', 'error'); return; }
+        if(!motorista){ showMessage('❌ Preencha o Motorista', 'error'); return; }
+        if(!mensagem){ showMessage('❌ Preencha a mensagem', 'error'); return; }
+
+        const payload = montarPayloadParaPlanilha();
+        btnEnviar.disabled = true;
+        showMessage('⏳ Enviando para planilha...', 'success');
+
         try {
-          window.open(urlWhatsApp, '_blank');
-          showMessage('✅ WhatsApp aberto! Envie a mensagem para o motorista.', 'success');
+          const res = await enviarParaPlanilha(payload);
+          if(res && (res.ok || res.result === 'success')) {
+            showMessage('✅ Dados enviados para a planilha com sucesso!', 'success');
+            try { window.open('https://wa.me/?text=' + encodeURIComponent(mensagem), '_blank'); } catch(e){ /* popup bloqueado */ }
+          } else {
+            showMessage('❌ Erro ao salvar: ' + (res?.error || JSON.stringify(res)), 'error');
+          }
         } catch(err) {
-          console.error('Erro ao abrir WhatsApp:', err);
-          showMessage('❌ Erro ao abrir WhatsApp. Copie a mensagem manualmente.', 'error');
+          showMessage('❌ Erro de conexão. Verifique o Apps Script / CORS.', 'error');
+        } finally {
+          btnEnviar.disabled = false;
         }
       });
     }
-
-    // ===================================================================
-    // FECHA AUTOCOMPLETE AO CLICAR FORA OU PRESSIONAR ESC
-    // ===================================================================
-    document.addEventListener('click', (evt) => {
-      document.querySelectorAll('.autocomplete-list').forEach(ul => { 
-        const inputId = ul.id.replace('lista-','');
-        const inputEl = document.getElementById(inputId);
-        if(!ul.contains(evt.target) && !(inputEl && inputEl.contains(evt.target))) {
-          ul.style.display = 'none';
-        }
-      }); 
-    });
-
-    document.addEventListener('keydown', (evt) => { 
-      if(evt.key === 'Escape') {
-        document.querySelectorAll('.autocomplete-list').forEach(ul => ul.style.display = 'none'); 
-      }
-    });
   </script>
 </body>
 </html>
