@@ -27,87 +27,24 @@
             width: 100%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            font-family: Arial, sans-serif;
         }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .greeting {
-            font-size: 18px;
-            color: #333;
-            margin-top: 10px;
-            text-align: center;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            row-gap: 25px;
-        }
-        .form-group {
-            flex: 1 1 calc(25% - 10px);
-            min-width: 180px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            color: #555;
-        }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; }
+        .greeting { font-size: 18px; color: #333; margin-top: 10px; text-align: center; }
+        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; row-gap: 25px; }
+        .form-group { min-width: 180px; }
+        label { display: block; font-weight: bold; color: #555; }
         input[type="text"], select, textarea, input[type="datetime-local"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
+            width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; box-sizing: border-box;
         }
-        textarea {
-            resize: vertical;
-            padding: 10px;
-            font-size: 14px;
-        }
-        .full-width {
-            grid-column: span 4;
-            width: 85%;
-            margin-bottom: 15px;
-        }
-        .navbar {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            position: fixed;
-            top: 0%;
-            width: 100%;
-            z-index: 1000;
-        }
-        .navbar a {
-            color: rgb(252, 254, 255);
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-            display: block;
-        }
-        .navbar a:hover {
-            background-color: #555;
-        }
+        .full-width { grid-column: span 4; width: 100%; }
+        .navbar { display: flex; justify-content: center; background-color: #444; position: fixed; top: 0; width: 100%; z-index: 1000; }
+        .navbar a { color: white; padding: 14px 20px; text-decoration: none; display: block; }
+        .navbar a:hover { background-color: #555; }
         button {
-            background-color: #007bff;
-            color: #fff;
-            padding: 8px 16px;
-            width: auto;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 20px;
-            grid-column: span 4;
-            transition: background-color 0.3s, transform 0.3s;
+            background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px;
+            font-size: 14px; cursor: pointer; grid-column: span 4; transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
@@ -118,23 +55,19 @@
         <a href="conhecimento.html" class="active">Para conhecimento</a>
         <a href="convite.html">Convite Motorista</a>
         <a href="videos.html">Galeria de Vídeos</a>
-        <li><a href="brief.html">Briefing</a></li>
+        <a href="brief.html">Briefing</a>
     </div>
     
     <div class="container">
         <h1>Para Conhecimento</h1>
-        <div class="greeting">
-            <span id="greetingMessage"></span>
-        </div>
+        <div class="greeting"><span id="greetingMessage"></span></div>
 
         <form id="formOcorrencia">
             <div class="form-grid">
-
                 <div class="form-group">
                     <label for="dataHora">Data/Hora</label>
                     <input type="datetime-local" id="dataHora" name="dataHora" readonly>
                 </div>
-
                 <div class="form-group">
                     <label for="ocorrencia">Ocorrência</label>
                     <select id="ocorrencia" name="ocorrencia">
@@ -152,156 +85,98 @@
                         <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="sm">SM</label>
-                    <input type="text" id="sm" name="sm" placeholder="Digite o SM">
-                </div>
-
-                <div class="form-group">
-                    <label for="veiculo">Veículo</label>
-                    <input type="text" id="veiculo" name="veiculo" placeholder="Digite o Veículo">
-                </div>
-
-                <div class="form-group">
-                    <label for="motorista">Motorista</label>
-                    <input type="text" id="motorista" name="motorista" placeholder="Digite o Motorista">
-                </div>
-
-                <div class="form-group">
-                    <label for="embarcador">Embarcador</label>
-                    <input type="text" id="embarcador" name="embarcador" placeholder="Digite o Embarcador">
-                </div>
-
-                <div class="form-group">
-                    <label for="valor">Valor</label>
-                    <input type="text" id="valor" name="valor" placeholder="Digite o Valor">
-                </div>
-
-                <div class="form-group">
-                    <label for="rota">Rota</label>
-                    <input type="text" id="rota" name="rota" placeholder="Digite a Rota">
-                </div>
-
-                <div class="form-group">
-                    <label for="ultimaPosicao">Última Posição</label>
-                    <input type="text" id="ultimaPosicao" name="ultimaPosicao" placeholder="Digite">
-                </div>
-
-                <div class="form-group">
-                    <label for="latLong">Lat/Long</label>
-                    <input type="text" id="latLong" name="latLong" placeholder="Digite Lat/Long">
-                </div>
-
+                <div class="form-group"><label for="sm">SM</label><input type="text" id="sm"></div>
+                <div class="form-group"><label for="veiculo">Veículo</label><input type="text" id="veiculo"></div>
+                <div class="form-group"><label for="motorista">Motorista</label><input type="text" id="motorista"></div>
+                <div class="form-group"><label for="embarcador">Embarcador</label><input type="text" id="embarcador"></div>
+                <div class="form-group"><label for="valor">Valor</label><input type="text" id="valor"></div>
+                <div class="form-group"><label for="rota">Rota</label><input type="text" id="rota"></div>
+                <div class="form-group"><label for="ultimaPosicao">Última Posição</label><input type="text" id="ultimaPosicao"></div>
+                <div class="form-group"><label for="latLong">Lat/Long</label><input type="text" id="latLong"></div>
                 <div class="form-group full-width">
                     <label for="postoApoio">Posto/Ponto de apoio próximo:</label>
-                    <textarea id="postoApoio" name="postoApoio" rows="4" placeholder="Informe se há ponto de apoio próximo"></textarea>
+                    <textarea id="postoApoio" rows="3"></textarea>
                 </div>
-
                 <div class="form-group full-width">
                     <label for="descricaoSituacao">Situação/Descrição</label>
-                    <textarea id="descricaoSituacao" name="descricaoSituacao" rows="4" placeholder="Descreva a situação"></textarea>
+                    <textarea id="descricaoSituacao" rows="3"></textarea>
                 </div>
-
-                <button type="button" onclick="enviarWhatsApp()">Enviar</button>
+                <button type="button" id="btnEnviar" onclick="enviarTudo()">Enviar</button>
             </div>
         </form>
     </div>
-
 <script>
-
     const hour = new Date().getHours();
-    const greeting =
-        hour < 12 ? "Bom dia!" :
-        hour < 18 ? "Boa tarde!" :
-        "Boa noite!";
-
+    const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
     document.getElementById("greetingMessage").textContent = greeting;
+    
+    // Ajuste para preencher o input com a data atual corretamente
+    const agora = new Date();
+    agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+    document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
 
-    // Preenche data/hora
-    document.getElementById("dataHora").value = new Date().toISOString().slice(0, 16);
-
-    function enviarWhatsApp() {
-
-        const btn = document.querySelector('button[onclick="enviarWhatsApp()"]');
+    function enviarTudo() {
+        const btn = document.getElementById("btnEnviar");
         btn.disabled = true;
+        btn.textContent = "Gravando...";
 
-        const dataHoraInput = document.getElementById("dataHora").value;
-        const dataHora = new Date(dataHoraInput);
-        dataHora.setHours(dataHora.getHours() - 3);
+        // Coleta os dados garantindo que os IDs coincidam com o HTML
+        // E que as CHAVES (keys) sejam exatamente o que o getField do Apps Script procura
+        const dados = {
+            dataHora: document.getElementById("dataHora").value,
+            ocorrencia: document.getElementById("ocorrencia").value,
+            sm: document.getElementById("sm").value,
+            veiculo: document.getElementById("veiculo").value,
+            motorista: document.getElementById("motorista").value,
+            embarcador: document.getElementById("embarcador").value,
+            valor: document.getElementById("valor").value,
+            rota: document.getElementById("rota").value,
+            ultimaPosicao: document.getElementById("ultimaPosicao").value,
+            latLong: document.getElementById("latLong").value,
+            postoApoio: document.getElementById("postoApoio").value,
+            descricaoSituacao: document.getElementById("descricaoSituacao").value
+        };
 
-        const dataFormatada =
-            `${String(dataHora.getDate()).padStart(2, '0')}/` +
-            `${String(dataHora.getMonth() + 1).padStart(2, '0')}/` +
-            `${dataHora.getFullYear()} ` +
-            `${String(dataHora.getHours()).padStart(2, '0')}:` +
-            `${String(dataHora.getMinutes()).padStart(2, '0')}`;
+        const urlScript = "https://script.google.com/macros/s/AKfycbx24GIW-KeYck6yh1cQpofKpoXzWUfPdKFhZz7KOPakS80VNRTIlp7dGabTcrfp5Bbf/exec";
 
-        const sm = document.getElementById("sm").value;
-        const veiculo = document.getElementById("veiculo").value;
-        const motorista = document.getElementById("motorista").value;
-        const embarcador = document.getElementById("embarcador").value;
-        const valor = document.getElementById("valor").value;
-        const rota = document.getElementById("rota").value;
-        const ultimaPosicao = document.getElementById("ultimaPosicao").value;
-        const latLong = document.getElementById("latLong").value;
-        const postoApoio = document.getElementById("postoApoio").value;
-        const descricaoSituacao = document.getElementById("descricaoSituacao").value;
-        const ocorrencia = document.getElementById("ocorrencia").value;
+        // Envio via POST JSON
+        fetch(urlScript, {
+            method: "POST",
+            mode: "no-cors", 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        })
+        .then(() => {
+            // Formatação para o WhatsApp
+            const dataBr = dados.dataHora.split('T')[0].split('-').reverse().join('/') + " " + dados.dataHora.split('T')[1];
+            
+            const msg = `*Para conhecimento*\n\n${greeting}\n\n` +
+                        `*Data/Hora:* ${dataBr}\n` +
+                        `*Ocorrência:* ${dados.ocorrencia}\n` +
+                        `*SM:* ${dados.sm}\n` +
+                        `*Veículo:* ${dados.veiculo}\n` +
+                        `*Motorista:* ${dados.motorista}\n` +
+                        `*Embarcador:* ${dados.embarcador}\n` +
+                        `*Valor:* ${dados.valor}\n` +
+                        `*Rota:* ${dados.rota}\n` +
+                        `*Última Posição:* ${dados.ultimaPosicao}\n` +
+                        `*Lat/Long:* ${dados.latLong}\n` +
+                        `*Posto/Ponto:* ${dados.postoApoio}\n` +
+                        `*Descrição:* ${dados.descricaoSituacao}`;
 
-        const mensagem = 
-`*Para conhecimento*
-
-${greeting}
-
-*Data/Hora:* ${dataFormatada}
-
-*Ocorrência:* ${ocorrencia}
-*SM:* ${sm}
-*Veículo:* ${veiculo}
-*Motorista:* ${motorista}
-*Embarcador:* ${embarcador}
-*Valor:* ${valor}
-*Rota:* ${rota}
-*Última Posição:* ${ultimaPosicao}
-*Lat/Long:* ${latLong}
-*Posto/Ponto de Apoio:* ${postoApoio}
-*Situação/Descrição:* ${descricaoSituacao}`;
-
-        // Envia para planilha
-        const formData = new FormData();
-        formData.append("dataHora", dataHoraInput);
-        formData.append("ocorrencia", ocorrencia);
-        formData.append("sm", sm);
-        formData.append("veiculo", veiculo);
-        formData.append("motorista", motorista);
-        formData.append("embarcador", embarcador);
-        formData.append("valor", valor);
-        formData.append("rota", rota);
-        formData.append("ultimaPosicao", ultimaPosicao);
-        formData.append("latLong", latLong);
-        formData.append("postoApoio", postoApoio);
-        formData.append("descricaoSituacao", descricaoSituacao);
-        
-        fetch("https://script.google.com/macros/s/AKfycbxjbfAJFKAmswhy5hUMPvi8Bg3Y1N67S3XKbpEm9cfLBHs_rZqjQgbAKiw2l6HSYE/exec", {
-    method: "POST",
-    body: formData
-})
-.then(response => response.json())
-.then(data => {
-    btn.disabled = false;
-    alert("Dados enviados para a planilha com sucesso!");
-})
-.catch(error => {
-    btn.disabled = false;
-    console.error("Erro ao enviar:", error);
-    alert("Erro ao salvar os dados na planilha.");
-});
-               
-        // Abre o WhatsApp
-        window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, "_blank");
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+            
+            btn.disabled = false;
+            btn.textContent = "Enviar";
+            alert("Dados enviados para a planilha e WhatsApp!");
+        })
+        .catch(err => {
+            console.error("Erro no envio:", err);
+            alert("Erro ao salvar dados.");
+            btn.disabled = false;
+            btn.textContent = "Enviar";
+        });
     }
-
 </script>
 
 </body>
