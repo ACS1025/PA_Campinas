@@ -215,11 +215,13 @@
         <p id="kpi-transito">--</p>
         <span class="status-indicator">Ativo</span>
     </div>
+
     <div class="kpi-card">
-        <h3>SLA Diário</h3>
-        <p id="kpi-sla">98.5%</p>
-        <span class="status-indicator">Dentro da Meta</span>
-    </div>
+    <h3>SLA Diário</h3>
+    <p id="kpi-sla">--%</p>
+    <span id="status-sla" class="status-indicator">Carregando...</span>
+</div>
+
     <div class="kpi-card">
         <h3>Alertas Críticos</h3>
         <p id="kpi-alertas" style="color: #e74c3c;">02</p>
@@ -291,6 +293,61 @@
     <p>&copy; 2026 PA-Campinas. Todos os direitos reservados. by ACS</p>
 </footer>
 
+
+<script>
+    // Seu link oficial
+    const urlScript = "https://script.google.com/macros/s/AKfycby32ozcJdkgrLnHAO1KX__DPpALy-VcXEDLkHZk9RTQCCRITCum3Q2vHEC__Xx5qWx-AQ/exec"
+    // Chama a função assim que a página abrir
+
+    async function carregarKPIs() {
+    try {
+        const response = await fetch(urlScript);
+        const dados = await response.json();
+
+        // --- ATUALIZAÇÃO: SLA DIÁRIO ---
+        const vSla = dados.sla_diario;
+        const pSla = document.getElementById('kpi-sla');
+        const sSla = document.getElementById('status-sla');
+        
+        pSla.innerText = (vSla * 100).toFixed(1) + "%";
+        // Cor dinâmica: Verde se >= 95%, Laranja se < 95%
+        if (vSla >= 0.95) {
+            pSla.style.color = "#2ecc71";
+            sSla.innerText = "Dentro da Meta";
+            sSla.style.color = "#2ecc71";
+        } else {
+            pSla.style.color = "#f39c12";
+            sSla.innerText = "Atenção";
+            sSla.style.color = "#f39c12";
+        }
+
+        // --- ATUALIZAÇÃO: ALERTAS CRÍTICOS ---
+        const vAlertas = dados.alertas_criticos;
+        const pAlertas = document.getElementById('kpi-alertas');
+        const sAlertas = pAlertas.nextElementSibling; // O span abaixo do P
+
+        pAlertas.innerText = vAlertas.toString().padStart(2, '0');
+        // Cor dinâmica: Vermelho se houver alertas, Branco se zero
+        if (vAlertas > 0) {
+            pAlertas.style.color = "#e74c3c";
+            sAlertas.innerText = "Verificar!";
+            sAlertas.style.color = "#e74c3c";
+        } else {
+            pAlertas.style.color = "#ffffff";
+            sAlertas.innerText = "Normal";
+            sAlertas.style.color = "#2ecc71";
+        }
+
+        // --- ATUALIZAÇÃO: EM TRÂNSITO ---
+        document.getElementById('kpi-transito').innerText = dados.em_transito;
+
+    } catch (error) {
+        console.error("Erro ao carregar KPIs:", error);
+    }
+}
+    window.onload = carregarKPIs;
+    setInterval(carregarKPIs, 60000); // Atualiza os dados a cada 1 minuto
+</script>
 <script>
     // Função Fullscreen original
     function toggleFullscreen(element) {
