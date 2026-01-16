@@ -105,12 +105,13 @@
             </div>
         </form>
     </div>
+
 <script>
+    // Saudação e Data Inicial
     const hour = new Date().getHours();
     const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
     document.getElementById("greetingMessage").textContent = greeting;
     
-    // Ajuste para preencher o input com a data atual corretamente
     const agora = new Date();
     agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
     document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
@@ -120,10 +121,17 @@
         btn.disabled = true;
         btn.textContent = "Gravando...";
 
-        // Coleta os dados garantindo que os IDs coincidam com o HTML
-        // E que as CHAVES (keys) sejam exatamente o que o getField do Apps Script procura
+        // --- FORMATAÇÃO DA DATA PARA PT-BR ---
+        const rawData = document.getElementById("dataHora").value;
+        let dataBrasil = rawData;
+        if (rawData) {
+            const [data, hora] = rawData.split('T');
+            const [ano, mes, dia] = data.split('-');
+            dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+        }
+
         const dados = {
-            dataHora: document.getElementById("dataHora").value,
+            dataHora: dataBrasil, // Enviando já formatada
             ocorrencia: document.getElementById("ocorrencia").value,
             sm: document.getElementById("sm").value,
             veiculo: document.getElementById("veiculo").value,
@@ -139,19 +147,16 @@
 
         const urlScript = "https://script.google.com/macros/s/AKfycbx24GIW-KeYck6yh1cQpofKpoXzWUfPdKFhZz7KOPakS80VNRTIlp7dGabTcrfp5Bbf/exec";
 
-        // Envio via POST JSON
         fetch(urlScript, {
             method: "POST",
-            mode: "no-cors", 
-            headers: { "Content-Type": "application/json" },
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(dados)
         })
         .then(() => {
-            // Formatação para o WhatsApp
-            const dataBr = dados.dataHora.split('T')[0].split('-').reverse().join('/') + " " + dados.dataHora.split('T')[1];
-            
+            // Mensagem do WhatsApp
             const msg = `*Para conhecimento*\n\n${greeting}\n\n` +
-                        `*Data/Hora:* ${dataBr}\n` +
+                        `*Data/Hora:* ${dados.dataHora}\n` +
                         `*Ocorrência:* ${dados.ocorrencia}\n` +
                         `*SM:* ${dados.sm}\n` +
                         `*Veículo:* ${dados.veiculo}\n` +
@@ -178,6 +183,5 @@
         });
     }
 </script>
-
 </body>
 </html>
