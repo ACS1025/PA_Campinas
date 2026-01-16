@@ -141,6 +141,31 @@
         color: #ffffff;
     }
 
+    /* Estilo do Botão Torre de Controle */
+    .kpi-card.btn-torre {
+        background: rgba(23, 23, 175, 0.4);
+        border-left: 5px solid #f1c40f; /* Cor amarela para destacar */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .kpi-card.btn-torre:hover {
+        background: rgba(23, 23, 175, 0.8);
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+    }
+
+    .icon-torre {
+        font-size: 28px;
+        margin-bottom: 5px;
+        filter: drop-shadow(0 0 5px #f1c40f);
+    }
+
     /* Conteúdo Central */
     .dashboard-container {
         flex: 1;
@@ -217,16 +242,22 @@
     </div>
 
     <div class="kpi-card">
-    <h3>SLA Diário</h3>
-    <p id="kpi-sla">--%</p>
-    <span id="status-sla" class="status-indicator">Carregando...</span>
-</div>
+        <h3>SLA Diário</h3>
+        <p id="kpi-sla">--%</p>
+        <span id="status-sla" class="status-indicator">Carregando...</span>
+    </div>
 
     <div class="kpi-card">
         <h3>Alertas Críticos</h3>
-        <p id="kpi-alertas" style="color: #e74c3c;">02</p>
+        <p id="kpi-alertas" style="color: #e74c3c;">--</p>
         <span class="status-indicator" style="color: #e74c3c;">Verificar</span>
     </div>
+
+    <a href="torre.html" class="kpi-card btn-torre">
+        <div class="icon-torre">📡</div>
+        <h3>Torre de Controle</h3>
+        <span class="status-indicator" style="color: #f1c40f;">Acessar Painel</span>
+    </a>
 </div>
 
 <div class="container">
@@ -359,7 +390,7 @@
     }
 
     // Mantendo seu endpoint original para futuras integrações
-    const endpointBase = "https://script.google.com/macros/s/AKfycbxmPtxbxQHWQP0-o2VAtPrmT6Qta-bpTjUPtLsYnDLSsmmxKuVv-Y2kWSL-WwLSnGri/exec";
+    const endpointBase = "https://script.google.com/macros/s/AKfycbwcPk4Vln25PrTvn02uLhPQlKQeIr4Y6Ua0olvWny_fBA34MI6bDqibWJqBdn8Ig4gw/exec";
 
     // Exemplo de como você pode alimentar os KPIs dinamicamente depois:
     document.getElementById('kpi-transito').innerText = "42"; 
