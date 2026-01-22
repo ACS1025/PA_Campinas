@@ -6,138 +6,29 @@
     <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
     <title>Torre de Controle - PA Campinas</title>
     <style>
-        /* BASE VISUAL DA HOME */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            background-image: url('src/img/Registro\ de\ Saidas.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        /* CABEÇALHO SEM NAV BAR */
-        .header {
-            text-align: center;
-            padding: 20px 0 30px 0;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 38px;
-            letter-spacing: 2px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        /* ÍCONE DE STATUS PULSANTE */
-        .status-pulse {
-            width: 15px;
-            height: 15px;
-            background-color: #2ecc71;
-            border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-
-        /* GRID DE KPIS (TAMANHOS ORIGINAIS DO DASHBOARD) */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-            max-width: 100%;
-        }
-
-        .kpi-card-full {
-            background: rgba(0, 42, 139, 0.75);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 30px 20px;
-            border-top: 6px solid #3498db;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s;
-        }
-
-        .kpi-card-full:hover { transform: translateY(-5px); }
-
-        .valor-big { 
-            font-size: 3.5rem; 
-            font-weight: bold; 
-            margin: 10px 0; 
-            display: block; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .label-sub { 
-            color: #bdc3c7; 
-            font-size: 0.9rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px;
-        }
-
-        /* CORES ESPECÍFICAS POR TIPO */
-        .critico { border-top-color: #e74c3c; }
-        .critico .valor-big { color: #e74c3c; }
-        .alerta { border-top-color: #f1c40f; }
-        .alerta .valor-big { color: #f1c40f; }
-
-        /* LISTAS DETALHADAS LARGURA TOTAL */
-        .grid-detalhes {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .card-detalhe {
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            padding: 25px;
-            min-height: 400px;
-        }
-
-        .card-detalhe h3 { 
-            margin-top: 0; 
-            color: #58a6ff; 
-            font-size: 1.2rem; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
-            padding-bottom: 15px;
-            text-transform: uppercase;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; box-sizing: border-box; background-image: url('src/img/Registro\ de\ Saidas.png'); background-size: cover; background-position: center; background-attachment: fixed; color: white; overflow-x: hidden; }
+        .header { text-align: center; padding: 20px 0 30px 0; }
+        .header h1 { margin: 0; font-size: 38px; letter-spacing: 2px; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .status-pulse { width: 15px; height: 15px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
         
-        .item-lista {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.95rem;
-            display: flex;
-            justify-content: space-between;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; max-width: 100%; }
+        .kpi-card-full { position: relative; background: rgba(0, 42, 139, 0.75); backdrop-filter: blur(10px); border-radius: 12px; padding: 30px 20px; border-top: 6px solid #3498db; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: transform 0.3s; }
+        .valor-big { font-size: 3.5rem; font-weight: bold; margin: 10px 0; display: block; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .label-sub { color: #bdc3c7; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; }
+        .critico { border-top-color: #e74c3c; } .critico .valor-big { color: #e74c3c; }
+        .alerta { border-top-color: #f1c40f; } .alerta .valor-big { color: #f1c40f; }
 
-        .item-lista:last-child { border-bottom: none; }
+        .grid-detalhes { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 40px; }
+        .card-detalhe { position: relative; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 15px; padding: 25px; min-height: 400px; }
+        .card-detalhe h3 { margin-top: 0; color: #58a6ff; font-size: 1.2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 15px; text-transform: uppercase; }
+        .item-lista { padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.95rem; display: flex; justify-content: space-between; }
+        .footer-info { text-align: right; color: #8b949e; font-size: 0.8rem; padding: 20px; }
 
-        .footer-info {
-            text-align: right;
-            color: #8b949e;
-            font-size: 0.8rem;
-            padding: 20px;
-        }
+        .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: center; border-radius: 12px; z-index: 10; }
+        .loading-text { font-size: 0.8rem; color: #f1c40f; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .is-updating .loading-overlay { display: flex; }
     </style>
 </head>
 <body>
@@ -147,83 +38,106 @@
     </header>
 
     <div class="grid-container">
-        <div class="kpi-card-full">
+        <div class="kpi-card-full" id="card-monitorado">
+           <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
+           <span class="label-sub">Monitorado</span>
+           <span id="big-monitorado" class="valor-big">--</span>
+        </div>
+
+        <div class="kpi-card-full" id="card-transito">
+            <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
             <span class="label-sub">Em Trânsito</span>
-            <span id="big-transito" class="valor-big">0</span>
+            <span id="big-transito" class="valor-big">--</span>
         </div>
 
-        <div class="kpi-card-full">
+        <div class="kpi-card-full" id="card-sla">
+            <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
             <span class="label-sub">SLA Cumprimento</span>
-            <span id="big-sla" class="valor-big">0%</span>
+            <span id="big-sla" class="valor-big">--%</span>
         </div>
 
-        <div class="kpi-card-full critico">
+        <div class="kpi-card-full critico" id="card-alertas">
+            <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
             <span class="label-sub">Alertas Ativos</span>
-            <span id="big-alertas" class="valor-big">0</span>
+            <span id="big-alertas" class="valor-big">--</span>
         </div>
 
-        <div class="kpi-card-full alerta">
+        <div class="kpi-card-full alerta" id="card-valor">
+            <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
             <span class="label-sub">Valor em Risco</span>
             <span id="big-valor" class="valor-big" style="font-size: 2.2rem; margin-top: 25px;">R$ 0,00</span>
         </div>
     </div>
 
     <div class="grid-detalhes">
-        <div class="card-detalhe">
-            <h3>🚚 Veículos em Alerta (Última Ocorrência)</h3>
-            <div id="lista-veiculos">Sincronizando dados...</div>
+        <div class="card-detalhe" id="card-lista-veiculos">
+            <div class="loading-overlay"><span class="loading-text">Sincronizando...</span></div>
+            <h3>🚚 Veículos em Alerta</h3>
+            <div id="lista-veiculos">Carregando...</div>
         </div>
-        <div class="card-detalhe">
+        <div class="card-detalhe" id="card-lista-motoristas">
+            <div class="loading-overlay"><span class="loading-text">Sincronizando...</span></div>
             <h3>👨‍✈️ Motoristas em Atenção</h3>
-            <div id="lista-motoristas">Sincronizando dados...</div>
+            <div id="lista-motoristas">Carregando...</div>
         </div>
     </div>
 
     <div class="footer-info">
-        Atualizado em tempo real: <span id="relogio">00:00:00</span> | © PA Campinas
+        Status: <span id="status-com">Conectado</span> | 
+        Atualizado: <span id="relogio">--:--:--</span>
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbyCDPlx00S591HM82NHMMLOmRAVt_EjXMbLVAz3BL3Qu-43znWxpwoROq3kYR7f11ICNg/exec";
-
+        // Use a URL do seu script do Google Apps Script
+        const urlScript = "https://script.google.com/macros/s/AKfycby5bM3Y6sdUjKLHvM6p31y5YT5S-diDl8H1AiyE4Bjucz9nCqT9cNKh2DktYiuen1_T7Q/exec";
+        
         async function updateTorre() {
+            const cards = document.querySelectorAll('.kpi-card-full, .card-detalhe');
+            cards.forEach(c => c.classList.add('is-updating'));
+            document.getElementById('status-com').innerText = "Sincronizando...";
+            document.getElementById('status-com').style.color = "#f1c40f";
+
             try {
                 const response = await fetch(urlScript);
                 const dados = await response.json();
 
-                // 1. Atualiza os Números Grandes
-                document.getElementById('big-transito').innerText = dados.em_transito;
-                document.getElementById('big-alertas').innerText = dados.alertas_criticos;
+                // --- ATUALIZAÇÃO DOS CAMPOS ---
+                document.getElementById('big-monitorado').innerText = dados.monitorados || 0;
+                document.getElementById('big-transito').innerText = dados.em_transito || 0;
+                document.getElementById('big-alertas').innerText = dados.alertas_criticos || 0;
                 document.getElementById('big-sla').innerText = (dados.sla_diario * 100).toFixed(1) + "%";
+                document.getElementById('big-valor').innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(dados.valor_risco || 0);
                 
-                // Formatação de Dinheiro
-                document.getElementById('big-valor').innerText = 
-                    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(dados.valor_risco);
-
-                // 2. Atualiza o Horário
                 document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
 
-                // 3. Preenche as Listas Detalhadas
                 renderRows('lista-veiculos', dados.topVeiculos);
                 renderRows('lista-motoristas', dados.topMotoristas);
 
+                document.getElementById('status-com').innerText = "Online";
+                document.getElementById('status-com').style.color = "#2ecc71";
+
             } catch (err) {
-                console.error("Erro na atualização:", err);
+                console.error("Erro:", err);
+                document.getElementById('status-com').innerText = "Erro de Conexão";
+                document.getElementById('status-com').style.color = "#e74c3c";
+            } finally {
+                setTimeout(() => {
+                    cards.forEach(c => c.classList.remove('is-updating'));
+                }, 500);
             }
         }
 
         function renderRows(id, itens) {
             const container = document.getElementById(id);
-            if (!itens || itens.length === 0 || itens[0] === "") {
+            if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
                 container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Sem registros críticos no momento.</div>";
                 return;
             }
             container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
         }
 
-        // Inicia e define intervalo de 1 minuto
         updateTorre();
-        setInterval(updateTorre, 60000);
+        setInterval(updateTorre, 60000); // Atualiza a cada 1 minuto
     </script>
 </body>
 </html>
