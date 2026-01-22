@@ -85,22 +85,16 @@
                         <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
                     </select>
                 </div>
-                <div class="form-group"><label for="sm">SM</label><input type="text" id="sm"></div>
                 <div class="form-group"><label for="veiculo">Veículo</label><input type="text" id="veiculo"></div>
                 <div class="form-group"><label for="motorista">Motorista</label><input type="text" id="motorista"></div>
-                <div class="form-group"><label for="embarcador">Embarcador</label><input type="text" id="embarcador"></div>
-                <div class="form-group"><label for="valor">Valor</label><input type="text" id="valor"></div>
                 <div class="form-group"><label for="rota">Rota</label><input type="text" id="rota"></div>
                 <div class="form-group"><label for="ultimaPosicao">Última Posição</label><input type="text" id="ultimaPosicao"></div>
-                <div class="form-group"><label for="latLong">Lat/Long</label><input type="text" id="latLong"></div>
+                <div class="form-group"><label for="latLong">Lat/Long</label><input type="text" id="latLong"></div> 
                 <div class="form-group full-width">
                     <label for="link">Link: localização google maps:</label>
                     <textarea id="link" rows="3"></textarea>
                 </div>
-                <div class="form-group full-width">
-                    <label for="descricaoSituacao">Situação/Descrição</label>
-                    <textarea id="descricaoSituacao" rows="3"></textarea>
-                </div>
+                
                 <div class="form-group">
                     <label for="escolta">Grupo de Escolta</label>
                     <select id="escolta" name="escolta">
@@ -113,98 +107,77 @@
         </form>
     </div>
 
-<script>
-    // Saudação e Data Inicial
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
-    document.getElementById("greetingMessage").textContent = greeting;
-    
-    const agora = new Date();
-    agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
-    document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
-
-    function enviarTudo() {
-    const btn = document.getElementById("btnEnviar");
-    
-    // 1. CAPTURA DOS CAMPOS PARA VALIDAÇÃO
-    const sm = document.getElementById("sm").value.trim();
-    const veiculo = document.getElementById("veiculo").value.trim();
-    const link = document.getElementById("link").value.trim();
-
-    // 2. VERIFICAÇÃO DE CAMPOS OBRIGATÓRIOS
-    if (!sm || !veiculo || !link) {
-        alert("Por favor, preencha os campos obrigatórios: SM, Veículo e Link de Localização.");
-        return; // Interrompe a função aqui se algo estiver faltando
-    }
-
-    // Se passou na validação, desabilita o botão e continua
-    btn.disabled = true;
-    btn.textContent = "Gravando...";
-
-        // --- FORMATAÇÃO DA DATA PARA PT-BR ---
-        const rawData = document.getElementById("dataHora").value;
-        let dataBrasil = rawData;
-        if (rawData) {
-            const [data, hora] = rawData.split('T');
-            const [ano, mes, dia] = data.split('-');
-            dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
-        }
-const dados = {
-    dataHora: dataBrasil,
-    ocorrencia: document.getElementById("ocorrencia").value,
-    sm: document.getElementById("sm").value,
-    veiculo: document.getElementById("veiculo").value,
-    motorista: document.getElementById("motorista").value,
-    embarcador: document.getElementById("embarcador").value,
-    valor: document.getElementById("valor").value,
-    rota: document.getElementById("rota").value,
-    ultimaPosicao: document.getElementById("ultimaPosicao").value,
-    latLong: document.getElementById("latLong").value,
-    // Usamos o .value.trim() para garantir que pegue o texto sem espaços inúteis
-    link: document.getElementById("link").value.trim(), 
-    descricaoSituacao: document.getElementById("descricaoSituacao").value,
-    escolta: document.getElementById("escolta").value
-};
-
-        const urlScript = "https://script.google.com/macros/s/AKfycbzEWOWs9etjUGZIlgNIdlcSK6wH7guiEER1KpZ9ZqB6A-lDK8VBTMqo7VFJUsFfydE0Yw/exec";
-
-        // 1. DISPARAR ENVIO PARA PLANILHA (Em segundo plano)
-        fetch(urlScript, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(dados)
-        }).catch(err => console.error("Erro na planilha:", err));
-
-        // 2. MONTAR MENSAGEM WHATSAPP (Sugestão de limpeza)
-const msg = `*Solicitação de Pronto Atendimento*\n\n` +
-            `${greeting}\n\n` +
-            `Temos agentes na localização disponível para atendimento.\n\n` +
-            `*Link Maps:* ${dados.link}\n` +
-            `*Data/Hora:* ${dados.dataHora}\n` +
-            `*Ocorrência:* ${dados.ocorrencia}\n` +
-            `*SM:* ${dados.sm}\n` +
-            `*Veículo:* ${dados.veiculo}\n` +
-            `*Motorista:* ${dados.motorista}\n` +
-            `*Embarcador:* ${dados.embarcador}\n` +
-            `*Valor:* ${dados.valor}\n` +
-            `*Rota:* ${dados.rota}\n` +
-            `*Última Posição:* ${dados.ultimaPosicao}\n` +
-            `*Lat/Long:* ${dados.latLong}\n` +            
-            `*Descrição:* ${dados.descricaoSituacao}\n` +
-            `*Grupo de Escolta:* ${dados.escolta}`;
-
-        // 3. ABRIR WHATSAPP IMEDIATAMENTE (Para evitar bloqueio de pop-up)
-        const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-        window.open(waUrl, "_blank");
+    <script>
+        // Lógica de Saudação e Data (Adicionada de volta)
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+        document.getElementById("greetingMessage").textContent = greeting;
         
-        // 4. RESETAR BOTÃO APÓS UM PEQUENO DELAY
-        setTimeout(() => {
-            btn.disabled = false;
-            btn.textContent = "Enviar";
-            alert("Processo concluído! Verifique a aba do WhatsApp.");
-        }, 1000);
-    }
-</script>
+        const agora = new Date();
+        agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+        document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+        function enviarTudo() {
+            const btn = document.getElementById("btnEnviar");
+            const veiculo = document.getElementById("veiculo").value.trim();
+            const link = document.getElementById("link").value.trim();
+
+            if (!veiculo || !link) {
+                alert("Por favor, preencha os campos obrigatórios: Veículo e Link de Localização.");
+                return; 
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Gravando...";
+
+            const rawData = document.getElementById("dataHora").value;
+            let dataBrasil = rawData;
+            if (rawData) {
+                const [data, hora] = rawData.split('T');
+                const [ano, mes, dia] = data.split('-');
+                dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+            }
+
+            const dados = {
+                dataHora: dataBrasil,
+                ocorrencia: document.getElementById("ocorrencia").value,
+                veiculo: veiculo,
+                motorista: document.getElementById("motorista").value,
+                rota: document.getElementById("rota").value,
+                ultimaPosicao: document.getElementById("ultimaPosicao").value,
+                latLong: document.getElementById("latLong").value,
+                link: link, 
+                escolta: document.getElementById("escolta").value
+            };
+
+            const urlScript = "https://script.google.com/macros/s/AKfycbxPjiy-kvGjxhOD3rMxGW-Yz5zZ35tPgFhO_a6UeotkpkBKU2ljrI9_l-3BBdQpUvZZUg/exec";
+
+            // Envio para Planilha
+            fetch(urlScript, {
+                method: "POST",
+                mode: "no-cors",
+                cache: "no-cache",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dados)
+            }).then(() => {
+                console.log("Comando de envio enviado.");
+            }).catch(err => console.error("Erro na planilha:", err));
+
+            // WhatsApp
+            const msg = `*Solicitação de Pronto Atendimento*\n\n` +
+                        `${greeting}\n\n` +
+                        `*Link Maps:* ${dados.link}\n` +
+                        `*Veículo:* ${dados.veiculo}\n` +
+                        `*Ocorrência:* ${dados.ocorrencia}\n` +
+                        `*Escolta:* ${dados.escolta}`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = "Enviar";
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
