@@ -107,8 +107,8 @@
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbyCDPlx00S591HM82NHMMLOmRAVt_EjXMbLVAz3BL3Qu-43znWxpwoROq3kYR7f11ICNg/exec";
-
+        const urlScript = "https://script.google.com/macros/s/AKfycbz-O-1RcxI3aln0CJ90ZEVFS2DL4_9_Gt_bFvIF0R6xqiYadOwRsJTYOuvENJ_PoDrgbQ/exec";
+        
         async function updateTorre() {
             // 1. Mostrar sinal de carregamento (adiciona classe nos cards)
             const cards = document.querySelectorAll('.kpi-card-full, .card-detalhe');
@@ -144,15 +144,17 @@
                 }, 500); // delay suave de meio segundo
             }
         }
-
         function renderRows(id, itens) {
-            const container = document.getElementById(id);
-            if (!itens || itens.length === 0 || itens[0] === "") {
-                container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Sem registros críticos no momento.</div>";
-                return;
-            }
-            container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
-        }
+    const container = document.getElementById(id);
+    
+    // Verifica se o array existe e se tem conteúdo real
+    if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
+        container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Sem registros críticos no momento.</div>";
+        return;
+    }
+    
+    container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
+}
 
         updateTorre();
         setInterval(updateTorre, 60000);
