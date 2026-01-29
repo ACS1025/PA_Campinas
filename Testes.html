@@ -12,24 +12,16 @@
         .status-pulse { width: 15px; height: 15px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
         
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 20px; max-width: 100%; }
-        .kpi-card-full { position: relative; background: rgba(0, 42, 139, 0.75); backdrop-filter: blur(10px); border-radius: 12px; padding: 30px 20px; border-top: 6px solid #3498db; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: transform 0.3s; }
-        .valor-big { font-size: 3.5rem; font-weight: bold; margin: 10px 0; display: block; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .label-sub { color: #bdc3c7; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; }
-        .critico { border-top-color: #e74c3c; } .critico .valor-big { color: #e74c3c; }
-        .alerta { border-top-color: #f1c40f; } .alerta .valor-big { color: #f1c40f; }
-
-        .sla-box {
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 20px 25px;
-            margin-bottom: 35px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #e5e7eb;
-            display: none;
-        }
+        /* Grid ajustada para os 5 novos cards da operação */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; max-width: 100%; }
+        .kpi-card-full { position: relative; background: rgba(0, 42, 139, 0.75); backdrop-filter: blur(10px); border-radius: 12px; padding: 25px 15px; border-top: 6px solid #3498db; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: transform 0.3s; }
+        .valor-big { font-size: 3rem; font-weight: bold; margin: 10px 0; display: block; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .label-sub { color: #bdc3c7; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; }
+        
+        /* Cores Temáticas para os Cards de Cima */
+        .card-atraso { border-top-color: #e74c3c; } .card-atraso .valor-big { color: #e74c3c; }
+        .card-aguardando { border-top-color: #f1c40f; } .card-aguardando .valor-big { color: #f1c40f; }
+        .card-transito { border-top-color: #2ecc71; } .card-transito .valor-big { color: #2ecc71; }
 
         .grid-detalhes { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 40px; }
         .card-detalhe { position: relative; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 15px; padding: 25px; min-height: 400px; }
@@ -50,49 +42,47 @@
 </header>
 
 <div class="grid-container">
-    <div class="kpi-card-full" id="card-monitorado">
-        <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
-        <span class="label-sub">Monitorado</span>
+    <div class="kpi-card-full">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Monitorados</span>
         <span id="big-monitorado" class="valor-big">--</span>
     </div>
 
-    <div class="kpi-card-full" id="card-transito">
-        <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
+    <div class="kpi-card-full">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Nova Solicitação</span>
+        <span id="big-nova" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-transito">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
         <span class="label-sub">Em Trânsito</span>
         <span id="big-transito" class="valor-big">--</span>
     </div>
 
-    <div class="kpi-card-full" id="card-sla">
-        <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
-        <span class="label-sub">SLA Cumprimento</span>
-        <span id="big-sla" class="valor-big">--%</span>
+    <div class="kpi-card-full card-aguardando">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Aguardando Início</span>
+        <span id="big-aguardando" class="valor-big">--</span>
     </div>
 
-    <div class="kpi-card-full critico" id="card-alertas">
-        <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
-        <span class="label-sub">Alertas Ativos</span>
-        <span id="big-alertas" class="valor-big">--</span>
-    </div>
-
-    <div class="kpi-card-full alerta" id="card-valor">
-        <div class="loading-overlay"><span class="loading-text">Atualizando...</span></div>
-        <span class="label-sub">Valor em Risco</span>
-        <span id="big-valor" class="valor-big" style="font-size: 2.2rem; margin-top: 25px;">R$ 0,00</span>
+    <div class="kpi-card-full card-atraso">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Início em Atraso</span>
+        <span id="big-atraso" class="valor-big">--</span>
     </div>
 </div>
-
-<div id="sla-texto" class="sla-box"></div>
 
 <div class="grid-detalhes">
     <div class="card-detalhe" id="card-lista-veiculos">
         <div class="loading-overlay"><span class="loading-text">Sincronizando...</span></div>
-        <h3>🚚 Veículos em Alerta</h3>
-        <div id="lista-veiculos">Carregando...</div>
+        <h3>🚚 Ocorrências: Veículos</h3>
+        <div id="lista-veiculos">Carregando da planilha...</div>
     </div>
     <div class="card-detalhe" id="card-lista-motoristas">
         <div class="loading-overlay"><span class="loading-text">Sincronizando...</span></div>
-        <h3>👨‍✈️ Motoristas em Atenção</h3>
-        <div id="lista-motoristas">Carregando...</div>
+        <h3>👨‍✈️ Ocorrências: Motoristas</h3>
+        <div id="lista-motoristas">Carregando da planilha...</div>
     </div>
 </div>
 
@@ -102,63 +92,39 @@
 </div>
 
 <script>
-// AJUSTE: Porta alterada para 8080 conforme o script Python para evitar erro de soquete
-const urlScript = "http://127.0.0.1:8080/dados";
+// Fontes de dados distintas
+const urlPython = "http://127.0.0.1:8080/dados";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbyJBihUFGNwnVnKYN0eIQoWdIn2odfTM2lvilbzTRDWlA7HnSG10Ji0eT1dUkOfoMfhEA/exec";
 
 async function updateTorre() {
     const cards = document.querySelectorAll('.kpi-card-full, .card-detalhe');
     cards.forEach(c => c.classList.add('is-updating'));
     document.getElementById('status-com').innerText = "Sincronizando...";
-    document.getElementById('status-com').style.color = "#f1c40f";
 
     try {
-        const response = await fetch(urlScript);
-        const dados = await response.json();
+        // 1. Busca dados da Operação (Python)
+        const resPython = await fetch(urlPython);
+        const dadosRobo = await resPython.json();
+        
+        document.getElementById('big-monitorado').innerText = dadosRobo.monitorados || 0;
+        document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+        document.getElementById('big-transito').innerText = dadosRobo.em_transito || 0;
+        document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio || 0;
+        document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso || 0;
 
-        const total = dados.monitorados || 0;
-        const emTransito = dados.em_transito || 0;
-        const finalizados = total - emTransito;
-        const slaPct = ((dados.sla_diario || 0) * 100).toFixed(1);
-        const alertas = dados.alertas_criticos || 0;
+        // 2. Busca dados de Ocorrências (Google Sheets)
+        const resGoogle = await fetch(urlGoogle);
+        const dadosPlanilha = await resGoogle.json();
 
-        document.getElementById('big-monitorado').innerText = total;
-        document.getElementById('big-transito').innerText = emTransito;
-        document.getElementById('big-alertas').innerText = alertas;
-        document.getElementById('big-sla').innerText = slaPct + "%";
-        document.getElementById('big-valor').innerText =
-            new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-            .format(dados.valor_risco || 0);
-
-        const slaBox = document.getElementById('sla-texto');
-
-        if (total > 0) {
-            let texto = `
-            O SLA mede <b>qualidade e avanço do serviço</b>, não volume operacional.<br><br>
-            Neste momento, <b>${slaPct}%</b> das viagens (<b>${finalizados} de ${total}</b>)
-            já concluíram seu ciclo dentro do período monitorado.
-            `;
-
-            if (alertas > 0) {
-                texto += `<br><br>
-                As demais seguem em trânsito, com <b>alertas em acompanhamento</b>,
-                sem impacto financeiro ou quebra de SLA neste momento.`;
-            }
-
-            slaBox.innerHTML = texto;
-            slaBox.style.display = "block";
-        } else {
-            slaBox.style.display = "none";
-        }
+        renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+        renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
 
         document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
-        renderRows('lista-veiculos', dados.topVeiculos);
-        renderRows('lista-motoristas', dados.topMotoristas);
-
-        document.getElementById('status-com').innerText = "Online";
+        document.getElementById('status-com').innerText = "Online (Robô + Planilha)";
         document.getElementById('status-com').style.color = "#2ecc71";
 
     } catch (err) {
-        console.error(err);
+        console.error("Erro na atualização:", err);
         document.getElementById('status-com').innerText = "Erro de Conexão";
         document.getElementById('status-com').style.color = "#e74c3c";
     } finally {
@@ -169,14 +135,15 @@ async function updateTorre() {
 function renderRows(id, itens) {
     const container = document.getElementById(id);
     if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
-        container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Sem registros críticos no momento.</div>";
+        container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Nenhuma ocorrência na planilha.</div>";
         return;
     }
     container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
 }
 
+// Inicializa e agenda
 updateTorre();
-setInterval(updateTorre, 60000);
+setInterval(updateTorre, 60000); 
 </script>
 </body>
 </html>
