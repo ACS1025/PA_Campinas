@@ -16,5 +16,6 @@
     "editor.experimental.treeSitterTelemetry": true,
     "editor.experimentalEditContextEnabled": true,
     "editor.foldingImportsByDefault": true,
-    "editor.inlayHints.padding": false
+    "editor.inlayHints.padding": false,
+    "liveServer.settings.port": 5501
 }

@@ -19,7 +19,6 @@
         .critico { border-top-color: #e74c3c; } .critico .valor-big { color: #e74c3c; }
         .alerta { border-top-color: #f1c40f; } .alerta .valor-big { color: #f1c40f; }
 
-        /* BLOCO SLA EXPLICATIVO */
         .sla-box {
             background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(10px);
@@ -82,7 +81,6 @@
     </div>
 </div>
 
-<!-- TEXTO DINÂMICO DO SLA -->
 <div id="sla-texto" class="sla-box"></div>
 
 <div class="grid-detalhes">
@@ -104,7 +102,8 @@
 </div>
 
 <script>
-const urlScript = "https://script.google.com/macros/s/AKfycbyJBihUFGNwnVnKYN0eIQoWdIn2odfTM2lvilbzTRDWlA7HnSG10Ji0eT1dUkOfoMfhEA/exec";
+// AJUSTE: Porta alterada para 8080 conforme o script Python para evitar erro de soquete
+const urlScript = "http://127.0.0.1:8080/dados";
 
 async function updateTorre() {
     const cards = document.querySelectorAll('.kpi-card-full, .card-detalhe');
