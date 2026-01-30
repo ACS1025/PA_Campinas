@@ -90,11 +90,10 @@
     Status: <span id="status-com">Conectado</span> | 
     Atualizado: <span id="relogio">--:--:--</span>
 </div>
-
 <script>
-// Fontes de dados distintas
+// URLs de Configuração
 const urlPython = "http://127.0.0.1:8080/dados";
-const urlGoogle = "https://script.google.com/macros/s/AKfycbyJBihUFGNwnVnKYN0eIQoWdIn2odfTM2lvilbzTRDWlA7HnSG10Ji0eT1dUkOfoMfhEA/exec";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbx7tWGSBtPG0QvBwk24OJX6tMwTiRtFTmt-YmV7SdDCFJvctMiwjuAcaFbOkKyCYU7MLA/exec";
 
 async function updateTorre() {
     const cards = document.querySelectorAll('.kpi-card-full, .card-detalhe');
@@ -102,48 +101,67 @@ async function updateTorre() {
     document.getElementById('status-com').innerText = "Sincronizando...";
 
     try {
-        // 1. Busca dados da Operação (Python)
+        // 1. Tenta buscar dados do Robô Local (Python)
         const resPython = await fetch(urlPython);
         const dadosRobo = await resPython.json();
         
-        document.getElementById('big-monitorado').innerText = dadosRobo.monitorados || 0;
-        document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
-        document.getElementById('big-transito').innerText = dadosRobo.em_transito || 0;
-        document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio || 0;
-        document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso || 0;
+        // TRAVA DE SEGURANÇA: Só atualiza se o robô trouxer dados maiores que zero
+        // Isso impede que a tela zere enquanto o robô recarrega a página
+        if (dadosRobo.monitorados > 0) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
+            document.getElementById('status-com').innerText = "Online (Robô Local)";
+            document.getElementById('status-com').style.color = "#2ecc71";
+        } else {
+            console.log("Robô local retornou zero ou carregando. Mantendo valores fixos.");
+        }
 
         // 2. Busca dados de Ocorrências (Google Sheets)
         const resGoogle = await fetch(urlGoogle);
         const dadosPlanilha = await resGoogle.json();
 
-        renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
-        renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
+        if (dadosPlanilha) {
+            renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+            renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
+            
+            // Caso o robô local esteja desligado, usamos os números da planilha como backup
+            if (parseInt(document.getElementById('big-monitorado').innerText) === 0 || document.getElementById('big-monitorado').innerText === "--") {
+                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || "--";
+                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || "--";
+                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || "--";
+                document.getElementById('status-com').innerText = "Online (Nuvem)";
+            }
+        }
 
         document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
-        document.getElementById('status-com').innerText = "Online (Robô + Planilha)";
-        document.getElementById('status-com').style.color = "#2ecc71";
 
     } catch (err) {
-        console.error("Erro na atualização:", err);
-        document.getElementById('status-com').innerText = "Erro de Conexão";
+        console.error("Erro na sincronização:", err);
+        document.getElementById('status-com').innerText = "Link de Dados Offline";
         document.getElementById('status-com').style.color = "#e74c3c";
     } finally {
-        setTimeout(() => cards.forEach(c => c.classList.remove('is-updating')), 500);
+        // Remove o efeito de loading suavemente
+        setTimeout(() => cards.forEach(c => c.classList.remove('is-updating')), 800);
     }
 }
 
 function renderRows(id, itens) {
     const container = document.getElementById(id);
     if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
-        container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Nenhuma ocorrência na planilha.</div>";
+        container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Nenhuma ocorrência detectada.</div>";
         return;
     }
     container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
 }
 
-// Inicializa e agenda
+// Inicia o monitoramento
 updateTorre();
-setInterval(updateTorre, 60000); 
+
+// Intervalo de 60 segundos (ajuste conforme necessário)
+setInterval(updateTorre, 60000);
 </script>
 </body>
 </html>
