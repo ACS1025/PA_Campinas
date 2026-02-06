@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Torre de Controle - PA Campinas</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; box-sizing: border-box; background-image: url('src/img/Registro\ de\ Saidas.png'); background-size: cover; background-position: center; background-attachment: fixed; color: white; overflow-x: hidden; }
+        .header { text-align: center; padding: 20px 0 30px 0; }
+        .header h1 { margin: 0; font-size: 38px; letter-spacing: 2px; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .status-pulse { width: 15px; height: 15px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
+        
+        /* Grid ajustada para os 5 novos cards da operação */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; max-width: 100%; }
+        .kpi-card-full { position: relative; background: rgba(0, 42, 139, 0.75); backdrop-filter: blur(10px); border-radius: 12px; padding: 25px 15px; border-top: 6px solid #3498db; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: transform 0.3s; }
+        .valor-big { font-size: 3rem; font-weight: bold; margin: 10px 0; display: block; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .label-sub { color: #bdc3c7; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; }
+        
+        /* Cores Temáticas para os Cards de Cima */
+        .card-atraso { border-top-color: #e74c3c; } .card-atraso .valor-big { color: #e74c3c; }
+        .card-aguardando { border-top-color: #f1c40f; } .card-aguardando .valor-big { color: #f1c40f; }
+        .card-transito { border-top-color: #2ecc71; } .card-transito .valor-big { color: #2ecc71; }
+
+        .grid-detalhes { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 40px; }
+        .card-detalhe { position: relative; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 15px; padding: 25px; min-height: 400px; }
+        .card-detalhe h3 { margin-top: 0; color: #58a6ff; font-size: 1.2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 15px; text-transform: uppercase; }
+        .item-lista { padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.95rem; display: flex; justify-content: space-between; }
+        .footer-info { text-align: right; color: #8b949e; font-size: 0.8rem; padding: 20px; }
+
+        .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: center; border-radius: 12px; z-index: 10; }
+        .loading-text { font-size: 0.8rem; color: #f1c40f; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .is-updating .loading-overlay { display: flex; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1><div class="status-pulse"></div> TORRE DE CONTROLE | PA CAMPINAS</h1>
+</header>
+
+<div class="grid-container">
+    <div class="kpi-card-full">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Monitorados</span>
+        <span id="big-monitorado" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Nova Solicitação</span>
+        <span id="big-nova" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-transito">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Em Trânsito</span>
+        <span id="big-transito" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-aguardando">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Aguardando Início</span>
+        <span id="big-aguardando" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-atraso">
+        <div class="loading-overlay"><span class="loading-text">...</span></div>
+        <span class="label-sub">Início em Atraso</span>
+        <span id="big-atraso" class="valor-big">--</span>
+    </div>
+</div>
+
+<div class="grid-detalhes">
+    <div class="card-detalhe" id="card-lista-veiculos">
+        <div class="loading-overlay"><span class="loading-text">Sincronizando...</span></div>
+        <h3>🚚 Ocorrências: Veículos</h3>
+        <div id="lista-veiculos">Carregando da planilha...</div>
+    </div>
+    <div class="card-detalhe" id="card-lista-motoristas">
+        <div class="loading-overlay"><span class="loading-text">Sincronizando...</span></div>
+        <h3>👨‍✈️ Ocorrências: Motoristas</h3>
+        <div id="lista-motoristas">Carregando da planilha...</div>
+    </div>
+</div>
+
+<div class="footer-info">
+    Status: <span id="status-com">Conectado</span> | 
+    Atualizado: <span id="relogio">--:--:--</span>
+</div>
+<script>
+// URLs de Configuração - AGORA ONLINE VIA TÚNEL
+const urlPython = "https://tyson-uncausative-deniably.ngrok-free.dev/dados";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
+
+async function updateTorre() {
+    const cards = document.querySelectorAll('.kpi-card-full, .card-detalhe');
+    cards.forEach(c => c.classList.add('is-updating'));
+    document.getElementById('status-com').innerText = "Sincronizando...";
+
+    try {
+        // AJUSTE PARA O NGROK: Adicionamos o 'headers' para o ngrok não bloquear a conexão
+        const resPython = await fetch(urlPython, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
+        const dadosRobo = await resPython.json();
+        
+        // TRAVA DE SEGURANÇA: Só atualiza se o robô trouxer dados maiores que zero
+        // Isso impede que a tela zere enquanto o robô recarrega a página
+        if (dadosRobo.monitorados > 0) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
+            document.getElementById('status-com').innerText = "Online (Robô Local)";
+            document.getElementById('status-com').style.color = "#2ecc71";
+        } else {
+            console.log("Robô local retornou zero ou carregando. Mantendo valores fixos.");
+        }
+
+        // 2. Busca dados de Ocorrências (Google Sheets)
+        const resGoogle = await fetch(urlGoogle);
+        const dadosPlanilha = await resGoogle.json();
+
+        if (dadosPlanilha) {
+            renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+            renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
+            
+            // Caso o robô local esteja desligado, usamos os números da planilha como backup
+            if (parseInt(document.getElementById('big-monitorado').innerText) === 0 || document.getElementById('big-monitorado').innerText === "--") {
+                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || "--";
+                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || "--";
+                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || "--";
+                document.getElementById('status-com').innerText = "Online (Nuvem)";
+            }
+        }
+
+        document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
+
+    } catch (err) {
+        console.error("Erro na sincronização:", err);
+        document.getElementById('status-com').innerText = "Link de Dados Offline";
+        document.getElementById('status-com').style.color = "#e74c3c";
+    } finally {
+        // Remove o efeito de loading suavemente
+        setTimeout(() => cards.forEach(c => c.classList.remove('is-updating')), 800);
+    }
+}
+
+function renderRows(id, itens) {
+    const container = document.getElementById(id);
+    if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
+        container.innerHTML = "<div class='item-lista' style='color:#bdc3c7'>✅ Nenhuma ocorrência detectada.</div>";
+        return;
+    }
+    container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
+}
+
+// Inicia o monitoramento
+updateTorre();
+
+// Intervalo de 60 segundos (ajuste conforme necessário)
+setInterval(updateTorre, 60000);
+</script>
+</body>
+</html>
