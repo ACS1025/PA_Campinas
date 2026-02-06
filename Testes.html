@@ -91,8 +91,8 @@
     Atualizado: <span id="relogio">--:--:--</span>
 </div>
 <script>
-// URLs de Configuração
-const urlPython = "http://127.0.0.1:8080/dados";
+// URLs de Configuração - AGORA ONLINE VIA TÚNEL
+const urlPython = "https://tyson-uncausative-deniably.ngrok-free.dev/dados";
 const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
 
 async function updateTorre() {
@@ -101,8 +101,12 @@ async function updateTorre() {
     document.getElementById('status-com').innerText = "Sincronizando...";
 
     try {
-        // 1. Tenta buscar dados do Robô Local (Python)
-        const resPython = await fetch(urlPython);
+        // AJUSTE PARA O NGROK: Adicionamos o 'headers' para o ngrok não bloquear a conexão
+        const resPython = await fetch(urlPython, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
         const dadosRobo = await resPython.json();
         
         // TRAVA DE SEGURANÇA: Só atualiza se o robô trouxer dados maiores que zero
