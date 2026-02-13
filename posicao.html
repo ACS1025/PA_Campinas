@@ -60,6 +60,11 @@ input[type="text"], select, textarea, input[type="datetime-local"] {
     box-sizing: border-box;
 }
 
+#latLongEncontro {
+    /* Fundo vermelho para visualização */
+    background-color: #ffcccc;
+}
+
 .full-width { grid-column: 1 / -1; }
 
 #distanciaBox {
@@ -186,7 +191,7 @@ button:hover { background-color: #0056b3; }
 
 <div class="form-group">
 <label>Lat/Long Ponto Encontro</label>
-<input type="text" id="latLongEncontro" placeholder="-21.123456, -47.123456">
+<input type="text" id="latLongEncontro" placeholder="-21.123456, -47.123456" readonly>
 </div>
 
 <div id="distanciaBox"></div>
@@ -241,7 +246,7 @@ const agora = new Date();
 agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
 document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
 
-let distanciaCalculada = 0; // ✅ variável global segura
+let distanciaCalculada = 0;
 
 function calcularDistancia(lat1, lon1, lat2, lon2) {
     const R = 6371;
@@ -260,13 +265,23 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 document.getElementById("pontoSelect").addEventListener("change", function () {
     const select = this.value;
-    if (!select) return;
+    const latLongInput = document.getElementById("latLongEncontro");
+
+    if (!select) {
+        latLongInput.style.backgroundColor = "#ffcccc"; // mantém vermelho mesmo sem seleção
+        latLongInput.value = "";
+        document.getElementById("postoApoio").value = "";
+        atualizarDistancia();
+        return;
+    }
+
+    latLongInput.style.backgroundColor = "#ffcccc"; // vermelho claro quando selecionado
 
     const partes = select.split("|");
     const coords = partes[0];
     const endereco = partes[1];
 
-    document.getElementById("latLongEncontro").value = coords;
+    latLongInput.value = coords;
     document.getElementById("postoApoio").value = endereco;
 
     atualizarDistancia();
@@ -287,7 +302,7 @@ function atualizarDistancia() {
             const distancia = calcularDistancia(lat1, lon1, lat2, lon2);
             const km = Math.round(distancia);
 
-            distanciaCalculada = km; // ✅ GUARDA DISTÂNCIA REAL
+            distanciaCalculada = km;
 
             const tempo = (distancia / 80).toFixed(1);
 
@@ -399,7 +414,6 @@ btn.textContent = "Enviar";
 
 }
 </script>
-
 
 </body>
 </html>
