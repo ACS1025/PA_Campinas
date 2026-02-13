@@ -203,6 +203,17 @@ button:hover { background-color: #0056b3; }
     <option value="-21.640200,-47.754300|Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP">
         Auto Posto Gironda - SP
     </option>
+    <option value="-23.3331,-46.8425|Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP">
+    DHL - Cajamar - SP (Jordanésia)
+</option>
+
+<option value="-22.2536,-47.3828|Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000">
+    Posto Pica Pau (Petrobras) - Leme - SP
+</option>
+
+<option value="-23.0185,-47.1354|Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740">
+    Supersonic - Campinas - SP
+</option>
     <option value="-22.903500,-47.061600|Cajamar - Centro">
         Cajamar - Centro
     </option>
@@ -344,10 +355,12 @@ const dados = {
     latLongEncontro: latLongEncontro.value,
     distanciaKM: distanciaFinal,
     linkGoogle: link.value,
-    postoApoio: postoApoio.value
+    pontoEncontro: pontoSelect.options[pontoSelect.selectedIndex].text,
+    enderecoPonto: postoApoio.value
 };
 
-fetch("https://script.google.com/macros/s/AKfycby8K31knAtp3H4U7jYk0Mb66wX7FqPQBgX4_7ZLHQ_2ujfip5hYHT56gnQ_A_IY58G_/exec", {
+
+fetch("https://script.google.com/macros/s/AKfycbw5g_z2JCFT-l1sd9rpyiSoEUlIN00kcO-4NGm4goAtWC519PzKLVVeACj9dwUncwmg/exec", {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -368,7 +381,8 @@ const msg = `*Posição para Escolta*\n\n${greeting}\n\n` +
 `*Última Posição:* ${dados.ultimaPosicao}\n` +
 `*Lat/Long:* ${dados.latLong}\n\n` +
 `📍 *Link Mapa:* ${dados.linkGoogle}\n\n` +
-`*Ponto de Encontro:* ${dados.postoApoio}`;
+`*Ponto de Encontro:* ${dados.pontoEncontro}\n\n` +
+`*Endereço do Ponto de Encontro:* ${dados.enderecoPonto}`;
 
 window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
 
