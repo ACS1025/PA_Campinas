@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+<title>Confirmação de escolta</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 60px;
+    background-image: url('src/img/Registro de Saidas.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    background: #fff;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+h1 { text-align: center; color: #333; margin-bottom: 10px; }
+.greeting { font-size: 18px; text-align: center; margin-bottom: 15px; }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+@media (max-width: 992px) {
+    .form-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+}
+
+.form-group { min-width: 180px; }
+label { display: block; font-weight: bold; color: #555; }
+
+input[type="text"], select, textarea, input[type="datetime-local"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#latLongEncontro {
+    /* Fundo vermelho para visualização */
+    background-color: #ffcccc;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+#distanciaBox {
+    grid-column: 1 / -1;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #444;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.navbar a:hover { background-color: #555; }
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    grid-column: 1 / -1;
+}
+button:hover { background-color: #0056b3; }
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="registro-saidas.html">Registro de saídas</a>
+    <a href="solicitacao-escolta.html">Solicitação de escolta</a>
+    <a href="conhecimento.html" class="active">Para conhecimento</a>
+    <a href="convite.html">Convite Motorista</a>
+    <a href="videos.html">Galeria de vídeos</a>
+    <a href="brief.html">Briefing</a>
+    <a href="posicao.html">Posição escolta</a>
+</div>
+
+<div class="container">
+<h1>Posição para a escolta</h1>
+<div class="greeting"><span id="greetingMessage"></span></div>
+
+<form id="formOcorrencia">
+<div class="form-grid">
+
+<div class="form-group">
+<label>Data/Hora</label>
+<input type="datetime-local" id="dataHora" readonly>
+</div>
+
+<div class="form-group">
+<label>Ordem</label>
+<select id="ordem">
+<option value="Selecione">Selecione</option>
+<option value="CPQ x BEL">CPQ x BEL</option>
+<option value="CPQ x CAJ">CPQ x CAJ</option>
+<option value="BEL X CPQ">BEL X CPQ</option>
+<option value="BEL X CAJ">BEL X CAJ</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Motorista</label>
+<input type="text" id="motorista">
+</div>
+
+<div class="form-group">
+<label>Veículo</label>
+<input type="text" id="veiculo">
+</div>
+
+<div class="form-group">
+<label>Manifesto</label>
+<input type="text" id="manifesto">
+</div>
+
+<div class="form-group">
+<label>Km destino</label>
+<select id="km">
+<option value="ORIGEM">ORIGEM</option>
+<option value="100">100</option>
+<option value="150">150</option>
+<option value="250">250</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Rota</label>
+<input type="text" id="rota">
+</div>
+
+<div class="form-group">
+<label>Cliente</label>
+<input type="text" id="cliente">
+</div>
+
+<div class="form-group">
+<label>Última Posição</label>
+<input type="text" id="ultimaPosicao">
+</div>
+
+<div class="form-group">
+<label>Lat/Long Veículo</label>
+<input type="text" id="latLong" placeholder="-18.090830, -49.271110">
+</div>
+
+<div class="form-group">
+<label>Lat/Long Ponto Encontro</label>
+<input type="text" id="latLongEncontro" placeholder="-21.123456, -47.123456" readonly>
+</div>
+
+<div id="distanciaBox"></div>
+
+<div class="form-group full-width">
+<label>Link Google Maps</label>
+<textarea id="link" rows="2"></textarea>
+</div>
+
+<div class="form-group full-width">
+    <label>Ponto de Encontro</label>
+    <select id="pontoSelect">
+        <option value="">Selecione</option>
+        <option value="-22.3577,-47.3849|Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780">Posto 7 - Araras - SP</option>
+        <option value="-21.4673,-47.5756|Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000">Posto do Tim - São Simão - SP</option>
+        <option value="-21.6841,-47.5002|Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000">Posto Anhanguera - Santa Rita do Passa Quatro - SP</option>
+        <option value="-21.6402,-47.7543|Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP">Auto Posto Gironda - SP</option>
+        <option value="-23.3331,-46.8425|Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP">DHL - Cajamar - SP (Jordanésia)</option>
+        <option value="-22.2536,-47.3828|Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000">Posto Pica Pau (Petrobras) - Leme - SP</option>
+        <option value="-23.0185,-47.1354|Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740">Supersonic - Campinas - SP</option>
+        <option value="-23.3558,-46.8756|Cajamar - Centro">Cajamar - Centro</option>
+    </select>
+</div>
+
+<div class="form-group full-width">
+<label>Endereço do Ponto de Encontro</label>
+<input type="text" id="postoApoio" readonly>
+</div>
+
+
+<button type="button" id="btnEnviar" onclick="enviarTudo()">Enviar</button>
+
+</div>
+</form>
+</div>
+
+<script>
+const hour = new Date().getHours();
+const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+document.getElementById("greetingMessage").textContent = greeting;
+
+const agora = new Date();
+agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+let distanciaCalculada = 0;
+
+function calcularDistancia(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+document.getElementById("pontoSelect").addEventListener("change", function () {
+    const select = this.value;
+    const latLongInput = document.getElementById("latLongEncontro");
+
+    if (!select) {
+        latLongInput.style.backgroundColor = "#ffcccc"; // mantém vermelho mesmo sem seleção
+        latLongInput.value = "";
+        document.getElementById("postoApoio").value = "";
+        atualizarDistancia();
+        return;
+    }
+
+    latLongInput.style.backgroundColor = "#ffcccc"; // vermelho claro quando selecionado
+
+    const partes = select.split("|");
+    const coords = partes[0];
+    const endereco = partes[1];
+
+    latLongInput.value = coords;
+    document.getElementById("postoApoio").value = endereco;
+
+    atualizarDistancia();
+});
+
+function atualizarDistancia() {
+    const box = document.getElementById("distanciaBox");
+
+    try {
+        const latLongValue = document.getElementById("latLong").value;
+        const latLongEncontroValue = document.getElementById("latLongEncontro").value;
+
+        const [lat1, lon1] = latLongValue.split(',').map(v => parseFloat(v.trim()));
+        const [lat2, lon2] = latLongEncontroValue.split(',').map(v => parseFloat(v.trim()));
+
+        if (!isNaN(lat1) && !isNaN(lon1) && !isNaN(lat2) && !isNaN(lon2)) {
+
+            const distancia = calcularDistancia(lat1, lon1, lat2, lon2);
+            const km = Math.round(distancia);
+
+            distanciaCalculada = km;
+
+            const tempo = (distancia / 80).toFixed(1);
+
+            let status = "";
+            let cor = "";
+
+            if (km <= 150) {
+                status = "🟢 PRÓXIMO";
+                cor = "#d4edda";
+            } 
+            else if (km <= 500) {
+                status = "🟡 MÉDIO";
+                cor = "#fff3cd";
+            } 
+            else {
+                status = "🔴 LONGE";
+                cor = "#f8d7da";
+            }
+
+            box.style.display = "block";
+            box.style.background = cor;
+            box.innerHTML = `
+                <strong>${status}</strong><br>
+                🚛 Veículo a <strong>${km} km</strong> do ponto de encontro<br>
+                ⏱ ETA aproximado: ${tempo}h
+            `;
+
+        } else {
+            box.style.display = "none";
+            distanciaCalculada = 0;
+        }
+    } catch (e) {
+        box.style.display = "none";
+        distanciaCalculada = 0;
+    }
+}
+
+document.getElementById("latLong").addEventListener("input", atualizarDistancia);
+document.getElementById("latLongEncontro").addEventListener("input", atualizarDistancia);
+
+function enviarTudo() {
+
+const btn = document.getElementById("btnEnviar");
+btn.disabled = true;
+btn.textContent = "Gravando...";
+
+const rawData = dataHora.value;
+const [data, hora] = rawData.split('T');
+const [ano, mes, dia] = data.split('-');
+const dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+
+let distanciaFinal = distanciaCalculada > 0 ? distanciaCalculada : "";
+
+const dados = {
+    dataHora: dataBrasil,
+    ordem: ordem.value,
+    motorista: motorista.value,
+    veiculo: veiculo.value,
+    manifesto: manifesto.value,
+    kmDestino: km.value,
+    rota: rota.value,
+    cliente: cliente.value,
+    ultimaPosicao: ultimaPosicao.value,
+    latLong: latLong.value,
+    latLongEncontro: latLongEncontro.value,
+    distanciaKM: distanciaFinal,
+    linkGoogle: link.value,
+    pontoEncontro: pontoSelect.options[pontoSelect.selectedIndex].text,
+    enderecoPonto: postoApoio.value
+};
+
+
+fetch("https://script.google.com/macros/s/AKfycbw5g_z2JCFT-l1sd9rpyiSoEUlIN00kcO-4NGm4goAtWC519PzKLVVeACj9dwUncwmg/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(dados)
+})
+.then(() => {
+
+const msg = `*Posição para Escolta*\n\n${greeting}\n\n` +
+(distanciaFinal ? `🚛 *Veículo a ${distanciaFinal} km do ponto de encontro*\n\n` : "") +
+`*Data/Hora:* ${dados.dataHora}\n` +
+`*Ordem:* ${dados.ordem}\n` +
+`*Motorista:* ${dados.motorista}\n` +
+`*Veículo:* ${dados.veiculo}\n` +
+`*Manifesto:* ${dados.manifesto}\n` +
+`*KM Destino:* ${dados.kmDestino}\n` +
+`*Rota:* ${dados.rota}\n` +
+`*Cliente:* ${dados.cliente}\n` +
+`*Última Posição:* ${dados.ultimaPosicao}\n` +
+`*Lat/Long:* ${dados.latLong}\n\n` +
+`📍 *Link Mapa:* ${dados.linkGoogle}\n\n` +
+`*Ponto de Encontro:* ${dados.pontoEncontro}\n\n` +
+`*Endereço do Ponto de Encontro:* ${dados.enderecoPonto}`;
+
+window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+
+btn.disabled = false;
+btn.textContent = "Enviar";
+alert("Dados enviados com sucesso!");
+
+})
+.catch(() => {
+alert("Erro ao salvar dados.");
+btn.disabled = false;
+btn.textContent = "Enviar";
+});
+
+}
+</script>
+
+</body>
+</html>

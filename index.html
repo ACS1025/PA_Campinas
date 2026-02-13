@@ -3,120 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PA-Campinas</title>
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Home - PA-Campinas | Monitoramento</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('src/img/Registro\ de\ Saidas.png');
-            background-size: cover; /* Ajusta a imagem para cobrir a tela sem distorção */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Imagem fixa ao fundo durante o scroll */
-            height: 100vh; /* Ocupa a altura total da tela */
-            overflow: hidden; /* Evita barras de rolagem horizontais */
-        }
+    /* Estilos Originais Mantidos e Otimizados */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: url('src/img/Registro\ de\ Saidas.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+    }
 
-        .header {
-            color: rgb(247, 243, 243);
-            padding: 10px 0;
-            text-align: center;
-            position: fixed;
-            width: 100%;
-            top: 50px;
-            z-index: 1000;
-        }
+    /* Navbar com efeito Glassmorphism */
+    nav {
+        width: 100%;
+        background-color: rgba(30, 30, 30, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+    }
 
-        .navbar {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            position: fixed;
-            top: 0%; /* Adiciona espaço para o header */
-            width: 100%;
-            z-index: 1000;
-        }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
 
-        .navbar a {
-            color: rgb(252, 254, 255);
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-            display: block;
-        }
+    nav ul li a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
 
-        .navbar a:hover {
-            background-color: #555;
-        }
+    nav ul li a:hover {
+        background-color: rgba(23, 23, 175, 0.6);
+    }
 
-        .content {
-            padding: 120px 20px; /* Adiciona espaço para a navbar e header fixos */
-        }
+    .header {
+        text-align: center;
+        padding: 100px 20px 20px; /* Aumentado para não cobrir pela nav */
+    }
 
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #847d7d;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .header h1 {
+        margin: 0;
+        font-size: 38px;
+        letter-spacing: 1px;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    }
 
-        h1, h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+    /* --- NOVA SEÇÃO: KPI CARDS --- */
+    .kpi-row {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        padding: 0 20px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
 
-        h1 {
-            font-size: 2rem;
-        }
+    .kpi-card {
+        background: rgba(0, 42, 139, 0.7);
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 12px;
+        border-left: 5px solid #3498db;
+        min-width: 180px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
 
-        h2 {
-            font-size: 1.6rem;
-        }
+    .kpi-card h3 { font-size: 12px; margin: 0; text-transform: uppercase; color: #bdc3c7; }
+    .kpi-card p { font-size: 24px; font-weight: bold; margin: 5px 0 0; color: #fff; }
+    .kpi-card .status-indicator { font-size: 11px; font-weight: bold; color: #2ecc71; }
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #f9f6f6;
-            padding: 10px 0;
-            background-color: #9b9a9a;
-            border-top: 1px solid #9b9a9a
-            ;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Adiciona a sombra no rodapé */
-        }
+    /* --- GRID LAYOUT --- */
+    .container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        max-width: 1400px;
+        margin: auto;
+        gap: 20px;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    .sidebar {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .icon-link {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .icon-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .icon-link img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 8px;
+    }
+
+    .icon-link p {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    /* Estilo do Botão Torre de Controle */
+    .kpi-card.btn-torre {
+        background: rgba(23, 23, 175, 0.4);
+        border-left: 5px solid #f1c40f; /* Cor amarela para destacar */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .kpi-card.btn-torre:hover {
+        background: rgba(23, 23, 175, 0.8);
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+    }
+
+    .icon-torre {
+        font-size: 28px;
+        margin-bottom: 5px;
+        filter: drop-shadow(0 0 5px #f1c40f);
+    }
+
+    /* Conteúdo Central */
+    .dashboard-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .dashboard {
+        width: 100%;
+        height: 450px; /* Aumentado para melhor visualização */
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .dashboard-title {
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: rgba(0, 42, 139, 0.85);
+        color: #fff;
+        text-align: center;
+    }
+
+    .dashboard iframe {
+        border: none;
+        flex: 1;
+    }
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: #bbb;
+        font-size: 13px;
+    }
+
+    @media (max-width: 1024px) {
+        .container { flex-direction: column; align-items: center; }
+        .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+        .icon-link { width: 140px; }
+        .kpi-card { width: 45%; }
+    }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>PA-Campinas</h1>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+        <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+        <li><a href="conhecimento.html">Para conhecimento</a></li>
+        <li><a href="convite.html">Convite Motorista</a></li>
+        <li><a href="videos.html">Galeria de Vídeos</a></li>
+        <li><a href="brief.html">Briefing</a></li>
+        <li><a href="posicao.html">Posição escolta</a></li>
+    </ul>
+</nav>
+
+<header class="header">
+    <h1>- MONITORAMENTO - <br>PA-Campinas</h1>
+</header>
+
+<div class="kpi-row">
+    <div class="kpi-card">
+        <h3>Em Trânsito</h3>
+        <p id="kpi-transito">--</p>
+        <span class="status-indicator">Ativo</span>
     </div>
 
-    <div class="navbar">
-        <a href="index.html" class="active">Home</a>
-        <a href="registro-saidas.html">Registro de Saídas</a>
-        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    <div class="kpi-card">
+        <h3>SLA Diário</h3>
+        <p id="kpi-sla">--%</p>
+        <span id="status-sla" class="status-indicator">Carregando...</span>
     </div>
-    
 
-    <div class="content">
-        <div id="home" class="section">
-            <h2></h2>
-            <p>Bem-vindo à nossa página de monitoramento PA-Campinas. Utilize o menu para acessar as funcionalidades disponíveis.</p>
+    <div class="kpi-card">
+        <h3>Alertas Críticos</h3>
+        <p id="kpi-alertas" style="color: #e74c3c;">--</p>
+        <span class="status-indicator" style="color: #e74c3c;">Verificar</span>
+    </div>
+
+    <a href="torre.html" class="kpi-card btn-torre">
+        <div class="icon-torre">📡</div>
+        <h3>Torre de Controle</h3>
+        <span class="status-indicator" style="color: #f1c40f;">Acessar Painel</span>
+    </a>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <a href="https://app.powerbi.com/view?..." target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="PA">
+            <p>PA Campinas</p>
+        </a>
+        <a href="https://app.powerbi.com/view?..." target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Coletas">
+            <p>Coletas SSonic</p>
+        </a>
+        <a href="https://app.powerbi.com/view?..." target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Mensal">
+            <p>Relatório Mensal</p>
+        </a>
+        <a href="relatorio4.html" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="R4">
+            <p>Relatório 4</p>
+        </a>
+        <a href="briefing.html" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Briefing">
+            <p>Briefing de Viagem</p>
+        </a>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="dashboard" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Relatório PA - Full View</div>
+            <iframe title="PA - CAMPINAS RELATORIO ANUAL" src="https://app.powerbi.com/view?r=eyJrIjoiZjI3YmUyNDQtYjgyZC00ZmVkLWE4M2YtZDY2OTlkNmVhNzc3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=1c0d1c1b9046070a09c5" allowFullScreen="true"></iframe>
+        </div>
+
+        <div class="dashboard" onclick="toggleFullscreen(this)">
+            <div class="dashboard-title">Coletas Supersonic</div>
+            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" allowFullScreen="true"></iframe>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
-    </footer>
+    <div class="sidebar">
+        <a href="https://docs.google.com/forms/..." target="_blank" class="icon-link">
+            <img src="src/img/checklist.gif" alt="Checklist">
+            <p>Checklist presencial</p>
+        </a>
+        <a href="https://docs.google.com/forms/..." target="_blank" class="icon-link">
+            <img src="src/img/briefing.gif" alt="Digital">
+            <p>Briefing digital</p>
+        </a>
+        <a href="https://docs.google.com/presentation/..." target="_blank" class="icon-link">
+            <img src="src/img/treinamento.gif" alt="Treinamento">
+            <p>Treinamento motorista</p>
+        </a>
+        <a href="https://docs.google.com/forms/..." target="_blank" class="icon-link">
+            <img src="src/img/dica.gif" alt="Dica">
+            <p>Dica</p>
+        </a>
+        <a href="src/pdf/Checklist Presencial - Modelo.pdf" target="_blank" class="icon-link">
+            <img src="src/img/dica.gif" alt="Modelo">
+            <p>Checklist (PDF)</p>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 PA-Campinas. Todos os direitos reservados. by ACS</p>
+</footer>
+
+
+<script>
+    // Seu link oficial
+    const urlScript = "https://script.google.com/macros/s/AKfycby32ozcJdkgrLnHAO1KX__DPpALy-VcXEDLkHZk9RTQCCRITCum3Q2vHEC__Xx5qWx-AQ/exec"
+    // Chama a função assim que a página abrir
+
+    async function carregarKPIs() {
+    try {
+        const response = await fetch(urlScript);
+        const dados = await response.json();
+
+        // --- ATUALIZAÇÃO: SLA DIÁRIO ---
+        const vSla = dados.sla_diario;
+        const pSla = document.getElementById('kpi-sla');
+        const sSla = document.getElementById('status-sla');
+        
+        pSla.innerText = (vSla * 100).toFixed(1) + "%";
+        // Cor dinâmica: Verde se >= 95%, Laranja se < 95%
+        if (vSla >= 0.95) {
+            pSla.style.color = "#2ecc71";
+            sSla.innerText = "Dentro da Meta";
+            sSla.style.color = "#2ecc71";
+        } else {
+            pSla.style.color = "#f39c12";
+            sSla.innerText = "Atenção";
+            sSla.style.color = "#f39c12";
+        }
+
+        // --- ATUALIZAÇÃO: ALERTAS CRÍTICOS ---
+        const vAlertas = dados.alertas_criticos;
+        const pAlertas = document.getElementById('kpi-alertas');
+        const sAlertas = pAlertas.nextElementSibling; // O span abaixo do P
+
+        pAlertas.innerText = vAlertas.toString().padStart(2, '0');
+        // Cor dinâmica: Vermelho se houver alertas, Branco se zero
+        if (vAlertas > 0) {
+            pAlertas.style.color = "#e74c3c";
+            sAlertas.innerText = "Verificar!";
+            sAlertas.style.color = "#e74c3c";
+        } else {
+            pAlertas.style.color = "#ffffff";
+            sAlertas.innerText = "Normal";
+            sAlertas.style.color = "#2ecc71";
+        }
+
+        // --- ATUALIZAÇÃO: EM TRÂNSITO ---
+        document.getElementById('kpi-transito').innerText = dados.em_transito;
+
+    } catch (error) {
+        console.error("Erro ao carregar KPIs:", error);
+    }
+}
+    window.onload = carregarKPIs;
+    setInterval(carregarKPIs, 60000); // Atualiza os dados a cada 1 minuto
+</script>
+<script>
+    // Função Fullscreen original
+    function toggleFullscreen(element) {
+        if (!document.fullscreenElement) {
+            element.requestFullscreen().catch(err => console.error(err.message));
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // Mantendo seu endpoint original para futuras integrações
+    const endpointBase = "https://script.google.com/macros/s/AKfycbwcPk4Vln25PrTvn02uLhPQlKQeIr4Y6Ua0olvWny_fBA34MI6bDqibWJqBdn8Ig4gw/exec";
+
+    // Exemplo de como você pode alimentar os KPIs dinamicamente depois:
+    document.getElementById('kpi-transito').innerText = "42"; 
+</script>
 
 </body>
 </html>
