@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Galeria de Vídeos - PA-Campinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('src/img/Registro%20de%20Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .header {
+            color: rgb(247, 243, 243);
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 50px;
+            z-index: 1000;
+        }
+            
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+            
+        .navbar a {
+            color: rgb(252, 254, 255);
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+            
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 120px 20px;
+            text-align: center;
+        }
+        
+        .video-container {
+            display: flex; /* Coloca os ícones lado a lado */
+            justify-content: center; /* Centraliza os ícones */
+            gap: 20px; /* Adiciona um espaçamento entre os ícones */
+            padding: 20px;
+        }
+
+        .video-item {
+            position: relative;
+            display: inline-block;
+        }
+
+        .video-icon {
+            width: 50px;  /* Ajuste o tamanho conforme necessário */
+            height: auto; /* Mantém a proporção original */
+            cursor: pointer; /* Indica que é clicável */
+            transition: 0.3s ease; /* Transição suave para o efeito hover */
+        }
+
+        .video-icon:hover {
+            filter: brightness(1.5); /* Aumenta o brilho do ícone ao passar o mouse */
+        }
+
+        .video-title {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .video-item:hover .video-title {
+            display: block;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #f9f6f6;
+            padding: 10px 0;
+            background-color: transparent;
+            border-top: 1px solid gray;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <script>
+        function abrirVideo(url) {
+            window.open(url, "_blank", "width=800,height=450");
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="registro-saidas.html">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+        <a href="conhecimento.html">Para conhecimento</a>
+        <a href="convite.html">Convite Motorista</a>
+        <a href="videos.html" class="active">Galeria de Vídeos</a>
+        <li><a href="brief.html">Briefing</a></li>
+        <li><a href="posicao.html">Posição escolta</a></li>
+    </div>
+
+    <div class="content">
+        <h1>Galeria de Vídeos</h1>
+        <div class="video-container">
+            <!-- Cada ícone com seu respectivo link de vídeo -->
+            <div class="video-item">
+                <img src="src/img/Movie_Kmd.png" alt="Dica KMD Move" class="video-icon" onclick="abrirVideo('src/video/Dica_Kmd_Move.mp4')">
+                <div class="video-title">Dica KMD Move</div>
+            </div>
+           
+            <div class="video-item">
+                <img src="src/img/Movie_Kmd.png" alt="Outro" class="video-icon" onclick="abrirVideo('src/video/Outro_Video.mp4')">
+                <div class="video-title">Outro Vídeo</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 PA-Campinas - Todos os direitos reservados.
+    </footer>
+
+    <script>
+        function abrirVideo(url) {
+            window.open(url, '_blank', 'width=800,height=450');
+        }
+    </script>
+</body>
+</html>

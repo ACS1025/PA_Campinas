@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Para conhecimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('src/img/Registro de Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; }
+        .greeting { font-size: 18px; color: #333; margin-top: 10px; text-align: center; }
+        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; row-gap: 25px; }
+        .form-group { min-width: 180px; }
+        label { display: block; font-weight: bold; color: #555; }
+        input[type="text"], select, textarea, input[type="datetime-local"] {
+            width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; box-sizing: border-box;
+        }
+        .full-width { grid-column: span 4; width: 100%; }
+        .navbar { display: flex; justify-content: center; background-color: #444; position: fixed; top: 0; width: 100%; z-index: 1000; }
+        .navbar a { color: white; padding: 14px 20px; text-decoration: none; display: block; }
+        .navbar a:hover { background-color: #555; }
+        button {
+            background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px;
+            font-size: 14px; cursor: pointer; grid-column: span 4; transition: background-color 0.3s;
+        }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="registro-saidas.html">Registro de Saídas</a>
+        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+        <a href="conhecimento.html" class="active">Para conhecimento</a>
+        <a href="convite.html">Convite Motorista</a>
+        <a href="videos.html">Galeria de Vídeos</a>
+        <a href="brief.html">Briefing</a>
+        <a href="posicao.html">Posição escolta</a>
+    </div>
+    
+    <div class="container">
+        <h1>Para Conhecimento</h1>
+        <div class="greeting"><span id="greetingMessage"></span></div>
+
+        <form id="formOcorrencia">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="dataHora">Data/Hora</label>
+                    <input type="datetime-local" id="dataHora" name="dataHora" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="ocorrencia">Ocorrência</label>
+                    <select id="ocorrencia" name="ocorrencia">
+                        <option value="PERDA DE SINAL">PERDA DE SINAL</option>
+                        <option value="ALERTA DESENGATE">ALERTA DESENGATE</option>
+                        <option value="FALHA NO EQUIPAMENTO">FALHA NO EQUIPAMENTO</option>
+                        <option value="ENVOLVIDO EM ACIDENTE">ENVOLVIDO EM ACIDENTE</option>
+                        <option value="ENVOLVIDO EM SINISTRO">ENVOLVIDO EM SINISTRO</option>
+                        <option value="ENVOLVIDO EM TENTATIVA DE FURTO">ENVOLVIDO EM TENTATIVA DE FURTO</option>
+                        <option value="PARADA PARA MANUTENÇÃO">PARADA PARA MANUTENÇÃO</option>
+                        <option value="VEÍCULO QUEBRADO">VEÍCULO QUEBRADO</option>
+                        <option value="VEÍCULO QUEBRADO NA VIA">VEÍCULO QUEBRADO NA VIA</option>
+                        <option value="VEÍCULO EM MANUTENÇÃO">VEÍCULO EM MANUTENÇÃO</option>
+                        <option value="DESCUMPRIMENTO DE NORMAS DE GR">DESCUMPRIMENTO DE NORMAS DE GR</option>
+                        <option value="PARADA FERIADO">PARADA FERIADO</option>
+                        <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
+                    </select>
+                </div>
+                <div class="form-group"><label for="sm">SM</label><input type="text" id="sm"></div>
+                <div class="form-group"><label for="veiculo">Veículo</label><input type="text" id="veiculo"></div>
+                <div class="form-group"><label for="motorista">Motorista</label><input type="text" id="motorista"></div>
+                <div class="form-group"><label for="embarcador">Embarcador</label><input type="text" id="embarcador"></div>
+                <div class="form-group"><label for="valor">Valor</label><input type="text" id="valor"></div>
+                <div class="form-group"><label for="rota">Rota</label><input type="text" id="rota"></div>
+                <div class="form-group"><label for="ultimaPosicao">Última Posição</label><input type="text" id="ultimaPosicao"></div>
+                <div class="form-group"><label for="latLong">Lat/Long</label><input type="text" id="latLong"></div>
+                <div class="form-group full-width">
+                    <label for="postoApoio">Posto/Ponto de apoio próximo:</label>
+                    <textarea id="postoApoio" rows="3"></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="descricaoSituacao">Situação/Descrição</label>
+                    <textarea id="descricaoSituacao" rows="3"></textarea>
+                </div>
+                <button type="button" id="btnEnviar" onclick="enviarTudo()">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+    // Saudação e Data Inicial
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+    document.getElementById("greetingMessage").textContent = greeting;
+    
+    const agora = new Date();
+    agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+    document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+    function enviarTudo() {
+        const btn = document.getElementById("btnEnviar");
+        btn.disabled = true;
+        btn.textContent = "Gravando...";
+
+        // --- FORMATAÇÃO DA DATA PARA PT-BR ---
+        const rawData = document.getElementById("dataHora").value;
+        let dataBrasil = rawData;
+        if (rawData) {
+            const [data, hora] = rawData.split('T');
+            const [ano, mes, dia] = data.split('-');
+            dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+        }
+
+        const dados = {
+            dataHora: dataBrasil, // Enviando já formatada
+            ocorrencia: document.getElementById("ocorrencia").value,
+            sm: document.getElementById("sm").value,
+            veiculo: document.getElementById("veiculo").value,
+            motorista: document.getElementById("motorista").value,
+            embarcador: document.getElementById("embarcador").value,
+            valor: document.getElementById("valor").value,
+            rota: document.getElementById("rota").value,
+            ultimaPosicao: document.getElementById("ultimaPosicao").value,
+            latLong: document.getElementById("latLong").value,
+            postoApoio: document.getElementById("postoApoio").value,
+            descricaoSituacao: document.getElementById("descricaoSituacao").value
+        };
+
+        const urlScript = "https://script.google.com/macros/s/AKfycbx24GIW-KeYck6yh1cQpofKpoXzWUfPdKFhZz7KOPakS80VNRTIlp7dGabTcrfp5Bbf/exec";
+
+        fetch(urlScript, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(dados)
+        })
+        .then(() => {
+            // Mensagem do WhatsApp
+            const msg = `*Para conhecimento*\n\n${greeting}\n\n` +
+                        `*Data/Hora:* ${dados.dataHora}\n` +
+                        `*Ocorrência:* ${dados.ocorrencia}\n` +
+                        `*SM:* ${dados.sm}\n` +
+                        `*Veículo:* ${dados.veiculo}\n` +
+                        `*Motorista:* ${dados.motorista}\n` +
+                        `*Embarcador:* ${dados.embarcador}\n` +
+                        `*Valor:* ${dados.valor}\n` +
+                        `*Rota:* ${dados.rota}\n` +
+                        `*Última Posição:* ${dados.ultimaPosicao}\n` +
+                        `*Lat/Long:* ${dados.latLong}\n` +
+                        `*Posto/Ponto:* ${dados.postoApoio}\n` +
+                        `*Descrição:* ${dados.descricaoSituacao}`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+            
+            btn.disabled = false;
+            btn.textContent = "Enviar";
+            alert("Dados enviados para a planilha e WhatsApp!");
+        })
+        .catch(err => {
+            console.error("Erro no envio:", err);
+            alert("Erro ao salvar dados.");
+            btn.disabled = false;
+            btn.textContent = "Enviar";
+        });
+    }
+</script>
+</body>
+</html>

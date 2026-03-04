@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Para conhecimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('src/img/Registro de Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        nav {
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+        nav ul li a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+
+        /* Conteúdo da página */
+        .container {
+            background: #fff;
+            padding: 20px;
+            max-width: 900px;
+            margin: 80px auto 0;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .greeting {
+            font-size: 18px;
+            color: #333;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            row-gap: 25px;
+        }
+        .form-group {
+            flex: 1 1 calc(25% - 10px);
+            min-width: 180px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], select, textarea, input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            padding: 10px;
+        }
+        .full-width {
+            grid-column: span 4;
+            width: 85%;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px;
+            width: auto;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            grid-column: span 4;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #previewSVG {
+            max-width: 100%;
+            height: auto;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+            <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+            <li><a href="conhecimento.html">Para conhecimento</a></li>
+            <li><a href="convite.html" class="active">Convite Motorista</a></li>
+            <li><a href="videos.html">Galeria de Vídeos</a>
+            <li><a href="brief.html">Briefing</a></li>
+            <li><a href="posicao.html">Posição escolta</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Sr. Motorista</h1>
+        <div class="greeting">
+            <span id="greetingMessage"></span>
+        </div>
+
+        <form id="formOcorrencia">
+            <div class="form-grid">
+                <!-- Seleção de texto -->
+                <div class="form-group full-width">
+                    <label for="modeloTexto">Selecione o modelo de texto:</label>
+                    <select id="modeloTexto" name="modeloTexto" onchange="carregarTexto()">
+                        <option value="" disabled selected>Escolha um modelo</option>
+                        <option value="checklist">Check list vencido</option>
+                        <option value="fotos">Fotos de paradas</option>
+                        <option value="manutencao">Agendamento de manutenção</option>
+                        <option value="briefing">Briefing digital</option>
+                        <option value="reciclagem">Reciclagem motorista</option>
+                    </select>
+                </div>
+
+                <!-- Texto Pronto -->
+                <div class="form-group full-width">
+                    <label for="textoPronto">Texto Pronto:</label>
+                    <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
+                </div>
+
+                <!-- Espaço para digitação adicional -->
+                <div class="form-group full-width">
+                    <label for="textoAdicional">Digite informações adicionais:</label>
+                    <textarea id="textoAdicional" name="textoAdicional" rows="4" placeholder="Digite suas informações adicionais aqui"></textarea>
+                </div>
+
+                <!-- Seleção de imagem -->
+                <div class="form-group">
+                    <label for="imagemSVG">Selecione uma Imagem:</label>
+                    <select id="imagemSVG" name="imagemSVG">
+                        <option value="" disabled selected>Escolha uma imagem</option>
+                        <option value="src/img/imagem1.jpg">Imagem JPG 1</option>
+                        <option value="src/img/imagem2.png">Imagem PNG 2</option>
+                        <option value="src/svg/imagem1.svg">Imagem SVG</option>
+                    </select>
+                </div>
+
+                <!-- Upload de arquivo -->
+                <div class="form-group">
+                    <label for="arquivoExterno">Imagem do seu dispositivo:</label>
+                    <input type="file" id="arquivoExterno" name="arquivoExterno" accept=".svg,.png,.jpg,.jpeg">
+                </div>
+
+                <!-- Pré-visualização -->
+                <div class="form-group">
+                    <img id="previewSVG" src="" alt="Pré-visualização da imagem">
+                </div>
+
+                <!-- Botão Enviar -->
+                <button type="button" onclick="enviarWhatsApp()">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Mensagem de saudação
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+        document.getElementById("greetingMessage").textContent = greeting;
+
+        // Modelos de texto
+    const textos = {
+        checklist: `*Check list vencido*\n\nSr. Motorista,\n\nSeu check list está vencido. Por favor verifique o melhor horário para realizar o teste. Antes, verifique as travas e sensores do veículo. Esteja engatado e entre em contato em nossos telefones para realizarmos o teste.\n\n*Equipe Komando*`,
+        manutencao: `*Agendamento de manutenção*\n\nSr. Motorista,\n\nVerificamos que o seu equipamento rastreador necessita de manutenção, estamos recebendo alertas. Por favor, verifique com a autorizada mais próxima para realizar os reparos necessários. Certifique-se de que o equipamento esteja em condições seguras e nos chame para um novo teste.\n\n*Equipe Komando*`, 
+        reciclagem: 'Sr. Motorista.\n\nSeu checkilist esta suspenso para novas viagens, será necessário reciclagem com a equipe komando para validá-lo no sistema, por favor preencha os dados no formulario e compareça na unidade em horário comercial. https://forms.gle/tt4LVq24EjBsVC7WA Qualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+        briefing: 'Sr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, leia o formulário e preencha os campos. https://forms.gle/F8ij4q2XPa8SLTmVA Qualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+        fotos: 'Sr. Motorista.\n\nAo informar paradas e pernoite via macro. Por favor confirme a ação em nosso whatsapp *(19 98103-2053)*.É preciso que você nos envie.\n\n*-> FOTO DO BAÚ.*\n*-> FOTO DOS LACRES.*\n*-> FOTO DO ENGATE.*\n\nEste procedimento de envio deverá ser repetido quando você reiniciar a viagem também. \n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+    };
+
+
+        // Carregar texto pronto
+        function carregarTexto() {
+            const modelo = document.getElementById("modeloTexto").value;
+            document.getElementById("textoPronto").value = textos[modelo] || "";
+        }
+
+        // Enviar mensagem
+        function enviarWhatsApp() {
+            const textoPronto = document.getElementById("textoPronto").value;
+            const textoAdicional = document.getElementById("textoAdicional").value;
+            const imagem = document.getElementById("imagemSVG").value;
+            const mensagem = `${textoPronto}\n\n${textoAdicional}\n${imagem ? "Confira a imagem: " + imagem : ""}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, "_blank");
+        }
+
+        // Pré-visualização de imagem
+        document.getElementById("arquivoExterno").addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById("previewSVG");
+            if (file && file.type.match("image.*")) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
