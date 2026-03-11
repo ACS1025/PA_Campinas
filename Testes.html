@@ -1,391 +1,309 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
-<title>Confirmação de escolta</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Home - PA-Campinas | Monitoramento</title>
+    <style>
+    /* Estilos Base */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0; padding: 0; box-sizing: border-box;
+        background-image: url('src/img/Registro\ de\ Saidas.png');
+        background-size: cover; background-position: center;
+        background-attachment: fixed; color: white;
+    }
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding-top: 60px;
-    background-image: url('src/img/Registro de Saidas.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+    nav {
+        width: 100%; background-color: rgba(30, 30, 30, 0.9);
+        backdrop-filter: blur(10px); padding: 15px 0;
+        position: fixed; top: 0; left: 0; z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+    }
 
-.container {
-    background: #fff;
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-}
+    nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    nav ul li a { color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 25px; transition: 0.3s; }
+    nav ul li a:hover { background-color: rgba(23, 23, 175, 0.6); }
 
-h1 { text-align: center; color: #333; margin-bottom: 10px; }
-.greeting { font-size: 18px; text-align: center; margin-bottom: 15px; }
+    .header { text-align: center; padding: 120px 20px 20px; }
+    .header h1 { margin: 0; font-size: 32px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-}
+    /* NOVOS ESTILOS KPI TORRE (GRID INTEGRADO) */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        padding: 0 40px;
+        margin-bottom: 25px;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-@media (max-width: 992px) {
-    .form-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-    .form-grid { grid-template-columns: 1fr; }
-}
+    .kpi-card-full {
+        background: rgba(0, 42, 139, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border-top: 4px solid #3498db;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        position: relative;
+    }
 
-.form-group { min-width: 180px; }
-label { display: block; font-weight: bold; color: #555; }
+    .label-sub { display: block; font-size: 11px; text-transform: uppercase; color: #bdc3c7; margin-bottom: 5px; }
+    .valor-big { font-size: 32px; font-weight: bold; display: block; }
 
-input[type="text"], select, textarea, input[type="datetime-local"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
+    /* Cores de Status da Torre */
+    .card-transito { border-top-color: #2ecc71; }
+    .card-aguardando { border-top-color: #f1c40f; }
+    .card-atraso { border-top-color: #e74c3c; }
+    #big-atraso { color: #ff6b6b; }
 
-.full-width { grid-column: 1 / -1; }
+    /* Botão Torre */
+    .btn-torre-box { text-align: center; margin-bottom: 30px; }
+    .btn-torre {
+        display: inline-block;
+        background: rgba(23, 23, 175, 0.8);
+        padding: 10px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        color: white;
+        border: 1px solid #f1c40f;
+        transition: 0.3s;
+    }
+    .btn-torre:hover { transform: scale(1.05); background: #1717af; }
 
-#distanciaBox {
-    grid-column: 1 / -1;
-    padding: 12px;
-    border-radius: 6px;
-    font-weight: bold;
-    text-align: center;
-    display: none;
-}
+    /* Layout Central e Sidebars */
+    .container { display: flex; justify-content: center; padding: 20px; max-width: 1500px; margin: auto; gap: 20px; }
+    .sidebar { width: 220px; display: flex; flex-direction: column; gap: 15px; }
+    .icon-link { text-align: center; background: rgba(0, 0, 0, 0.6); padding: 15px; border-radius: 15px; transition: 0.3s; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .icon-link:hover { background: rgba(0, 0, 0, 0.8); transform: translateY(-3px); }
+    .icon-link img { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px; }
+    .icon-link p { margin: 0; font-size: 12px; font-weight: 600; color: #fff; }
 
-.navbar {
-    display: flex;
-    justify-content: center;
-    background-color: #444;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-}
+    .main-content { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .action-box { background: rgba(0, 0, 0, 0.75); border-radius: 20px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; justify-content: space-between; }
+    .btn-action { background: #3498db; color: white; text-decoration: none; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+    .notice-board { background: rgba(0, 0, 0, 0.8); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    
+    footer { text-align: center; padding: 30px; color: #bbb; font-size: 12px; }
 
-.navbar a {
-    color: white;
-    padding: 14px 20px;
-    text-decoration: none;
-}
-
-.navbar a:hover { background-color: #555; }
-
-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    grid-column: 1 / -1;
-}
-button:hover { background-color: #0056b3; }
-</style>
+    @media (max-width: 1024px) {
+        .container { flex-direction: column; }
+        .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+        .action-grid { grid-template-columns: 1fr; }
+    }
+    </style>
 </head>
-
 <body>
 
-<div class="navbar">
-    <a href="index.html">Home</a>
-    <a href="registro-saidas.html">Registro de saídas</a>
-    <a href="solicitacao-escolta.html">Solicitação de escolta</a>
-    <a href="conhecimento.html" class="active">Para conhecimento</a>
-    <a href="convite.html">Convite Motorista</a>
-    <a href="videos.html">Galeria de vídeos</a>
-    <a href="brief.html">Briefing</a>
-    <a href="posicao.html">Posição escolta</a>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+        <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+        <li><a href="brief.html">Briefing</a></li>
+        <li><a href="posicao.html">Posição escolta</a></li>
+        <li><a href="comunicado.html">Comunicado</a></li>
+    </ul>
+</nav>
+
+<header class="header">
+    <h1>CENTRAL DE OPERAÇÕES<br>PA-Campinas</h1>
+    <p id="status-com" style="font-size: 12px; font-weight: bold;">Iniciando Sincronização...</p>
+</header>
+
+<div class="grid-container">
+    <div class="kpi-card-full">
+        <span class="label-sub">Monitorados</span>
+        <span id="big-monitorado" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full">
+        <span class="label-sub">Nova Solicitação</span>
+        <span id="big-nova" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-transito">
+        <span class="label-sub">Em Trânsito</span>
+        <span id="big-transito" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-aguardando">
+        <span class="label-sub">Aguardando Início</span>
+        <span id="big-aguardando" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-atraso">
+        <span class="label-sub">Início em Atraso</span>
+        <span id="big-atraso" class="valor-big">--</span>
+    </div>
 </div>
 
+<div class="btn-torre-box">
+    <a href="torre.html" class="btn-torre">📡 Acessar Torre de Controle Completa</a>
+</div>
 <div class="container">
-<h1>Posição para a escolta</h1>
-<div class="greeting"><span id="greetingMessage"></span></div>
+    <div class="sidebar">
+        <a href="https://app.powerbi.com/view?..." target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="PA">
+            <p>PA Campinas</p>
+        </a>
+        <a href="https://app.powerbi.com/view?..." target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Coletas">
+            <p>Coletas SSonic</p>
+        </a>
+        <a href="briefing.html" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Briefing">
+            <p>Briefing de Viagem</p>
+        </a>
+    </div>
 
-<form id="formOcorrencia">
-<div class="form-grid">
+    <div class="main-content">
+        <div class="action-grid">
+            <div class="action-box">
+                <div>
+                    <h2>Gerador Operacional</h2>
+                    <p>Envio de mensagens rápidas e padronizadas para a operação Supersonic via WhatsApp.</p>
+                    <ul>
+                        <li>Registro automático no Log</li>
+                        <li>Modelos pré-configurados</li>
+                    </ul>
+                </div>
+                <a href="comunicado.html" class="btn-action">Abrir Gerador</a>
+            </div>
+            
+            <div class="action-box">
+                <div>
+                    <h2>Posição de Escolta</h2>
+                    <p>Atualize o status da viagem para o grupo de escolta nos marcos obrigatórios:</p>
+                    <ul>
+                        <li>Início de viagem</li>
+                        <li>Check-point diário</li>
+                        <li>Proximidade (500km e 250km)</li>
+                    </ul>
+                </div>
+                <a href="posicao.html" class="btn-action" style="background: #27ae60;">Informar Posição</a>
+            </div>
+        </div>
 
-<div class="form-group">
-<label>Data/Hora</label>
-<input type="datetime-local" id="dataHora" readonly>
+        <div class="notice-board">
+            <h3 style="margin-top:0; font-size: 16px; color: #f1c40f;">📌 Quadro de Avisos / Links Rápidos</h3>
+            <div class="notice-item">
+                <span>Procedimento de Sinistro (PDF)</span>
+                <span class="tag">Importante</span>
+            </div>
+            <div class="notice-item">
+                <span>Escala do Turno Atual - T1/T2</span>
+                <span class="tag" style="background: #3498db;">Operacional</span>
+            </div>
+            <div class="notice-item">
+                <span>Contatos de Emergência Bases Belém/SP</span>
+                <span class="tag" style="background: #27ae60;">Suporte</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="https://docs.google.com/forms/..." target="_blank" class="icon-link">
+            <img src="src/img/checklist.gif" alt="Checklist">
+            <p>Checklist presencial</p>
+        </a>
+        <a href="https://docs.google.com/forms/..." target="_blank" class="icon-link">
+            <img src="src/img/briefing.gif" alt="Digital">
+            <p>Briefing digital</p>
+        </a>
+        <a href="https://docs.google.com/presentation/..." target="_blank" class="icon-link">
+            <img src="src/img/treinamento.gif" alt="Treinamento">
+            <p>Treinamento motorista</p>
+        </a>
+    </div>
 </div>
 
-<div class="form-group">
-<label>Ordem</label>
-<select id="ordem">
-<option value="Selecione">Selecione</option>
-<option value="CPQ x BEL">CPQ x BEL</option>
-<option value="CPQ x CAJ">CPQ x CAJ</option>
-<option value="BEL X CPQ">BEL X CPQ</option>
-<option value="BEL X CAJ">BEL X CAJ</option>
-</select>
-</div>
-
-<div class="form-group">
-<label>Motorista</label>
-<input type="text" id="motorista">
-</div>
-
-<div class="form-group">
-<label>Veículo</label>
-<input type="text" id="veiculo">
-</div>
-
-<div class="form-group">
-<label>Manifesto</label>
-<input type="text" id="manifesto">
-</div>
-
-<div class="form-group">
-<label>Km destino</label>
-<select id="km">
-<option value="ORIGEM">ORIGEM</option>
-<option value="100">100</option>
-<option value="150">150</option>
-<option value="250">250</option>
-</select>
-</div>
-
-<div class="form-group">
-<label>Rota</label>
-<input type="text" id="rota">
-</div>
-
-<div class="form-group">
-<label>Cliente</label>
-<input type="text" id="cliente">
-</div>
-
-<div class="form-group">
-<label>Última Posição</label>
-<input type="text" id="ultimaPosicao">
-</div>
-
-<div class="form-group">
-<label>Lat/Long Veículo</label>
-<input type="text" id="latLong" placeholder="-18.090830, -49.271110">
-</div>
-
-<div class="form-group">
-<label>Lat/Long Ponto Encontro</label>
-<input type="text" id="latLongEncontro" placeholder="-21.123456, -47.123456">
-</div>
-
-<div id="distanciaBox"></div>
-
-<div class="form-group full-width">
-<label>Link Google Maps</label>
-<textarea id="link" rows="2"></textarea>
-</div>
-
-<div class="form-group full-width">
-<label>Ponto de Encontro</label>
-<select id="pontoSelect">
-    <option value="">Selecione</option>
-    <option value="-21.640200,-47.754300|Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP">
-        Auto Posto Gironda - SP
-    </option>
-    <option value="-22.903500,-47.061600|Cajamar - Centro">
-        Cajamar - Centro
-    </option>
-</select>
-</div>
-
-<div class="form-group full-width">
-<label>Endereço do Ponto de Encontro</label>
-<input type="text" id="postoApoio" readonly>
-</div>
-
-
-<button type="button" id="btnEnviar" onclick="enviarTudo()">Enviar</button>
-
-</div>
-</form>
-</div>
+<footer>
+    <p>&copy; 2026 PA-Campinas. Todos os direitos reservados. by ACS</p>
+</footer>
 
 <script>
-const hour = new Date().getHours();
-const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
-document.getElementById("greetingMessage").textContent = greeting;
+// URLs de Configuração - AGORA ONLINE VIA TÚNEL
+const urlPython = "https://tyson-uncausative-deniably.ngrok-free.dev/dados";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
 
-const agora = new Date();
-agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
-document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
-
-let distanciaCalculada = 0; // ✅ variável global segura
-
-function calcularDistancia(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-
-    const a =
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-}
-
-document.getElementById("pontoSelect").addEventListener("change", function () {
-    const select = this.value;
-    if (!select) return;
-
-    const partes = select.split("|");
-    const coords = partes[0];
-    const endereco = partes[1];
-
-    document.getElementById("latLongEncontro").value = coords;
-    document.getElementById("postoApoio").value = endereco;
-
-    atualizarDistancia();
-});
-
-function atualizarDistancia() {
-    const box = document.getElementById("distanciaBox");
+async function updateTorre() {
+    // Seleciona os cards para o efeito visual de atualização
+    const cards = document.querySelectorAll('.kpi-card-full');
+    cards.forEach(c => c.style.opacity = "0.7");
+    
+    const statusCom = document.getElementById('status-com');
+    statusCom.innerText = "Sincronizando...";
 
     try {
-        const latLongValue = document.getElementById("latLong").value;
-        const latLongEncontroValue = document.getElementById("latLongEncontro").value;
-
-        const [lat1, lon1] = latLongValue.split(',').map(v => parseFloat(v.trim()));
-        const [lat2, lon2] = latLongEncontroValue.split(',').map(v => parseFloat(v.trim()));
-
-        if (!isNaN(lat1) && !isNaN(lon1) && !isNaN(lat2) && !isNaN(lon2)) {
-
-            const distancia = calcularDistancia(lat1, lon1, lat2, lon2);
-            const km = Math.round(distancia);
-
-            distanciaCalculada = km; // ✅ GUARDA DISTÂNCIA REAL
-
-            const tempo = (distancia / 80).toFixed(1);
-
-            let status = "";
-            let cor = "";
-
-            if (km <= 150) {
-                status = "🟢 PRÓXIMO";
-                cor = "#d4edda";
-            } 
-            else if (km <= 500) {
-                status = "🟡 MÉDIO";
-                cor = "#fff3cd";
-            } 
-            else {
-                status = "🔴 LONGE";
-                cor = "#f8d7da";
-            }
-
-            box.style.display = "block";
-            box.style.background = cor;
-            box.innerHTML = `
-                <strong>${status}</strong><br>
-                🚛 Veículo a <strong>${km} km</strong> do ponto de encontro<br>
-                ⏱ ETA aproximado: ${tempo}h
-            `;
-
-        } else {
-            box.style.display = "none";
-            distanciaCalculada = 0;
+        // 1. Busca dados do Robô Local (Python/Ngrok)
+        const resPython = await fetch(urlPython, {
+            headers: { 'ngrok-skip-browser-warning': 'true' }
+        });
+        const dadosRobo = await resPython.json();
+        
+        if (dadosRobo.monitorados > 0) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
+            
+            statusCom.innerText = "Online (Robô Local)";
+            statusCom.style.color = "#2ecc71";
         }
-    } catch (e) {
-        box.style.display = "none";
-        distanciaCalculada = 0;
+
+        // 2. Busca dados de Backup/Ocorrências (Google Sheets)
+        const resGoogle = await fetch(urlGoogle);
+        const dadosPlanilha = await resGoogle.json();
+
+        if (dadosPlanilha) {
+            // Renderiza as linhas se os containers existirem no HTML
+            if(document.getElementById('lista-veiculos')) renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+            
+            // Backup caso o Python falhe
+            const monitoradoAtual = document.getElementById('big-monitorado').innerText;
+            if (monitoradoAtual === "0" || monitoradoAtual === "--") {
+                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || "--";
+                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || "--";
+                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || "--";
+                statusCom.innerText = "Online (Nuvem)";
+            }
+        }
+
+        // Atualiza o relógio no rodapé (se o ID existir)
+        if(document.getElementById('relogio')) {
+            document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
+        }
+
+    } catch (err) {
+        console.error("Erro na sincronização:", err);
+        statusCom.innerText = "Link de Dados Offline";
+        statusCom.style.color = "#e74c3c";
+    } finally {
+        cards.forEach(c => c.style.opacity = "1");
     }
 }
 
-document.getElementById("latLong").addEventListener("input", atualizarDistancia);
-document.getElementById("latLongEncontro").addEventListener("input", atualizarDistancia);
-
-function enviarTudo() {
-
-const btn = document.getElementById("btnEnviar");
-btn.disabled = true;
-btn.textContent = "Gravando...";
-
-const rawData = dataHora.value;
-const [data, hora] = rawData.split('T');
-const [ano, mes, dia] = data.split('-');
-const dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
-
-let distanciaFinal = distanciaCalculada > 0 ? distanciaCalculada : "";
-
-const dados = {
-    dataHora: dataBrasil,
-    ordem: ordem.value,
-    motorista: motorista.value,
-    veiculo: veiculo.value,
-    manifesto: manifesto.value,
-    kmDestino: km.value,
-    rota: rota.value,
-    cliente: cliente.value,
-    ultimaPosicao: ultimaPosicao.value,
-    latLong: latLong.value,
-    latLongEncontro: latLongEncontro.value,
-    distanciaKM: distanciaFinal,
-    linkGoogle: link.value,
-    postoApoio: postoApoio.value
-};
-
-fetch("https://script.google.com/macros/s/AKfycby8K31knAtp3H4U7jYk0Mb66wX7FqPQBgX4_7ZLHQ_2ujfip5hYHT56gnQ_A_IY58G_/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(dados)
-})
-.then(() => {
-
-const msg = `*Posição para Escolta*\n\n${greeting}\n\n` +
-(distanciaFinal ? `🚛 *Veículo a ${distanciaFinal} km do ponto de encontro*\n\n` : "") +
-`*Data/Hora:* ${dados.dataHora}\n` +
-`*Ordem:* ${dados.ordem}\n` +
-`*Motorista:* ${dados.motorista}\n` +
-`*Veículo:* ${dados.veiculo}\n` +
-`*Manifesto:* ${dados.manifesto}\n` +
-`*KM Destino:* ${dados.kmDestino}\n` +
-`*Rota:* ${dados.rota}\n` +
-`*Cliente:* ${dados.cliente}\n` +
-`*Última Posição:* ${dados.ultimaPosicao}\n` +
-`*Lat/Long:* ${dados.latLong}\n\n` +
-`📍 *Link Mapa:* ${dados.linkGoogle}\n\n` +
-`*Ponto de Encontro:* ${dados.postoApoio}`;
-
-window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
-
-btn.disabled = false;
-btn.textContent = "Enviar";
-alert("Dados enviados com sucesso!");
-
-})
-.catch(() => {
-alert("Erro ao salvar dados.");
-btn.disabled = false;
-btn.textContent = "Enviar";
-});
-
+function renderRows(id, itens) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
+        container.innerHTML = "<div style='color:#bdc3c7; font-size:12px;'>✅ Nenhuma ocorrência detectada.</div>";
+        return;
+    }
+    container.innerHTML = itens.map(i => `<div style='font-size:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding:5px 0;'>• ${i}</div>`).join('');
 }
-</script>
 
+// Inicia e define intervalo
+updateTorre();
+setInterval(updateTorre, 60000);
+</script>
 
 </body>
 </html>
