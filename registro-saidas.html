@@ -28,27 +28,16 @@
             z-index: 1000;
         }
         
-        .navbar {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            position: fixed;
-            top: 0%;
-            width: 100%;
-            z-index: 1000;
+        nav {
+            width: 100%; background-color: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px); padding: 15px 0;
+            position: fixed; top: 0; left: 0; z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
         }
         
-        .navbar a {
-            color: rgb(252, 254, 255);
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-            display: block;
-        }
-        
-        .navbar a:hover {
-            background-color: #555;
-        }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav ul li a { color: rgb(252, 254, 255); text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 25px; transition: 0.3s; }
+        nav ul li a:hover { background-color: rgba(23, 23, 175, 0.6); }
         
         .content {
             display: flex;
@@ -297,16 +286,19 @@
         <h1> </h1>
     </div>
 
-    <div class='navbar'>
-        <a href='index.html'>Home</a>
-        <a href='registro-saidas.html'class='active'>Registro de Saídas</a>
-        <a href='solicitacao-escolta.html'>Solicitação de Escolta</a>
-        <a href='conhecimento.html'>Para conhecimento</a>
-        <a href='convite.html'>Convite Motorista</a>
-        <a href="videos.html">Galeria de Vídeos</a>
-        <li><a href="brief.html" class="active">Briefing</a></li>
-        <a href="posicao.html">Posição escolta</a>
-    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+            <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+            <li><a href="conhecimento.html">Para conhecimento</a></li>
+            <li><a href="convite.html">Convite Motorista</a></li>
+            <li><a href="videos.html">Galeria de Vídeos</a></li>
+            <li><a href="brief.html">Briefing</a></li>
+            <li><a href="posicao.html">Posição escolta</a></li>
+            <li><a href="comunicado.html">Comunicado</a></li>
+        </ul>
+    </nav>
 
 
     <div class='content'>

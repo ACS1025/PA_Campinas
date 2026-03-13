@@ -26,7 +26,7 @@ body {
     background: #fff;
     padding: 20px;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 80px auto 0;
     width: 100%;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 8px;
@@ -76,23 +76,16 @@ input[type="text"], select, textarea, input[type="datetime-local"] {
     display: none;
 }
 
-.navbar {
-    display: flex;
-    justify-content: center;
-    background-color: #444;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+nav {
+    width: 100%; background-color: rgba(30, 30, 30, 0.9);
+    backdrop-filter: blur(10px); padding: 15px 0;
+    position: fixed; top: 0; left: 0; z-index: 1000;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
 }
 
-.navbar a {
-    color: white;
-    padding: 14px 20px;
-    text-decoration: none;
-}
-
-.navbar a:hover { background-color: #555; }
+nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+nav ul li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 25px; transition: 0.3s; }
+nav ul li a:hover { background-color: rgba(23, 23, 175, 0.6); }
 
 button {
     background-color: #007bff;
@@ -110,16 +103,19 @@ button:hover { background-color: #0056b3; }
 
 <body>
 
-<div class="navbar">
-    <a href="index.html">Home</a>
-    <a href="registro-saidas.html">Registro de saídas</a>
-    <a href="solicitacao-escolta.html">Solicitação de escolta</a>
-    <a href="conhecimento.html" class="active">Para conhecimento</a>
-    <a href="convite.html">Convite Motorista</a>
-    <a href="videos.html">Galeria de vídeos</a>
-    <a href="brief.html">Briefing</a>
-    <a href="posicao.html">Posição escolta</a>
-</div>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+        <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+        <li><a href="conhecimento.html">Para conhecimento</a></li>
+        <li><a href="convite.html">Convite Motorista</a></li>
+        <li><a href="videos.html">Galeria de Vídeos</a></li>
+        <li><a href="brief.html">Briefing</a></li>
+        <li><a href="posicao.html">Posição escolta</a></li>
+        <li><a href="comunicado.html">Comunicado</a></li>
+    </ul>
+</nav>
 
 <div class="container">
 <h1>Posição para a escolta</h1>

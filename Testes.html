@@ -10,7 +10,7 @@
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0; padding: 0; box-sizing: border-box;
-        background-image: url('src/img/Registro\ de\ Saidas.png');
+        background-image: url('src/img/Registro%20de%20Saidas.png');
         background-size: cover; background-position: center;
         background-attachment: fixed; color: white;
     }
@@ -88,6 +88,22 @@
     .action-box { background: rgba(0, 0, 0, 0.75); border-radius: 20px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; justify-content: space-between; }
     .btn-action { background: #3498db; color: white; text-decoration: none; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; transition: 0.3s; }
     .notice-board { background: rgba(0, 0, 0, 0.8); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .notice-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .notice-item:last-child { border-bottom: none; }
+    .tag {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
     
     footer { text-align: center; padding: 30px; color: #bbb; font-size: 12px; }
 
@@ -196,8 +212,9 @@
         <div class="notice-board">
             <h3 style="margin-top:0; font-size: 16px; color: #f1c40f;">📌 Quadro de Avisos / Links Rápidos</h3>
             <div class="notice-item">
-                <span>Procedimento de Sinistro (PDF)</span>
+                <span>Avaliação pós treinamento</span>
                 <span class="tag">Importante</span>
+                <a href="Treinamento_Komando_Completo.html" target="_blank" class="icon-link">Abrir</a>
             </div>
             <div class="notice-item">
                 <span>Escala do Turno Atual - T1/T2</span>
@@ -211,15 +228,15 @@
     </div>
 
     <div class="sidebar">
-        <a href="https://docs.google.com/forms/..." target="_blank" class="icon-link">
-            <img src="src/img/checklist.gif" alt="Checklist">
-            <p>Checklist presencial</p>
-        </a>
+        <a href="https://drive.google.com/file/d/1LDve3eJIQUz4MXpsrRje3ot80WOvRvoN/view?usp=sharing" target="_blank" class="icon-link">
+    <img src="src/img/checklist.gif" alt="Checklist">
+    <p>Checklist presencial</p>
+</a>
         <a href="https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg" target="_blank" class="icon-link">
     <img src="src/img/briefing.gif" alt="Digital">
     <p>Briefing digital</p>
 </a>
-        <a href="https://docs.google.com/presentation/..." target="_blank" class="icon-link">
+        <a href="https://docs.google.com/presentation/d/1RRDgPSzhzji4DX_4uzWF5hZpzl1D9r4pU68Kpp3SR_o/edit?usp=sharing" target="_blank" class="icon-link">
             <img src="src/img/treinamento.gif" alt="Treinamento">
             <p>Treinamento motorista</p>
         </a>
