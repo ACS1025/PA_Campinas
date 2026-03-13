@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Treinamento Komando 2026</title>
+    <style>
+        :root {
+            --primary-color: #004a99;
+            --secondary-color: #FFFFFF;
+            --accent-color: #ffc107;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --text-color: #333333; /* Cinza bem escuro para leitura */
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-image: url('src/img/Registro\ de\ Saidas.png');
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f0f2f5; /* Fallback caso a imagem falhe */
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text-color); /* Garante que o texto padrão não seja branco */
+        }
+
+        .quiz-container { 
+            background: white; 
+            padding: 0; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            width: 100%; 
+            max-width: 500px; 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 600px) {
+            .quiz-container {
+                border-radius: 12px;
+                min-height: auto;
+                margin: 20px auto;
+            }
+            body { padding: 20px; }
+        }
+
+        .header {
+            background-color: white;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .logo-placeholder {
+            width: auto;
+            height: 60px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        /* Corrigindo os títulos e labels para azul escuro */
+        .header h1, label, .question-text, h2 {
+            color: var(--primary-color) !important;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px 20px;
+            background-color: white;
+            color: var(--text-color);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .option { 
+            background: var(--secondary-color); 
+            color: var(--text-color); /* Texto das opções em preto/cinza */
+            margin: 10px 0; 
+            padding: 18px 15px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            border: 2px solid #dee2e6; 
+            transition: all 0.2s;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background-color: #f8fbff;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 16px; 
+            margin-bottom: 15px;
+            color: #000; /* Texto digitado em preto */
+        }
+
+        .rationale {
+            background-color: #fff8e1;
+            color: #856404; /* Texto da explicação em tom de alerta */
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn { 
+            background: var(--primary-color); 
+            color: white !important; /* Texto do botão sempre branco */
+            border: none; 
+            padding: 18px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="header">
+        <img src="src/img/LogoKMD.png" alt="Komando Gerenciamento de Riscos" class="logo-placeholder">
+        <h1>Avaliação do Treinamento</h1>
+    </div>
+    
+    <div class="progress-container" id="progress-area" style="display:none; margin-top: 0;">
+        <div class="progress-bar" style="border-radius: 0;"><div id="progress-fill" class="progress-fill"></div></div>
+    </div>
+
+    <div class="content">
+        <div id="setup-screen">
+            <div class="form-group">
+                <label>Nome Completo:</label>
+                <input type="text" id="nome" placeholder="Ex: João Silva">
+            </div>
+            <div class="form-group">
+                <label>CPF:</label>
+                <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+            </div>
+            <div class="form-group">
+                <label>Placa do Veículo:</label>
+                <input type="text" id="placa" placeholder="ABC1D23" maxlength="8" oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <button class="btn" onclick="startQuiz()">INICIAR AVALIAÇÃO</button>
+        </div>
+
+        <div id="quiz-screen" style="display:none;">
+            <div id="question-container"></div>
+            <div id="rat-container" class="rationale"></div>
+            <button id="nextBtn" class="btn" onclick="nextQuestion()" style="display:none; margin-top: 20px;">PRÓXIMA QUESTÃO</button>
+        </div>
+
+        <div id="result-screen" style="display:none; text-align:center;">
+            <h2>Avaliação Concluída!</h2>
+            <span class="score-badge" id="score-num">0</span>
+            <p id="score-text" style="font-size: 1.1rem;"></p>
+            <div id="loading" style="display:none; color: var(--primary-color); margin: 20px 0;">
+                <strong>Salvando resultados...</strong>
+            </div>
+            <div id="final-msg"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// MÁSCARA DE CPF
+function mascaraCPF(i) {
+    let v = i.value;
+    v = v.replace(/\D/g, ""); 
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    i.value = v;
+}
+
+const questions = [
+    { q: "O que fazer ao parar entre Itumbiara/GO e Jaraguá/GO?", options: ["Apenas informar a central", "Tirar foto da carreta e lacre e enviar no WhatsApp", "Solicitar bloqueio", "Manter o motor ligado"], correct: 1, rationale: "Exigência de registro visual via WhatsApp para trechos de alto risco." },
+    { q: "O que acontece se o sistema detectar 'Fuga de Rota'?", options: ["O veículo é bloqueado imediatamente", "Recebe apenas aviso no teclado", "Entra em modo economia", "Nada acontece"], correct: 0, rationale: "Fuga de rota gera bloqueio automático por segurança." },
+    { q: "O que é PROIBIDO após o 'Início de Viagem'?", options: ["Usar o rádio", "Abrir portas da cabine ou soltar engate", "Ligar os faróis", "Beber água"], correct: 1, rationale: "Os sensores de porta e engate são monitorados após o início." },
+    { q: "Como deve ser o contato com a Central?", options: ["Longo e detalhado", "Gritando", "Breve, objetivo e claro", "Não deve haver contato"], correct: 2, rationale: "Comunicação objetiva agiliza o processo de segurança." },
+    { q: "Quando enviar a macro de 'Fim de Viagem'?", options: ["Ao chegar na cidade", "Quando a carga estiver 100% fora do veículo", "Ao ver o cliente", "Antes de descarregar"], correct: 1, rationale: "A viagem só encerra após a entrega total da mercadoria." },
+    { q: "O que é o sensor JAMMER?", options: ["Sensor de pneus", "Detector de interferência de sinal", "Acelerômetro", "Sensor de temperatura"], correct: 1, rationale: "Identifica bloqueadores de sinal usados em tentativas de roubo." },
+    { q: "Qual a recomendação em caso de abordagem/assalto?", options: ["Reagir", "Tentar fugir", "Não reagir e manter a calma", "Discutir com os meliantes"], correct: 2, rationale: "A prioridade total é a preservação da vida do motorista." },
+    { q: "A macro de 'Pernoite' permite o quê?", options: ["Desligar o GPS", "Abrir a porta do motorista sem alerta", "Dar carona", "Deixar o baú aberto"], correct: 1, rationale: "Ajusta os sensores para o descanso legal do condutor." },
+    { q: "O que é Gerenciamento de Riscos?", options: ["Técnicas para minimizar perdas e danos", "Apenas seguro de carga", "Multar motoristas", "Instalar som no caminhão"], correct: 0, rationale: "É um conjunto de medidas preventivas integradas." },
+    { q: "Sobre os dados da carga, você deve:", options: ["Postar no Facebook", "Não conversar com estranhos sobre isso", "Contar para outros motoristas no posto", "Anotar no para-brisa"], correct: 1, rationale: "A informação sigilosa é a maior proteção contra roubos." }
+];
+
+let currentQ = 0;
+let score = 0;
+let userData = {};
+
+function startQuiz() {
+    userData.nome = document.getElementById('nome').value;
+    userData.cpf = document.getElementById('cpf').value;
+    userData.placa = document.getElementById('placa').value;
+    userData.data = new Date().toLocaleString('pt-BR');
+
+    if(userData.nome.length < 3 || userData.cpf.length < 14 || !userData.placa) {
+        alert("Preencha seus dados corretamente antes de começar.");
+        return;
+    }
+
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('progress-area').style.display = 'block';
+    document.getElementById('quiz-screen').style.display = 'block';
+    showQuestion();
+}
+
+function showQuestion() {
+    const q = questions[currentQ];
+    const container = document.getElementById('question-container');
+    document.getElementById('progress-fill').style.width = `${((currentQ) / questions.length) * 100}%`;
+    
+    container.innerHTML = `
+        <div class="question-text">${q.q}</div>
+        ${q.options.map((opt, i) => `<div class="option" onclick="checkAnswer(${i}, this)">${opt}</div>`).join('')}
+    `;
+}
+
+function checkAnswer(idx, element) {
+    const q = questions[currentQ];
+    if (document.getElementById('nextBtn').style.display === 'block') return;
+
+    const options = document.querySelectorAll('.option');
+    if (idx === q.correct) {
+        element.classList.add('correct');
+        score++;
+    } else {
+        element.classList.add('wrong');
+        options[q.correct].classList.add('correct');
+    }
+
+    const rat = document.getElementById('rat-container');
+    rat.innerHTML = `<strong>💡 Por que isso?</strong><br>${q.rationale}`;
+    rat.style.display = 'block';
+    document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentQ++;
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('rat-container').style.display = 'none';
+
+    if (currentQ < questions.length) {
+        showQuestion();
+    } else {
+        finishQuiz();
+    }
+}
+
+function finishQuiz() {
+    document.getElementById('progress-fill').style.width = `100%`;
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('score-num').innerText = score;
+    document.getElementById('score-text').innerText = `Você acertou ${score} de ${questions.length} questões.`;
+    
+    sendData();
+}
+
+function sendData() {
+    document.getElementById('loading').style.display = 'block';
+    
+    const url = "https://script.google.com/macros/s/AKfycbzaNwivA32PcJyEKkhLaj7geQN6wBRoSmFcz_gbfmgcLeK763ibQMilUOqi7SFyhbgX/exec"; 
+
+    const finalData = {
+        ...userData,
+        nota: score
+    };
+
+    fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(finalData)
+    }).then(() => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('final-msg').innerHTML = "<h3 style='color: var(--success-color);'>✅ Resultados salvos com sucesso!</h3><p>Pode fechar esta página.</p>";
+    }).catch(() => {
+        document.getElementById('loading').style.display = 'none';
+        alert("Erro ao enviar dados. Por favor, tire um print desta tela.");
+    });
+}
+</script>
+</body>
+</html>
