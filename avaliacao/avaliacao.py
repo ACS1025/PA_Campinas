@@ -3,57 +3,16 @@ import pandas as pd
 import re
 
 # ---------------------------------------------------
-# CONFIGURAÇÃO DA PÁGINA
+# CONFIGURAÇÃO VISUAL
 # ---------------------------------------------------
 st.set_page_config(page_title="Análise de Risco - PA Campinas", layout="wide")
 
 st.markdown("""
 <style>
-    /* Painel de Boas-Vindas */
-    .welcome-card {
-        background: linear-gradient(135deg, #007bff 0%, #003366 100%);
-        color: white;
-        padding: 60px;
-        border-radius: 20px;
-        text-align: center;
-        margin-top: 50px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    .report-section {
-        background-color: white;
-        padding: 10px;
-        margin-bottom: 5px;
-    }
-
-    /* Caixa de Dica Amigável */
-    .tip-box {
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 6px solid;
-        margin: 15px 0;
-        font-size: 1.1rem;
-        line-height: 1.5;
-    }
-
-    /* REGRAS DE IMPRESSÃO - FORÇAR UMA PÁGINA */
-    @media print {
-        header, footer, .stSidebar, .stButton, [data-testid="stHeader"], .no-print { 
-            display:none !important; 
-        }
-        /* Remove o espaço gigante que o Streamlit coloca no topo e nas laterais */
-        .main .block-container { 
-            max-width: 100% !important; 
-            padding-top: 0 !important; 
-            padding-bottom: 0 !important; 
-            margin: 0 !important; 
-        }
-        /* Compacta as tabelas para não estourarem a página */
-        table { width: 100% !important; font-size: 9pt !important; }
-        .report-section { border: none !important; }
-        h1 { font-size: 18pt !important; }
-        h3 { font-size: 14pt !important; }
-    }
+    .welcome-card { background: linear-gradient(135deg, #007bff 0%, #003366 100%); color: white; padding: 40px; border-radius: 20px; text-align: center; }
+    .metric-box { background-color: #f8f9fa; padding: 15px; border-radius: 10px; border: 1px solid #dee2e6; text-align: center; }
+    .report-header { text-align: center; border-bottom: 2px solid #333; margin-bottom: 20px; }
+    @media print { .no-print { display:none !important; } .main .block-container { max-width: 100% !important; padding: 0 !important; } }
 </style>
 """, unsafe_allow_html=True)
 
@@ -63,123 +22,92 @@ URL_DESEMPENHO = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL5tw7f2ptOEh
 def limpar_cpf(cpf):
     return re.sub(r'\D', '', str(cpf)).strip()
 
-def encontrar_coluna(df, palavras):
-    for col in df.columns:
-        for p in palavras:
-            if p.upper() in col.upper(): return col
-    return None
-
 @st.cache_data(ttl=5)
 def carregar_dados():
-    df_oc = pd.read_csv(URL_OCORRENCIAS)
-    df_des = pd.read_csv(URL_DESEMPENHO, header=None) 
-    df_oc.columns = [c.strip() for c in df_oc.columns]
+    # Aba Ocorrências: Tratando separadores extras que o Sheets pode enviar nas colunas vazias
+    df_oc = pd.read_csv(URL_OCORRENCIAS, on_bad_lines='skip').dropna(how='all', axis=1)
+    # Aba Desempenho: Lida como matriz bruta (header=None) para navegar pelas células
+    df_des = pd.read_csv(URL_DESEMPENHO, header=None)
+    df_oc.columns = [str(c).strip() for c in df_oc.columns]
     return df_oc, df_des
 
 try:
     df_oc_bruto, df_des_bruto = carregar_dados()
-    col_cpf_oc = encontrar_coluna(df_oc_bruto, ["CPF"])
-    df_oc_bruto["cpf_limpo"] = df_oc_bruto[col_cpf_oc].apply(limpar_cpf)
     
-    st.sidebar.header("Módulo de Consulta")
-    lista_cpfs = sorted(df_oc_bruto[col_cpf_oc].dropna().unique())
-    cpf_selecionado = st.sidebar.selectbox("Selecione o CPF:", [""] + list(lista_cpfs))
+    # Mapeamento dinâmico (Ocorrências)
+    col_cpf = next((c for c in df_oc_bruto.columns if "CPF" in c.upper()), None)
+    col_mot = next((c for c in df_oc_bruto.columns if "MOTORISTA" in c.upper()), None)
+    col_evento = next((c for c in df_oc_bruto.columns if "OCORRÊNCIA" in c.upper() or "DESCRIÇÃO" in c.upper()), None)
+    col_rastr = next((c for c in df_oc_bruto.columns if "RASTREAMENTO" in c.upper()), None)
+    col_data = "Data Inserção" # Sua coluna na AW
+
+    df_oc_bruto["cpf_limpo"] = df_oc_bruto[col_cpf].apply(limpar_cpf)
+    lista_cpfs = sorted(df_oc_bruto[col_cpf].dropna().unique())
+    
+    st.sidebar.header("Filtro de Análise")
+    cpf_selecionado = st.sidebar.selectbox("Escolha o CPF:", [""] + list(lista_cpfs))
 
     if cpf_selecionado:
         cpf_limpo_sel = limpar_cpf(cpf_selecionado)
         df_mot = df_oc_bruto[df_oc_bruto["cpf_limpo"] == cpf_limpo_sel].copy()
-        
-        nome_mot = df_mot["Motorista"].iloc[0] if "Motorista" in df_mot.columns else "Motorista"
-        col_placa = encontrar_coluna(df_mot, ["PLACA"])
-        placa_veic = df_mot[col_placa].iloc[0] if col_placa else "N/D"
+        nome_mot = df_mot[col_mot].iloc[0] if col_mot else "Motorista"
 
-        linha_inicio = None
-        for idx, row in df_des_bruto.iterrows():
-            if row.astype(str).str.contains(cpf_selecionado).any() or row.astype(str).str.contains(cpf_limpo_sel).any():
-                linha_inicio = idx
-                break
-        
+        # --- LÓGICA DE CAPTURA NA PLANILHA DE DESEMPENHO (Baseada na Imagem) ---
         total_sm_planilha, nota_val, peso_val = 0, 0.0, 0.0
-        df_ficha_exibir = pd.DataFrame()
-
-        if linha_inicio is not None:
-            df_ficha = df_des_bruto.iloc[linha_inicio-1 : linha_inicio+15].copy()
-            df_ficha_exibir = df_ficha.dropna(how='all', axis=1).fillna("")
-            valores_planos = df_ficha.astype(str).values.flatten().tolist()
-            for i, v in enumerate(valores_planos):
-                v_up = v.upper().strip()
-                try:
-                    if "TOTAL DE SM" in v_up: total_sm_planilha = float(valores_planos[i+1].replace(",", "."))
-                    elif "NOTA AVALIAÇÃO" in v_up: nota_val = float(valores_planos[i+1].replace(",", "."))
-                    elif "PESO DE IMPACTO" in v_up: peso_val = float(valores_planos[i+1].replace(",", "."))
-                except: continue
-
-        col_evento = encontrar_coluna(df_mot, ["OCORR"])
-        col_rastr = encontrar_coluna(df_mot, ["RASTR", "COD"])
-        total_sm_final = total_sm_planilha if total_sm_planilha > 0 else (df_mot[col_rastr].nunique() if col_rastr else 1)
-        ocorrencias_risco = ["DESVIO DE ROTA", "PARADA NÃO INFORMADA", "PARADA EXCEDIDA", "PERNOITE EXCEDIDO", "PARADA EM LOCAL NÃO AUTORIZADO"]
-        df_historico_risco = df_mot[df_mot[col_evento].str.upper().isin(ocorrencias_risco)].copy()
-        df_historico_risco = df_historico_risco.drop_duplicates(subset=[col_rastr, col_evento, "Data/Hora de ocorrência"])
         
-        mapa_pesos = {"DESVIO DE ROTA": 5, "PARADA NÃO INFORMADA": 4, "PARADA EXCEDIDA": 4, "PERNOITE EXCEDIDO": 3, "PARADA EM LOCAL NÃO AUTORIZADO": 3}
-        df_historico_risco["Peso"] = df_historico_risco[col_evento].str.upper().map(mapa_pesos)
-        indice_sev = df_historico_risco["Peso"].sum() / total_sm_final if total_sm_final > 0 else 0
+        # Procura a célula que contém o CPF na matriz bruta
+        for r in range(len(df_des_bruto)):
+            for c in range(len(df_des_bruto.columns)):
+                celula = str(df_des_bruto.iloc[r, c])
+                if cpf_limpo_sel in limpar_cpf(celula):
+                    # Encontrou o bloco do motorista! Agora busca as labels próximas
+                    # Varre as 15 linhas ao redor para achar os valores
+                    sub_matriz = df_des_bruto.iloc[r-2 : r+15].astype(str).values.flatten().tolist()
+                    for i, texto in enumerate(sub_matriz):
+                        t_up = texto.upper()
+                        try:
+                            if "TOTAL DE SM" in t_up: total_sm_planilha = float(sub_matriz[i+1].replace(",", "."))
+                            elif "NOTA AVALIAÇÃO" in t_up: nota_val = float(sub_matriz[i+1].replace(",", "."))
+                            elif "PESO DE IMPACTO" in t_up: peso_val = float(sub_matriz[i+1].replace(",", "."))
+                        except: continue
+                    break
 
-        if indice_sev <= 1:
-            status, cor, dica = "DIAMANTE", "#28a745", "👏 **Excelente performance!** O motorista demonstra total comprometimento com as regras de segurança. Recomenda-se manter o reconhecimento e utilizá-lo como exemplo para a equipe."
-        elif indice_sev <= 2:
-            status, cor, dica = "MODERADO", "#fd7e14", "🤝 **Oportunidade de Conversa:** Identificamos alguns desvios pontuais. Vale um bate-papo amigável para reforçar os procedimentos de rota e garantir que ele continue evoluindo para o nível Diamante."
-        else:
-            status, cor, dica = "CRÍTICO", "#dc3545", "📢 **Atenção Prioritária:** O nível de risco atual exige uma intervenção imediata. Recomendamos uma reciclagem técnica e acompanhamento próximo para garantir a segurança do motorista e da operação."
+        # --- PROCESSAMENTO DE RISCOS ---
+        riscos_pgr = ["DESVIO DE ROTA", "PARADA NÃO INFORMADA", "PARADA EXCEDIDA", "PERNOITE EXCEDIDO", "PARADA EM LOCAL NÃO AUTORIZADO"]
+        df_riscos = df_mot[df_mot[col_evento].str.upper().isin(riscos_pgr)].copy()
+        df_riscos = df_riscos.drop_duplicates(subset=[col_rastr, col_evento, col_data])
+        
+        pesos = {"DESVIO DE ROTA": 5, "PARADA NÃO INFORMADA": 4, "PARADA EXCEDIDA": 4, "PERNOITE EXCEDIDO": 3, "PARADA EM LOCAL NÃO AUTORIZADO": 3}
+        df_riscos["Peso"] = df_riscos[col_evento].str.upper().map(pesos)
+        
+        viagens = total_sm_planilha if total_sm_planilha > 0 else (df_mot[col_rastr].nunique() if col_rastr else 1)
+        indice = df_riscos["Peso"].sum() / viagens if viagens > 0 else 0
 
-        # CABEÇALHO (Respeitando seu título)
-        st.markdown(f"""
-            <div style='text-align: center; border-bottom: 2px solid #333; margin-bottom: 10px;'>
-                <h1 style='margin:0;'>🛡️ Análise de Comportamento - PA Campinas</h1>
-                <h3 style='margin:5px 0;'>{nome_mot} | Placa: {placa_veic}</h3>
-                <p style='margin:0; font-size:12px;'>CPF: {cpf_selecionado} | Base Campinas</p>
-            </div>
-        """, unsafe_allow_html=True)
+        # Status
+        if indice <= 1: status, cor = "DIAMANTE", "#28a745"
+        elif indice <= 2: status, cor = "MODERADO", "#fd7e14"
+        else: status, cor = "CRÍTICO", "#dc3545"
 
-        m1, m2, m3, m4, m5 = st.columns(5)
-        m1.metric("Viagens (SM)", int(total_sm_final))
-        m2.metric("Riscos", len(df_historico_risco))
-        m3.metric("Nota", f"{nota_val:.1f}")
-        m4.metric("Peso", f"{peso_val:.2f}")
-        with m5: st.markdown(f"<div style='background:{cor};color:white;padding:8px;border-radius:8px;text-align:center;'><b>{status}</b><br>{indice_sev:.2f}</div>", unsafe_allow_html=True)
+        # --- INTERFACE ---
+        st.markdown(f"<div class='report-header'><h1>🛡️ {nome_mot}</h1><p>Base Campinas | {cpf_selecionado}</p></div>", unsafe_allow_html=True)
 
-        st.markdown(f"""
-            <div class='tip-box' style='border-color: {cor}; background-color: {cor}15; color: #333;'>
-                {dica}
-            </div>
-        """, unsafe_allow_html=True)
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Viagens Total", int(viagens))
+        c2.metric("Ocorrências", len(df_riscos))
+        c3.metric("Nota Geral", f"{nota_val:.1f}")
+        with c4: st.markdown(f"<div style='background:{cor}; color:white; padding:10px; border-radius:10px;'><b>{status}</b><br>Índice: {indice:.2f}</div>", unsafe_allow_html=True)
 
-        st.markdown("### 📋 Histórico de Riscos PGR")
-        cols_tab = [col_rastr, "Data/Hora de ocorrência", col_evento]
-        st.table(df_historico_risco[[c for c in cols_tab if c in df_historico_risco.columns]])
+        st.divider()
+        st.subheader("📋 Detalhamento de Ocorrências (A:AW)")
+        # Exibe apenas se a coluna existir no DataFrame filtrado
+        cols_final = [c for c in [col_rastr, col_data, col_evento] if c in df_riscos.columns]
+        st.table(df_riscos[cols_final])
 
-        st.markdown("### 📑 Ficha de Desempenho Detalhada")
-        if not df_ficha_exibir.empty:
-            st.table(df_ficha_exibir)
-
-        st.markdown("<div class='no-print' style='margin-top:20px;'>", unsafe_allow_html=True)
-        if st.button("🖨️ Imprimir Relatório"):
+        if st.button("🖨️ Imprimir"):
             st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     else:
-        # PAINEL DE BOAS VINDAS (Respeitando seu título)
-        st.markdown("""
-            <div class='welcome-card'>
-                <h1>🛡️ Análise de Comportamento - PA Campinas</h1>
-                <p style='font-size:1.3em;'>Gestão de Performance - PA Campinas</p>
-            </div>
-        """, unsafe_allow_html=True)
-        st.markdown("---")
-        c_i1, c_i2 = st.columns(2)
-        c_i1.info(f"📊 Registros na base: {len(df_oc_bruto)}")
-        c_i2.success(f"🚚 Motoristas ativos: {len(lista_cpfs)}")
-        st.warning("👈 Selecione um motorista na barra lateral para gerar o relatório.")
+        st.markdown("<div class='welcome-card'><h1>🛡️ Torre de Controle - PA Campinas</h1><p>Aguardando seleção de motorista...</p></div>", unsafe_allow_html=True)
 
 except Exception as e:
-    st.error(f"Erro: {e}")
+    st.error(f"Erro na integração: {e}")
