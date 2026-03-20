@@ -22,11 +22,13 @@ st.markdown("""
     .metric-box { text-align: center; padding: 12px; border-radius: 8px; color: white; font-weight: bold; }
     .info-vazio { color: #666; font-style: italic; padding: 10px; background: #f8f9fa; border-left: 5px solid #ccc; }
     
-    /* REMOVE A "SUJEIRA" VISUAL (BOTÃO DE SETA E MENUS PADRÃO) */
+    /* REMOVE APENAS O MENU DE OPÇÕES E O RODAPÉ, MANTENDO O HEADER PARA O BOTÃO LATERAL */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
     button[title="View fullscreen"] {visibility: hidden;}
+    
+    /* AJUSTE PARA O BOTÃO DE EXPANDIR/RECOLHER (keyboard_double_arrow) FICAR VISÍVEL */
+    header { visibility: visible !important; background: rgba(255,255,255,0); }
 </style>
 """, unsafe_allow_html=True)
 
@@ -135,7 +137,6 @@ try:
         with col_2:
             st.write("#### 📊 Histórico Detalhado (Com Datas)")
             if not df_hist_pgr.empty:
-                # Inclui a coluna de Código Rastreamento para vincular cada erro à sua SM específica
                 st.dataframe(df_hist_pgr[["Data Hora Ocorrência", "Descrição Ocorrência", "Código Rastreamento"]], 
                              use_container_width=True, hide_index=True)
             else:
