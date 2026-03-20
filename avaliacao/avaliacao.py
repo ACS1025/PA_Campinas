@@ -2,10 +2,8 @@ import streamlit as st
 import pandas as pd
 import re
 
-# ---------------------------------------------------
-# CONFIGURAÇÃO VISUAL
-# ---------------------------------------------------
-st.set_page_config(page_title="Relatório PGR - PA Campinas", layout="wide")
+# 1. Configuração e Estética Profissional
+st.set_page_config(page_title="PGR - PA Campinas", layout="wide")
 
 st.markdown("""
 <style>
@@ -20,12 +18,13 @@ st.markdown("""
         color: white; padding: 60px; border-radius: 20px; text-align: center;
     }
     .metric-box { text-align: center; padding: 12px; border-radius: 8px; color: white; font-weight: bold; }
+    .info-vazio { color: #666; font-style: italic; padding: 10px; background: #f8f9fa; border-left: 5px solid #ccc; }
+    /* Esconde o botão keyboard do Streamlit para limpar a tela */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------------------------------------
-# CARREGAMENTO E LOGICA DE DADOS
-# ---------------------------------------------------
 OC_PGR = ["DESVIO DE ROTA", "PARADA NÃO INFORMADA", "PARADA EXCEDIDA", "PERNOITE EXCEDIDO", "PARADA EM LOCAL NÃO AUTORIZADO"]
 
 def limpar_cpf(cpf):
@@ -35,7 +34,6 @@ def limpar_cpf(cpf):
 def carregar_dados():
     URL_OC = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL5tw7f2ptOEhVk0nyNE5AkddbMVKcXspxL0dl2zz9dhkB7R8HcmtHlW2o-PdgiNw5OBX3M3xTo-al/pub?gid=2109672138&single=true&output=csv"
     URL_DES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL5tw7f2ptOEhVk0nyNE5AkddbMVKcXspxL0dl2zz9dhkB7R8HcmtHlW2o-PdgiNw5OBX3M3xTo-al/pub?gid=2131819073&single=true&output=csv"
-    # Lendo todas as 195 linhas originais
     df_oc = pd.read_csv(URL_OC, skip_blank_lines=False)
     df_des = pd.read_csv(URL_DES, header=None).fillna("")
     return df_oc, df_des
@@ -45,57 +43,53 @@ try:
     df_oc_bruto.columns = [str(c).strip() for c in df_oc_bruto.columns]
     df_oc_bruto["cpf_limpo"] = df_oc_bruto["CPF Motorista"].astype(str).apply(limpar_cpf)
 
-    # --- LÓGICA DE RESET DO BOTÃO (VOLTAR PARA A CAPA) ---
-    if 'reset_key' not in st.session_state:
-        st.session_state.reset_key = 0
+    if 'reset_key' not in st.session_state: st.session_state.reset_key = 0
 
     def voltar_inicio():
         st.session_state.reset_key += 1
         st.rerun()
 
-    # --- SIDEBAR ---
+    # Sidebar
     st.sidebar.header("🔍 Consulta")
-    cpfs_lista = sorted([c for c in df_oc_bruto["CPF Motorista"].unique() if pd.notna(c) and str(c).strip() != ""])
-    
-    # Usando a key dinâmica para forçar o reset do selectbox
-    cpf_selecionado = st.sidebar.selectbox(
-        "Selecione o CPF:", 
-        [""] + cpfs_lista, 
-        key=f"sb_{st.session_state.reset_key}"
-    )
-
-    st.sidebar.markdown("---")
+    lista_cpfs = sorted([c for c in df_oc_bruto["CPF Motorista"].unique() if pd.notna(c) and str(c).strip() != ""])
+    cpf_selecionado = st.sidebar.selectbox("Selecio o CPF:", [""] + lista_cpfs, key=f"s_{st.session_state.reset_key}")
     st.sidebar.button("🏠 Voltar ao início", on_click=voltar_inicio)
 
-    if cpf_selecionado != "":
-        # === RELATÓRIO INDIVIDUAL ===
+    if cpf_selecionado:
         cpf_alvo = limpar_cpf(cpf_selecionado)
         df_mot = df_oc_bruto[df_oc_bruto["cpf_limpo"] == cpf_alvo].copy()
         
-        # 1. CONTAGEM REAL DE SM (Códigos de Rastreamento distintos para o CPF)
-        # Isso garante que SM nunca seja 0 se houver ocorrência registrada
+        # Filtro de Histórico PGR
+        df_hist_pgr = df_mot[df_mot["Descrição Ocorrência"].str.upper().isin(OC_PGR)].sort_values(by="Data Hora Ocorrência", ascending=False).copy()
+        
+        # --- Lógica de Rastreamento ---
+        # SM Real = Contagem de códigos distintos
         sm_real = df_mot["Código Rastreamento"].nunique()
+        
+        # Último Rastreamento = O código da última ocorrência registrada (se houver) ou a última viagem
+        if not df_hist_pgr.empty:
+            ultimo_rastreio = df_hist_pgr.iloc[0]["Código Rastreamento"]
+            ultima_data = df_hist_pgr.iloc[0]["Data Hora Ocorrência"]
+        else:
+            ultimo_rastreio = df_mot.iloc[-1]["Código Rastreamento"] if not df_mot.empty else "N/A"
+            ultima_data = "Sem ocorrências"
 
-        # 2. Ocorrências filtradas para o histórico PGR
-        df_hist_pgr = df_mot[df_mot["Descrição Ocorrência"].str.upper().isin(OC_PGR)].copy()
-        qtd_oc_pgr = len(df_hist_pgr)
-
-        # 3. Busca de Metadados (Matriz) na aba Desempenho
-        df_matriz_des = pd.DataFrame()
+        # Matriz de Desempenho
+        df_matriz = pd.DataFrame()
         for idx, row in df_des_bruto.iterrows():
             if cpf_alvo in limpar_cpf(str(row[1])):
-                df_matriz_des = df_des_bruto.iloc[idx: idx+8, 0:2].copy()
+                df_matriz = df_des_bruto.iloc[idx: idx+8, 0:2].copy()
                 break
 
-        # --- CÁLCULO DO ÍNDICE ---
-        # Multiplicamos por 3 (peso padrão) e dividimos pelo total de SMs distintas
-        indice_pgr = (qtd_oc_pgr * 3) / sm_real if sm_real > 0 else 0
-        
-        cor_status = "#28a745" if indice_pgr <= 1.0 else "#fd7e14" if indice_pgr <= 2.5 else "#dc3545"
-        label_status = "DIAMANTE" if indice_pgr <= 1.0 else "MODERADO" if indice_pgr <= 2.5 else "ALTO RISCO"
+        # Cálculo
+        qtd_oc = len(df_hist_pgr)
+        divisor = sm_real if sm_real > 0 else (1 if qtd_oc > 0 else 0)
+        indice = (qtd_oc * 3) / divisor if divisor > 0 else 0
+        cor_ind = "#28a745" if indice <= 1.0 else "#fd7e14" if indice <= 2.5 else "#dc3545"
 
-        st.markdown(f"### 🛡️ Análise PGR - {df_mot['Motorista'].iloc[0]}")
+        st.subheader(f"🛡️ Análise PGR - {df_mot['Motorista'].iloc[0]}")
         
+        # Cabeçalho Detalhado
         st.markdown("<div class='data-card'>", unsafe_allow_html=True)
         c1, c2, c3 = st.columns(3)
         with c1:
@@ -103,43 +97,36 @@ try:
             st.write(f"**CPF:** {cpf_selecionado}")
         with c2:
             st.write(f"**Placa:** {df_mot['Placa Veículo'].iloc[0]}")
-            st.write(f"**Rastreamento:** {df_mot['Código Rastreamento'].iloc[0]}")
+            st.write(f"**Último Rastreio:** {ultimo_rastreio}")
         with c3:
             st.write(f"**Cliente:** {df_mot['Cliente'].iloc[0]}")
             st.write(f"**Perfil:** {df_mot['Perfil Motorista'].iloc[0]}")
         st.markdown("</div>", unsafe_allow_html=True)
 
         m1, m2, m3 = st.columns(3)
-        m1.metric("Viagens (Total SM)", sm_real)
-        m2.metric("Ocorrências PGR", qtd_oc_pgr)
-        m3.markdown(f"<div class='metric-box' style='background:{cor_status};'>{label_status}<br>Índice: {indice_pgr:.2f}</div>", unsafe_allow_html=True)
+        m1.metric("Viagens (Total SM Distintos)", sm_real)
+        m2.metric("Ocorrências PGR", qtd_oc)
+        m3.markdown(f"<div class='metric-box' style='background:{cor_ind};'>Índice: {indice:.2f}</div>", unsafe_allow_html=True)
 
         st.markdown("<div class='data-card'>", unsafe_allow_html=True)
-        col_1, col_2 = st.columns(2)
-        with col_1:
+        col_l, col_r = st.columns(2)
+        with col_l:
             st.write("#### 📋 Matriz de Desempenho")
-            st.dataframe(df_matriz_des, use_container_width=True, hide_index=True)
-        with col_2:
-            st.write("#### 📊 Histórico Filtrado")
-            st.dataframe(df_hist_pgr[["Data Hora Ocorrência", "Descrição Ocorrência"]], use_container_width=True, hide_index=True)
+            if not df_matriz.empty: st.dataframe(df_matriz, use_container_width=True, hide_index=True)
+            else: st.markdown("<div class='info-vazio'>Sem dados na matriz.</div>", unsafe_allow_html=True)
+        
+        with col_r:
+            st.write("#### 📊 Histórico de Ocorrências (Por Data)")
+            if not df_hist_pgr.empty:
+                # Exibe Data, Ocorrência e o Rastreamento específico daquele evento
+                st.dataframe(df_hist_pgr[["Data Hora Ocorrência", "Descrição Ocorrência", "Código Rastreamento"]], use_container_width=True, hide_index=True)
+            else:
+                st.markdown("<div class='info-vazio'>Nenhuma ocorrência PGR vinculada a este CPF.</div>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
     else:
-        # === CAPA (VALORES TOTAIS) ===
-        st.markdown("""
-            <div class='welcome-card'>
-                <h1>🛡️ Central de Operações - PA Campinas</h1>
-                <p style='font-size:1.2em;'>Gerenciamento de Risco e Comportamento</p>
-                <hr style='border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 30px 0;'>
-                <p>Selecione um motorista no menu lateral para iniciar.</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("---")
-        k1, k2, k3 = st.columns(3)
-        with k1: st.markdown(f"<div class='data-card' style='text-align:center;'><h2>{len(cpfs_lista)}</h2><b>Motoristas Ativos</b></div>", unsafe_allow_html=True)
-        with k2: st.markdown(f"<div class='data-card' style='text-align:center;'><h2>{len(df_oc_bruto)}</h2><b>Total Ocorrências (Base)</b></div>", unsafe_allow_html=True)
-        with k3: st.markdown(f"<div class='data-card' style='text-align:center;'><h2>Campinas</h2><b>Base de Monitoramento</b></div>", unsafe_allow_html=True)
+        # Capa Azul
+        st.markdown(f"""<div class='welcome-card'><h1>🛡️ PA Campinas</h1><p>Gestão de Comportamento PGR</p><br><p>Total de Registros na Base: {len(df_oc_bruto)}</p></div>""", unsafe_allow_html=True)
 
 except Exception as e:
-    st.error(f"Erro técnico: {e}")
+    st.error(f"Erro: {e}")
