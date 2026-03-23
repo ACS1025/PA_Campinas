@@ -235,20 +235,126 @@ function mascaraCPF(i) {
     i.value = v;
 }
 
-const questions = [
-    { q: "O que fazer ao parar entre Itumbiara/GO e Jaraguá/GO?", options: ["Apenas informar a central", "Tirar foto da carreta e lacre e enviar no WhatsApp", "Solicitar bloqueio", "Manter o motor ligado"], correct: 1, rationale: "Exigência de registro visual via WhatsApp para trechos de alto risco." },
-    { q: "O que acontece se o sistema detectar 'Fuga de Rota'?", options: ["O veículo é bloqueado imediatamente", "Recebe apenas aviso no teclado", "Entra em modo economia", "Nada acontece"], correct: 0, rationale: "Fuga de rota gera bloqueio automático por segurança." },
-    { q: "O que é PROIBIDO após o 'Início de Viagem'?", options: ["Usar o rádio", "Abrir portas da cabine ou soltar engate", "Ligar os faróis", "Beber água"], correct: 1, rationale: "Os sensores de porta e engate são monitorados após o início." },
-    { q: "Como deve ser o contato com a Central?", options: ["Longo e detalhado", "Gritando", "Breve, objetivo e claro", "Não deve haver contato"], correct: 2, rationale: "Comunicação objetiva agiliza o processo de segurança." },
-    { q: "Quando enviar a macro de 'Fim de Viagem'?", options: ["Ao chegar na cidade", "Quando a carga estiver 100% fora do veículo", "Ao ver o cliente", "Antes de descarregar"], correct: 1, rationale: "A viagem só encerra após a entrega total da mercadoria." },
-    { q: "O que é o sensor JAMMER?", options: ["Sensor de pneus", "Detector de interferência de sinal", "Acelerômetro", "Sensor de temperatura"], correct: 1, rationale: "Identifica bloqueadores de sinal usados em tentativas de roubo." },
-    { q: "Qual a recomendação em caso de abordagem/assalto?", options: ["Reagir", "Tentar fugir", "Não reagir e manter a calma", "Discutir com os meliantes"], correct: 2, rationale: "A prioridade total é a preservação da vida do motorista." },
-    { q: "A macro de 'Pernoite' permite o quê?", options: ["Desligar o GPS", "Abrir a porta do motorista sem alerta", "Dar carona", "Deixar o baú aberto"], correct: 1, rationale: "Ajusta os sensores para o descanso legal do condutor." },
-    { q: "O que é Gerenciamento de Riscos?", options: ["Técnicas para minimizar perdas e danos", "Apenas seguro de carga", "Multar motoristas", "Instalar som no caminhão"], correct: 0, rationale: "É um conjunto de medidas preventivas integradas." },
-    { q: "Sobre os dados da carga, você deve:", options: ["Postar no Facebook", "Não conversar com estranhos sobre isso", "Contar para outros motoristas no posto", "Anotar no para-brisa"], correct: 1, rationale: "A informação sigilosa é a maior proteção contra roubos." }
+const allQuestions = [
+    { 
+        q: "Para que serve o Gerenciamento de Riscos?", 
+        options: ["Para multar motorista", "Para garantir que o procedimento de viagem seja seguido assim como proteger motorista, veículo e carga", "Para controlar combustível", "Para aumentar velocidade"], 
+        correct: 1, 
+        rationale: "O gerenciamento de riscos existe para aumentar a segurança de toda a operação." 
+    },
+    { 
+        q: "O que o motorista deve fazer durante a viagem?", 
+        options: ["Fazer o que quiser", "Seguir os procedimentos e regras", "Ignorar a central", "Mudar a rota sozinho"], 
+        correct: 1, 
+        rationale: "Seguir os procedimentos é o que garante segurança na operação." 
+    },
+    { 
+        q: "Para que servem as macros?", 
+        options: ["Para conversar com outros motoristas", "Para enviar mensagens padronizadas para a central", "Para ouvir música", "Para desligar o rastreador"], 
+        correct: 1, 
+        rationale: "As macros padronizam a comunicação com a central e evitam erros." 
+    },
+    { 
+        q: "O que fazer antes de parar o veículo?", 
+        options: ["Parar direto", "Avisar a central usando macro", "Desligar o rastreador", "Abrir o baú"], 
+        correct: 1, 
+        rationale: "Toda parada deve ser informada para garantir segurança." 
+    },
+    { 
+        q: "Após uma parada, o que é obrigatório fazer?", 
+        options: ["Nada", "Mandar macro de reinício de viagem", "Ligar o rádio", "Trocar de rota"], 
+        correct: 1, 
+        rationale: "O reinício ativa novamente a segurança do sistema." 
+    },
+    { 
+        q: "Quando pode abrir o baú ou desengatar a carreta?", 
+        options: ["Quando quiser", "Somente com autorização da central", "Durante a viagem", "Em qualquer parada"], 
+        correct: 1, 
+        rationale: "Essa é uma operação de alto risco e precisa de autorização." 
+    },
+    { 
+        q: "O que fazer se precisar mudar a rota?", 
+        options: ["Mudar sozinho", "Avisar a central antes", "Ignorar o sistema", "Desligar o GPS"], 
+        correct: 1, 
+        rationale: "Toda mudança de rota deve ser autorizada para evitar riscos." 
+    },
+    { 
+        q: "O que fazer em caso de abordagem suspeita?", 
+        options: ["Reagir", "Discutir", "Manter a calma e não reagir", "Tentar fugir"], 
+        correct: 2, 
+        rationale: "A prioridade é sempre preservar a vida do motorista." 
+    },
+    { 
+        q: "O que é o jammer?", 
+        options: ["Um tipo de carga", "Um bloqueador de sinal", "Um sensor de porta", "Um tipo de pneu"], 
+        correct: 1, 
+        rationale: "O jammer bloqueia o sinal e pode indicar tentativa de roubo." 
+    },
+    { 
+        q: "Quando enviar a macro de fim de viagem?", 
+        options: ["Ao chegar no cliente", "Depois que descarregar tudo", "Antes de descarregar", "No meio da viagem"], 
+        correct: 1, 
+        rationale: "A viagem só termina após a entrega completa da carga." 
+    },
+    { 
+        q: "Por que o pernoite na região de Itumbiara/GO e Jaraguá/GO não é recomendado?", 
+        options: ["O risco de roubo é alto", "Porque não tem posto de combustível", "É permitido, mas não recomendado", "Sempre é recomendado pernoitar nesses locais"], 
+        correct: 0, 
+        rationale: "Essa região tem alto risco de roubo, por isso o pernoite deve ser evitado." 
+    },
+    { q: "O que acontece se o motorista não enviar macro?", options: ["Nada", "A central perde o controle da viagem", "Ganha bônus", "A viagem termina"], correct: 1, rationale: "Sem macro, a central não sabe o que está acontecendo." },
+    { q: "Quem é responsável pela segurança da operação?", options: ["Somente a empresa", "Somente a central", "O motorista", "Ninguém"], correct: 2, rationale: "O motorista é peça principal na segurança." },
+    { q: "Pode dar carona durante a viagem?", options: ["Sim", "Não", "Só se for conhecido", "Só em emergência"], correct: 1, rationale: "É proibido levar pessoas não autorizadas." },
+    { q: "Pode parar em qualquer lugar?", options: ["Sim", "Não", "Só se quiser", "Depende do dia"], correct: 1, rationale: "Paradas devem ser seguras e informadas." },
+    { q: "O que fazer ao chegar no cliente?", options: ["Descarregar direto", "Avisar a central", "Ir embora", "Dormir"], correct: 1, rationale: "A central precisa autorizar as ações." },
+    { q: "Pode abrir o baú sem avisar?", options: ["Sim", "Não", "Só rápido", "Só de dia"], correct: 1, rationale: "Sempre precisa de autorização." },
+    { q: "Para que serve o rastreamento?", options: ["Espionar", "Controlar a viagem", "Gastar bateria", "Multar"], correct: 1, rationale: "Permite monitoramento em tempo real." },
+    { q: "O que fazer se perder comunicação?", options: ["Ignorar", "Seguir viagem", "Tentar contato com a central", "Desligar tudo"], correct: 2, rationale: "A comunicação é essencial." },
+    { q: "Desviar da rota sem avisar pode causar?", options: ["Nada", "Bloqueio do veículo", "Mais velocidade", "Economia"], correct: 1, rationale: "Desvio gera alerta de risco." },
+    { q: "Pode ajudar outro veículo sem avisar?", options: ["Sim", "Não", "Só se quiser", "Só de noite"], correct: 1, rationale: "Sempre avisar a central antes." },
+    { q: "O que fazer ao abastecer?", options: ["Nada", "Usar macro de parada", "Desligar rastreador", "Trocar rota"], correct: 1, rationale: "Toda parada deve ser registrada." },
+    { q: "Pode desligar o rastreador?", options: ["Sim", "Não", "Só em descanso", "Só com autorização própria"], correct: 1, rationale: "Nunca deve ser desligado." },
+    { q: "O que fazer ao reiniciar viagem?", options: ["Nada", "Enviar macro", "Acelerar", "Trocar rota"], correct: 1, rationale: "Reinício é obrigatório." },
+    { q: "O que significa fuga de rota?", options: ["Caminho correto", "Desvio não autorizado", "Atalho permitido", "Erro do GPS"], correct: 1, rationale: "É sair da rota planejada." },
+    { q: "O que fazer se o sistema alertar risco?", options: ["Ignorar", "Continuar normal", "Seguir orientação da central", "Desligar sistema"], correct: 2, rationale: "A central orienta a ação correta." },
+    { q: "Pode mexer na carga durante viagem?", options: ["Sim", "Não", "Só se quiser", "Só em emergência"], correct: 1, rationale: "É proibido durante a viagem." },
+    { q: "O que garante uma viagem segura?", options: ["Sorte", "Velocidade", "Seguir procedimentos", "Atalho"], correct: 2, rationale: "Procedimento é segurança." },
+    { q: "O que fazer antes do pernoite?", options: ["Dormir direto", "Avisar a central", "Desligar tudo", "Ir embora"], correct: 1, rationale: "Pernoite precisa ser informado." },
+    { q: "Pode pernoitar em qualquer lugar?", options: ["Sim", "Não", "Só se quiser", "Depende do clima"], correct: 1, rationale: "Somente locais autorizados." },
+    { q: "O que fazer ao ver situação suspeita?", options: ["Ignorar", "Observar e avisar", "Parar", "Fugir sem avisar"], correct: 1, rationale: "Sempre comunicar a central." },
+    { q: "Pode compartilhar informação da carga?", options: ["Sim", "Não", "Só com amigos", "Só no posto"], correct: 1, rationale: "Informação é sigilosa." },
+    { q: "O que acontece se abrir porta após início?", options: ["Nada", "Alerta e risco", "Ganho de tempo", "Melhora viagem"], correct: 1, rationale: "Gera alerta de segurança." },
+    { q: "O que fazer ao terminar descarga?", options: ["Ir embora", "Enviar macro fim", "Dormir", "Desligar rastreador"], correct: 1, rationale: "Finalização correta é obrigatória." },
+    { q: "Pode dirigir sem comunicar?", options: ["Sim", "Não", "Só de noite", "Só em cidade"], correct: 1, rationale: "Comunicação é obrigatória." },
+    { q: "O que é comunicação correta?", options: ["Longa", "Confusa", "Clara e rápida", "Gritando"], correct: 2, rationale: "Clareza evita erros." },
+    { q: "O que fazer em emergência?", options: ["Ignorar", "Avisar a central", "Fugir", "Parar sem avisar"], correct: 1, rationale: "Central deve ser informada." },
+    { q: "Pode sair da rota para economizar tempo?", options: ["Sim", "Não", "Só se quiser", "Só com pressa"], correct: 1, rationale: "Rota deve ser seguida." },
+    { q: "O que fazer ao chegar em parada longa?", options: ["Nada", "Registrar pernoite", "Ir embora", "Desligar sistema"], correct: 1, rationale: "Parada longa precisa ser registrada." },
+    { q: "O que acontece sem rastreamento?", options: ["Nada", "Perda de controle", "Mais segurança", "Mais rápido"], correct: 1, rationale: "Sem rastreamento não há controle." },
+    { q: "Pode ignorar a central?", options: ["Sim", "Não", "Só às vezes", "Só de noite"], correct: 1, rationale: "Central faz parte da segurança." },
+    { q: "O que fazer ao iniciar viagem?", options: ["Nada", "Enviar macro início", "Acelerar", "Mudar rota"], correct: 1, rationale: "Início ativa o sistema." },
+    { q: "O que evita roubos?", options: ["Sorte", "Procedimento correto", "Velocidade", "Atalho"], correct: 1, rationale: "Procedimento reduz risco." },
+    { q: "Pode abrir baú em trânsito?", options: ["Sim", "Não", "Só rápido", "Só com pressa"], correct: 1, rationale: "É proibido." },
+    { q: "O que fazer se atrasar?", options: ["Ignorar", "Avisar a central", "Correr mais", "Mudar rota"], correct: 1, rationale: "Comunicação evita problemas." },
+    { q: "O que é operação segura?", options: ["Rápida", "Sem regras", "Com procedimento", "Sem controle"], correct: 2, rationale: "Segurança vem do padrão." },
+    { q: "Pode desengatar sem avisar?", options: ["Sim", "Não", "Só rápido", "Só de dia"], correct: 1, rationale: "Nunca sem autorização." },
+    { q: "O que fazer ao parar em risco?", options: ["Ficar parado", "Avisar a central", "Dormir", "Ignorar"], correct: 1, rationale: "Central precisa agir." },
+    { q: "O que fazer com dúvida?", options: ["Ignorar", "Perguntar à central", "Decidir sozinho", "Parar viagem"], correct: 1, rationale: "Central orienta corretamente." },
+    { q: "O que é mais importante?", options: ["Carga", "Tempo", "Segurança", "Velocidade"], correct: 2, rationale: "Vida vem primeiro." },
+    { q: "O que fazer ao ver risco?", options: ["Ignorar", "Comunicar", "Acelerar", "Parar"], correct: 1, rationale: "Comunicação salva." },
+    { q: "O que nunca deve parar?", options: ["Veículo", "Comunicação", "Rádio", "Motor"], correct: 1, rationale: "Contato com central é essencial." },
+    { q: "Pode agir sem autorização?", options: ["Sim", "Não", "Só às vezes", "Só em emergência"], correct: 1, rationale: "Seguir padrão evita erro." },
+    { q: "O que fazer sempre?", options: ["Improvisar", "Seguir padrão", "Correr", "Ignorar"], correct: 1, rationale: "Disciplina operacional salva vidas." }
 ];
 
+let questions = [];
 let currentQ = 0, score = 0, userData = {}, userErrors = [];
+
+function getRandomQuestions(qtd = 10) {
+    return [...allQuestions]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, qtd);
+}
 
 function startQuiz() {
     userData.nome = document.getElementById('nome').value;
@@ -260,6 +366,9 @@ function startQuiz() {
         alert("Preencha seus dados corretamente antes de começar.");
         return;
     }
+
+    // Sorteia as questões
+    questions = getRandomQuestions(10);
 
     document.getElementById('setup-screen').style.display = 'none';
     document.getElementById('progress-area').style.display = 'block';
@@ -319,7 +428,6 @@ function finishQuiz() {
     document.getElementById('score-num').innerText = score;
     document.getElementById('score-text').innerText = `Você acertou ${score} de ${questions.length} questões.`;
     
-    // 1. FORMATAR MENSAGEM DO WHATSAPP
     const hora = new Date().getHours();
     const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
     
@@ -333,11 +441,9 @@ function finishQuiz() {
         textoWhats = `${saudacao}. Sou o motorista ${userData.nome}, concluí o treinamento com 100% de aproveitamento!`;
     }
 
-    // Gerar o link final (encodeURIComponent serve para converter espaços e quebras de linha em formato de URL)
     const linkFinal = `https://wa.me/5519981260767?text=${encodeURIComponent(textoWhats)}`;
     document.getElementById('link-whats').href = linkFinal;
 
-    // 2. MOSTRAR ERROS NA TELA
     if(userErrors.length > 0) {
         const list = document.getElementById('errors-list');
         list.innerHTML = userErrors.map(err => `
