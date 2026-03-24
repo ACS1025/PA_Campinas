@@ -312,10 +312,15 @@ if cpf_selecionado:
         col_k3.markdown(f"<div class='metric-box' style='background:#1e293b;'>Avaliações<br><span style='font-size:40px'>{dados['qtd_avaliacoes']}</span></div>", unsafe_allow_html=True)
 
         st.markdown("### 🛡️ Auditoria de Risco Operacional")
-        st.table(df_resumo_oc)
-        
         st.markdown("### 📌 Detalhamento de Provas")
-        st.dataframe(df_provas[["Data", "Hora", "NOTA", "PLACA"]], use_container_width=True, hide_index=True)
+        # Verifica se df_provas não está vazio e se as colunas existem
+        colunas_exibicao = ["Data", "Hora", "NOTA", "PLACA"]
+        colunas_presentes = [c for c in colunas_exibicao if c in df_provas.columns]
+        
+        if not df_provas.empty and len(colunas_presentes) > 0:
+            st.dataframe(df_provas[colunas_presentes], use_container_width=True, hide_index=True)
+        else:
+            st.warning("Nenhum detalhamento de prova (avaliação de campo) encontrado para este condutor.")
 
     # --------------------------------------------------------------------------
     # 11. RENDERIZAÇÃO: DASHBOARD INTERATIVO
