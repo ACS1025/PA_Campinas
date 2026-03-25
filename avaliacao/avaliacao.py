@@ -37,7 +37,34 @@ st.markdown("""
         font-size: 13px !important; 
         font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     }
+/* --- NOVA MARRETA PARA O BOTÃO DA SIDEBAR --- */
+    /* Localiza o botão que contém o ícone de fechar/abrir */
+    [data-testid="collapsedControl"] {
+        background-color: #f1f5f9 !important; /* Fundo cinza bem clarinho */
+        border-radius: 0 10px 10px 0 !important; /* Arredonda só o lado direito */
+        padding: 5px !important;
+        transition: all 0.3s ease !important;
+        border: 1px solid #e2e8f0 !important;
+    }
 
+    /* Estiliza o ícone (a seta) dentro do botão */
+    [data-testid="collapsedControl"] svg {
+        fill: #2563eb !important; /* Deixa a seta azul da Komando */
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+    }
+
+    /* Efeito de Hover (Passar o Mouse) */
+    [data-testid="collapsedControl"]:hover {
+        background-color: #2563eb !important; /* Fundo fica azul */
+        transform: scale(1.05); /* Dá um leve zoom */
+        box-shadow: 4px 0 10px rgba(37, 99, 235, 0.2) !important;
+    }
+
+    /* Muda a seta para branco quando o fundo fica azul */
+    [data-testid="collapsedControl"]:hover svg {
+        fill: white !important;
+    }
     /* Cards de Informação e Containers */
     .data-card {
         background-color: white;
