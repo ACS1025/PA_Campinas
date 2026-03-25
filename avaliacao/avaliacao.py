@@ -108,9 +108,9 @@ st.markdown("""
     margin-bottom: 30px;
     box-shadow: 0 10px 25px rgba(30, 58, 138, 0.2);
 '>
-    <h1 style='margin:0; font-weight: 800; font-size: 2.2rem;'>📊 Histórico do Motorista Supersonic</h1>
+    <h2 style='margin:0; font-weight: 800; font-size: 2.2rem;'>📊 Histórico do Motorista Supersonic</h2>
     <p style='margin:8px 0 0 0; opacity:0.85; font-size: 1.1rem; font-weight: 400;'>
-        Monitoramento Inteligente ACS Consult | Unidade Campinas/SP
+        Monitoramento Inteligente | Unidade Campinas/SP
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -348,46 +348,38 @@ if cpf_selecionado:
             st.info(f"O motorista apresenta um nível de risco classificado como: {nivel_risco}")
 
 # ------------------------------------------------------------------------------
-# 12. TELA DE REPOUSO / CAPA PERSONALIZADA (DESIGN FIGMA) - MULTIFORMATO
+# 12. TELA DE REPOUSO / CAPA PERSONALIZADA (DESIGN FIGMA)
 # ------------------------------------------------------------------------------
 else:
     st.markdown("<br><br>", unsafe_allow_html=True)
     
-    # Lista de prioridade de formatos salvos na sua pasta src
-    formatos = ["src/capa.svg", "src/capa.png", "src/capa.jpg", "src/img/LogoKMD.png"]
-    img_logo_b64 = None
-    extensao_encontrada = "png" # default
-
-    for caminho in formatos:
-        img_logo_b64 = get_image_base64(caminho)
-        if img_logo_b64:
-            extensao_encontrada = caminho.split(".")[-1]
-            break
+    # CAMINHO EXATO: Refletindo a pasta 'avaliacao/src' do seu VS Code
+    caminho_capa = "avaliacao/src/capa.png" 
     
-    if img_logo_b64:
-        # Define o MIME type correto para o navegador
-        mime = "image/svg+xml" if extensao_encontrada == "svg" else f"image/{extensao_encontrada}"
-        
+    img_b64 = get_image_base64(caminho_capa)
+
+    if img_b64:
+        # Renderiza a imagem usando Base64 para garantir que funcione no navegador
         st.markdown(f"""
             <div style="text-align: center;">
-                <img src="data:{mime};base64,{img_logo_b64}" 
-                     style="width: 100%; max-width: 880px; border-radius: 25px; 
+                <img src="data:image/png;base64,{img_b64}" 
+                     style="width: 100%; max-width: 1400px; border-radius: 25px; 
                             box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid #f1f5f9;">
             </div>
         """, unsafe_allow_html=True)
     else:
-        # Se nenhum dos 3 formatos for encontrado
+        # Se a imagem não for encontrada, mostra o placeholder limpo
         st.markdown("""
             <div style='text-align:center; padding: 100px; background: #f8fafc; border-radius: 30px; border: 2px dashed #e2e8f0;'>
                 <h1 style='color: #cbd5e1;'>[ LOGO KMD ]</h1>
-                <p style='color: #94a3b8;'>Verifique se os arquivos capa.svg, .png ou .jpg estão na pasta /src</p>
+                <p style='color: #94a3b8;'>Verifique se o arquivo capa.png está na pasta /avaliacao/src</p>
             </div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
         <div style='text-align:center; margin-top: 55px;'>
             <h1 style='color: #0f172a; font-weight: 800; font-size: 3rem; letter-spacing: -2px; margin-bottom: 10px;'>
-                Selecione um Condutor na Barra Lateral para Iniciar
+                Selecione um Condutor para Iniciar
             </h1>
             <p style='color: #475569; font-size: 1.4rem; max-width: 750px; margin: 0 auto; line-height: 1.5; font-weight: 400;'>
                 Dashboard centralizado para auditoria de desempenho e gestão de risco operacional.
