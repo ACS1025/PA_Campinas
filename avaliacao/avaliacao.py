@@ -25,7 +25,7 @@ def get_image_base64(path):
 # 1. CONFIGURAÇÃO VISUAL E MOTOR DE ESTILO (CSS CUSTOM)
 # ------------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Relatório Avaliação Motoristas | ACS Consult", 
+    page_title="Relatório Avaliação MotoristaS", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -46,6 +46,28 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         margin-bottom: 25px;
         border: 1px solid #eef2f6;
+    }
+    
+    /* Estilização das Abas (Tabs) */
+    button[data-baseweb="tab"] {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #64748b !important;
+        background-color: #f1f5f9 !important;
+        border-radius: 10px 10px 0 0 !important;
+        margin-right: 5px !important;
+        padding: 10px 20px !important;
+        transition: all 0.3s ease;
+    }
+
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: white !important;
+        background-color: #2563eb !important; /* Azul Principal */
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+    }
+
+    div[data-baseweb="tab-highlight"] {
+        background-color: transparent !important; /* Remove a linha padrão feia */
     }
 
     /* Tabelas de Alta Densidade */
@@ -292,10 +314,31 @@ if cpf_selecionado:
     cor_media = cor_nota(dados["media_nota"])
 
     # --------------------------------------------------------------------------
-    # 10. RENDERIZAÇÃO: MODO RELATÓRIO TÉCNICO
+    # 10. RENDERIZAÇÃO: MODO RELATÓRIO TÉCNICO (COM NOVOS REFINAMENTOS)
     # --------------------------------------------------------------------------
     if modo_relatorio:
-        st.markdown("## 📄 Relatório Consolidado de Auditoria")
+        # Script para botão de impressão direta
+        st.markdown("<script>window.print_report = function() { window.print(); }</script>", unsafe_allow_html=True)
+        
+        col_header_1, col_header_2 = st.columns([3, 1])
+        with col_header_1:
+            st.markdown("## 📄 Relatório Consolidado de Auditoria")
+        with col_header_2:
+            if st.button("🖨️ Imprimir / PDF"):
+                st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
+
+        # Barra de Performance Visual
+        percentual_score = max(0, min(100, score_final))
+        st.markdown(f"""
+            <div style="width: 100%; background-color: #e2e8f0; border-radius: 10px; margin-bottom: 10px;">
+                <div style="width: {percentual_score}%; background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%); 
+                            height: 8px; border-radius: 10px;"></div>
+            </div>
+            <p style="text-align: right; font-size: 0.8rem; color: #64748b; margin-bottom: 20px;">
+                Progresso para Nível Diamante: {int(percentual_score)}%
+            </p>
+        """, unsafe_allow_html=True)
+
         st.markdown("<div class='data-card'>", unsafe_allow_html=True)
         col_r1, col_r2 = st.columns(2)
         with col_r1:
@@ -303,7 +346,7 @@ if cpf_selecionado:
             st.write(f"**Identificação:** {cpf_selecionado}")
         with col_r2:
             st.write(f"**Veículo Base:** {dados['placa']}")
-            st.write(f"**Classificação:** {nivel_serasa}")
+            st.write(f"**Classificação Atual:** {nivel_serasa}")
         st.markdown("</div>", unsafe_allow_html=True)
 
         col_k1, col_k2, col_k3 = st.columns(3)
@@ -311,41 +354,135 @@ if cpf_selecionado:
         col_k2.markdown(f"<div class='metric-box' style='background:{cor_media};'>Média Global<br><span style='font-size:40px'>{tratar_valor(dados['media_nota'])}</span></div>", unsafe_allow_html=True)
         col_k3.markdown(f"<div class='metric-box' style='background:#1e293b;'>Avaliações<br><span style='font-size:40px'>{dados['qtd_avaliacoes']}</span></div>", unsafe_allow_html=True)
 
-        st.markdown("### 🛡️ Auditoria de Risco Operacional")
-        st.markdown("### 📌 Detalhamento de Provas")
-        # Verifica se df_provas não está vazio e se as colunas existem
+        st.markdown("---")
+        st.markdown("### 📌 Detalhamento de Provas (Campo)")
+        
         colunas_exibicao = ["Data", "Hora", "NOTA", "PLACA"]
         colunas_presentes = [c for c in colunas_exibicao if c in df_provas.columns]
         
         if not df_provas.empty and len(colunas_presentes) > 0:
             st.dataframe(df_provas[colunas_presentes], use_container_width=True, hide_index=True)
         else:
-            st.warning("Nenhum detalhamento de prova (avaliação de campo) encontrado para este condutor.")
+            st.info("ℹ️ Histórico de Avaliação de Campo Inexistente.")
+            st.markdown(f"""
+                <div style='padding: 15px; background: #fffbeb; border-radius: 10px; border: 1px solid #fef3c7; margin-bottom: 20px;'>
+                    <p style='margin:0; color: #b45309; font-size: 1rem;'>
+                        <strong>Recomendação Komando:</strong> Agendar auditoria de direção para validar o perfil operacional do condutor.
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
+
+        # --- SEÇÃO: AUDITORIA DE RISCO OPERACIONAL ---
+        st.markdown("### 🛡️ Auditoria de Risco Operacional")
+        
+        # 1. Resumo de Impacto (Tabela de Totais)
+        if not df_resumo_oc.empty and df_resumo_oc["Qtd"].astype(int).sum() > 0:
+            maior_falha = df_resumo_oc.sort_values(by="Qtd", ascending=False).iloc[0]
+            st.warning(f"🚨 **Ponto de Atenção:** A principal recorrência é '{maior_falha['Ocorrência']}' com {maior_falha['Qtd']} registros.")
+            st.dataframe(df_resumo_oc, use_container_width=True, hide_index=True)
+        else:
+            st.success("✅ Nenhuma ocorrência crítica detectada na telemetria recente.")
+
+        # 2. DETALHAMENTO POR SM (Rastreabilidade Operacional)
+        st.markdown("#### 🛰️ Histórico de Eventos por SM")
+        
+        lista_restrita = list(OC_PESOS.keys())
+        df_detalhe_sm = df_oc_mot[df_oc_mot["Descrição Ocorrência"].isin(lista_restrita)].copy()
+
+        if not df_detalhe_sm.empty:
+            # Nome exato da coluna que identificamos na sua base
+            col_data = "Data Inserção"
+            
+            # Montamos a visualização garantindo que a Data Inserção seja a primeira
+            col_view = [col_data, "Código Rastreamento", "Descrição Ocorrência", "Placa Veículo"]
+            # Filtra apenas as que realmente existem (segurança contra mudanças no Sheets)
+            col_ok = [c for c in col_view if c in df_detalhe_sm.columns]
+            
+            if col_ok:
+                df_f = df_detalhe_sm[col_ok].copy()
+                
+                # Tratamento de Data para ordenação (Recentes no topo)
+                if col_data in df_f.columns:
+                    df_f[col_data] = pd.to_datetime(df_f[col_data], errors='ignore')
+                    df_f = df_f.sort_values(by=col_data, ascending=False)
+                
+                st.dataframe(df_f, use_container_width=True, hide_index=True)
+                st.caption(f"ℹ️ Auditando: {', '.join(lista_restrita)}.")
+            else:
+                # Se a coluna sumir ou mudar de nome, o sistema avisa sem travar
+                st.warning(f"⚠️ A coluna '{col_data}' não foi encontrada. Colunas disponíveis: {list(df_detalhe_sm.columns)}")
+        else:
+            st.info("💡 Este condutor não possui eventos críticos registrados nas categorias monitoradas.")
 
     # --------------------------------------------------------------------------
     # 11. RENDERIZAÇÃO: DASHBOARD INTERATIVO
     # --------------------------------------------------------------------------
     else:
-        st.subheader(f"Perfil de Performance: {dados['nome']}")
-        tab_v, tab_h, tab_r = st.tabs(["📊 Painel de Controle", "📋 Log de Provas", "🛡️ Analítico de Risco"])
+        st.subheader(f"👤 Perfil de Performance: {dados['nome']}")
+        tab_v, tab_h, tab_r = st.tabs(["📊 Painel de Controle", "📋 Provas de Campo", "🛡️ Risco por SM"])
         
         with tab_v:
-            st.markdown("<div class='data-card'>", unsafe_allow_html=True)
-            k_1, k_2, k_3 = st.columns(3)
-            k_1.metric("Score Final Auditoria", round(score_final, 2))
-            k_2.metric("Nível Serasa ACS", nivel_serasa)
-            k_3.metric("Status Evolutivo", nivel)
-            st.markdown("</div>", unsafe_allow_html=True)
+            # --- KPIs ESTILIZADOS ---
+            k_col1, k_col2, k_col3 = st.columns(3)
             
+            with k_col1:
+                st.markdown(f"""
+                    <div class='metric-box' style='background: linear-gradient(135deg, #1e293b 0%, #334155 100%);'>
+                        <span style='font-size: 1rem; opacity: 0.8;'>Score Final</span><br>
+                        <span style='font-size: 2.5rem;'>{round(score_final, 1)}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            with k_col2:
+                st.markdown(f"""
+                    <div class='metric-box' style='background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);'>
+                        <span style='font-size: 1rem; opacity: 0.8;'>Classificação</span><br>
+                        <span style='font-size: 2.2rem;'>{nivel_serasa}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+            with k_col3:
+                st.markdown(f"""
+                    <div class='metric-box' style='background: {cor};'>
+                        <span style='font-size: 1rem; opacity: 0.8;'>Status Evolutivo</span><br>
+                        <span style='font-size: 2.2rem;'>{nivel}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+
+            # --- GRÁFICO DE TENDÊNCIA ENCORPADO ---
+            st.markdown("### 📈 Evolução das Notas de Campo")
             if not df_motorista.empty:
-                st.area_chart(df_motorista.set_index("DATA/ HORA")["NOTA"])
+                # Criamos um container para o gráfico não ficar "espremido"
+                with st.container():
+                    chart_data = df_motorista.sort_values("DATA/ HORA").set_index("DATA/ HORA")["NOTA"]
+                    st.line_chart(chart_data, height=350, use_container_width=True)
+            else:
+                st.info("Aguardando primeiras avaliações para gerar gráfico de tendência.")
 
         with tab_h:
+            st.markdown("### 📝 Histórico Detalhado de Avaliações")
             st.dataframe(df_provas, use_container_width=True, hide_index=True)
 
         with tab_r:
+            st.markdown("### 🛡️ Análise de Ocorrências Críticas")
+            # Reutilizamos a tabela de resumo que você já tem
             st.dataframe(df_resumo_oc, use_container_width=True, hide_index=True)
-            st.info(f"O motorista apresenta um nível de risco classificado como: {nivel_risco}")
+            
+            st.markdown("#### 🛰️ Localização de Eventos (SM)")
+            # Aqui inserimos a mesma lógica de rastreabilidade que validamos para o relatório
+            lista_restrita = list(OC_PESOS.keys())
+            df_r_tab = df_oc_mot[df_oc_mot["Descrição Ocorrência"].isin(lista_restrita)].copy()
+            
+            if not df_r_tab.empty:
+                # Busca automática pela coluna 'Data Inserção' que confirmamos existir
+                col_data = "Data Inserção" if "Data Inserção" in df_r_tab.columns else None
+                col_view = [col_data, "Código Rastreamento", "Descrição Ocorrência", "Placa Veículo"]
+                col_ok = [c for c in col_view if c and c in df_r_tab.columns]
+                
+                df_f = df_r_tab[col_ok].sort_values(by=col_data if col_data else col_ok[0], ascending=False)
+                st.dataframe(df_f, use_container_width=True, hide_index=True)
+            else:
+                st.success("Condutor sem ocorrências críticas registradas no monitoramento.")
 
 # ------------------------------------------------------------------------------
 # 12. TELA DE REPOUSO / CAPA PERSONALIZADA (DESIGN FIGMA)
@@ -395,9 +532,10 @@ st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.divider()
 col_f1, col_f2 = st.columns([2,1])
 with col_f1:
-    st.caption(f"© 2026 ACS | Tecnologia de Monitoramento Komando")
+    st.caption(f"© 2026 ACS| Tecnologia de Monitoramento Komando")
 with col_f2:
-    st.caption(f"Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} | v4.2.0")
+    # Substituído Timestamp por Atualização e formatado para o padrão BR
+    st.caption(f"Atualizado em: {datetime.now().strftime('%d/%m/%Y %H:%M')} | v4.2.0")
 
 # GARANTIA DE DENSIDADE DE LINHAS PARA AUDITORIA
 # LINHA 415
