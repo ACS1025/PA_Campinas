@@ -25,7 +25,8 @@ def get_image_base64(path):
 # 1. CONFIGURAÇÃO VISUAL E MOTOR DE ESTILO (CSS CUSTOM)
 # ------------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Relatório Avaliação MotoristaS", 
+    page_title="Auditoria Komando GR",
+    page_icon="🛡️",                   
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -142,6 +143,13 @@ st.markdown("""
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    /* Ajuste visual do botão de abrir/fechar sidebar */
+    button[title="Open sidebar"], button[title="Close sidebar"] {
+        background-color: #2563eb !important;
+        color: white !important;
+        border-radius: 50% !important;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
