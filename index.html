@@ -3,120 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PA-Campinas</title>
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Home - PA-Campinas | Monitoramento</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('src/img/Registro\ de\ Saidas.png');
-            background-size: cover; /* Ajusta a imagem para cobrir a tela sem distorção */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Imagem fixa ao fundo durante o scroll */
-            height: 100vh; /* Ocupa a altura total da tela */
-            overflow: hidden; /* Evita barras de rolagem horizontais */
-        }
+    /* Estilos Base */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0; padding: 0; box-sizing: border-box;
+        background-image: url('src/img/Registro%20de%20Saidas.png');
+        background-size: cover; background-position: center;
+        background-attachment: fixed; color: white;
+    }
 
-        .header {
-            color: rgb(247, 243, 243);
-            padding: 10px 0;
-            text-align: center;
-            position: fixed;
-            width: 100%;
-            top: 50px;
-            z-index: 1000;
-        }
+    nav {
+        width: 100%; background-color: rgba(30, 30, 30, 0.9);
+        backdrop-filter: blur(10px); padding: 15px 0;
+        position: fixed; top: 0; left: 0; z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+    }
 
-        .navbar {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            position: fixed;
-            top: 0%; /* Adiciona espaço para o header */
-            width: 100%;
-            z-index: 1000;
-        }
+    nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    nav ul li a { color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 25px; transition: 0.3s; }
+    nav ul li a:hover { background-color: rgba(23, 23, 175, 0.6); }
 
-        .navbar a {
-            color: rgb(252, 254, 255);
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-            display: block;
-        }
+    .header { text-align: center; padding: 120px 20px 20px; }
+    .header h1 { margin: 0; font-size: 32px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); }
 
-        .navbar a:hover {
-            background-color: #555;
-        }
+    /* NOVOS ESTILOS KPI TORRE (GRID INTEGRADO) */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        padding: 0 40px;
+        margin-bottom: 25px;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-        .content {
-            padding: 120px 20px; /* Adiciona espaço para a navbar e header fixos */
-        }
+    .kpi-card-full {
+        background: rgba(0, 42, 139, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border-top: 4px solid #3498db;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        position: relative;
+    }
 
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #847d7d;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .label-sub { display: block; font-size: 11px; text-transform: uppercase; color: #bdc3c7; margin-bottom: 5px; }
+    .valor-big { font-size: 32px; font-weight: bold; display: block; }
 
-        h1, h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+    /* Cores de Status da Torre */
+    .card-transito { border-top-color: #2ecc71; }
+    .card-aguardando { border-top-color: #f1c40f; }
+    .card-atraso { border-top-color: #e74c3c; }
+    #big-atraso { color: #ff6b6b; }
 
-        h1 {
-            font-size: 2rem;
-        }
+    /* Botão Torre */
+    .btn-torre-box { text-align: center; margin-bottom: 30px; }
+    .btn-torre {
+        display: inline-block;
+        background: rgba(23, 23, 175, 0.8);
+        padding: 10px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        color: white;
+        border: 1px solid #f1c40f;
+        transition: 0.3s;
+    }
+    .btn-torre:hover { transform: scale(1.05); background: #1717af; }
 
-        h2 {
-            font-size: 1.6rem;
-        }
+    /* Layout Central e Sidebars */
+    .container { display: flex; justify-content: center; padding: 20px; max-width: 1500px; margin: auto; gap: 20px; }
+    .sidebar { width: 220px; display: flex; flex-direction: column; gap: 15px; }
+    .icon-link { text-align: center; background: rgba(0, 0, 0, 0.6); padding: 15px; border-radius: 15px; transition: 0.3s; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .icon-link:hover { background: rgba(0, 0, 0, 0.8); transform: translateY(-3px); }
+    .icon-link img { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px; }
+    .icon-link p { margin: 0; font-size: 12px; font-weight: 600; color: #fff; }
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #f9f6f6;
-            padding: 10px 0;
-            background-color: #9b9a9a;
-            border-top: 1px solid #9b9a9a
-            ;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Adiciona a sombra no rodapé */
-        }
+    .main-content { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .action-box { background: rgba(0, 0, 0, 0.75); border-radius: 20px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; justify-content: space-between; }
+    .btn-action { background: #3498db; color: white; text-decoration: none; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+    .notice-board { background: rgba(0, 0, 0, 0.8); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .notice-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .notice-item:last-child { border-bottom: none; }
+    .tag {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    footer { text-align: center; padding: 30px; color: #bbb; font-size: 12px; }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    @media (max-width: 1024px) {
+        .container { flex-direction: column; }
+        .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+        .action-grid { grid-template-columns: 1fr; }
+    }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>PA-Campinas</h1>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registro-saidas.html">Registro de Saídas</a></li>
+        <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
+        <li><a href="conhecimento.html">Para conhecimento</a></li>
+        <li><a href="convite.html">Convite Motorista</a></li>
+        <li><a href="videos.html">Galeria de Vídeos</a></li>
+        <li><a href="brief.html">Briefing</a></li>
+        <li><a href="posicao.html">Posição escolta</a></li>
+        <li><a href="comunicado.html">Comunicado</a></li>
+    </ul>
+</nav>
+
+<header class="header">
+    <h1>CENTRAL DE OPERAÇÕES<br>PA-Campinas</h1>
+    <p id="status-com" style="font-size: 12px; font-weight: bold;">Iniciando Sincronização...</p>
+</header>
+
+<div class="grid-container">
+    <div class="kpi-card-full">
+        <span class="label-sub">Monitorados</span>
+        <span id="big-monitorado" class="valor-big">--</span>
     </div>
 
-    <div class="navbar">
-        <a href="index.html" class="active">Home</a>
-        <a href="registro-saidas.html">Registro de Saídas</a>
-        <a href="solicitacao-escolta.html">Solicitação de Escolta</a>
+    <div class="kpi-card-full">
+        <span class="label-sub">Nova Solicitação</span>
+        <span id="big-nova" class="valor-big">--</span>
     </div>
-    
 
-    <div class="content">
-        <div id="home" class="section">
-            <h2></h2>
-            <p>Bem-vindo à nossa página de monitoramento PA-Campinas. Utilize o menu para acessar as funcionalidades disponíveis.</p>
+    <div class="kpi-card-full card-transito">
+        <span class="label-sub">Em Trânsito</span>
+        <span id="big-transito" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-aguardando">
+        <span class="label-sub">Aguardando Início</span>
+        <span id="big-aguardando" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-atraso">
+        <span class="label-sub">Início em Atraso</span>
+        <span id="big-atraso" class="valor-big">--</span>
+    </div>
+</div>
+
+<div class="btn-torre-box">
+    <a href="torre.html" class="btn-torre">📡 Acessar Torre de Controle Completa</a>
+</div>
+<div class="container">
+    <div class="sidebar">
+        <a href="https://sites.google.com/view/pacampinas/apresenta%C3%A7%C3%A3o" target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="PA">
+            <p>PA Campinas</p>
+        </a>
+        <a href="https://sites.google.com/view/pacampinas/posi%C3%A7%C3%B5es/coletas" target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Coletas">
+            <p>Coletas SSonic</p>
+        </a>
+        <a href="brief.html" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Briefing">
+            <p>Briefing de Viagem</p>
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="action-grid">
+            <div class="action-box">
+                <div>
+                    <h2>Gerador Operacional</h2>
+                    <p>Envio de mensagens rápidas e padronizadas para a operação Supersonic via WhatsApp.</p>
+                    <ul>
+                        <li>Registro automático no Log</li>
+                        <li>Modelos pré-configurados</li>
+                    </ul>
+                </div>
+                <a href="comunicado.html" class="btn-action">Abrir Gerador</a>
+            </div>
+            
+            <div class="action-box">
+                <div>
+                    <h2>Posição de Escolta</h2>
+                    <p>Atualize o status da viagem para o grupo de escolta nos marcos obrigatórios:</p>
+                    <ul>
+                        <li>Início de viagem</li>
+                        <li>Check-point diário</li>
+                        <li>Proximidade (500km e 250km)</li>
+                    </ul>
+                </div>
+                <a href="posicao.html" class="btn-action" style="background: #27ae60;">Informar Posição</a>
+            </div>
+        </div>
+
+        <div class="notice-board">
+            <h3 style="margin-top:0; font-size: 16px; color: #f1c40f;">📌 Quadro de Avisos / Links Rápidos</h3>
+            <div class="notice-item">
+                <span>Avaliação pós treinamento</span>
+                <span class="tag">Importante</span>
+                <a href="Treinamento_Komando_Completo.html" target="_blank" class="icon-link">Abrir</a>
+            </div>
+            <div class="notice-item">
+                <span>Escala do Turno Atual - T1/T2</span>
+                <span class="tag" style="background: #3498db;">Operacional</span>
+            </div>
+            <div class="notice-item">
+                <span>Contatos de Emergência Bases Belém/SP</span>
+                <span class="tag" style="background: #27ae60;">Suporte</span>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
-    </footer>
+    <div class="sidebar">
+        <a href="https://drive.google.com/file/d/1LDve3eJIQUz4MXpsrRje3ot80WOvRvoN/view?usp=sharing" target="_blank" class="icon-link">
+    <img src="src/img/checklist.gif" alt="Checklist">
+    <p>Checklist presencial</p>
+</a>
+        <a href="https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg" target="_blank" class="icon-link">
+    <img src="src/img/briefing.gif" alt="Digital">
+    <p>Briefing digital</p>
+</a>
+        <a href="https://docs.google.com/presentation/d/1RRDgPSzhzji4DX_4uzWF5hZpzl1D9r4pU68Kpp3SR_o/edit?usp=sharing" target="_blank" class="icon-link">
+            <img src="src/img/treinamento.gif" alt="Treinamento">
+            <p>Treinamento motorista</p>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 PA-Campinas. Todos os direitos reservados. by ACS</p>
+</footer>
+
+<script>
+// URLs de Configuração - AGORA ONLINE VIA TÚNEL
+const urlPython = "https://tyson-uncausative-deniably.ngrok-free.dev/dados";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
+
+async function updateTorre() {
+    // Seleciona os cards para o efeito visual de atualização
+    const cards = document.querySelectorAll('.kpi-card-full');
+    cards.forEach(c => c.style.opacity = "0.7");
+    
+    const statusCom = document.getElementById('status-com');
+    statusCom.innerText = "Sincronizando...";
+
+    try {
+        // 1. Busca dados do Robô Local (Python/Ngrok)
+        const resPython = await fetch(urlPython, {
+            headers: { 'ngrok-skip-browser-warning': 'true' }
+        });
+        const dadosRobo = await resPython.json();
+        
+        if (dadosRobo.monitorados > 0) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
+            
+            statusCom.innerText = "Online (Robô Local)";
+            statusCom.style.color = "#2ecc71";
+        }
+
+        // 2. Busca dados de Backup/Ocorrências (Google Sheets)
+        const resGoogle = await fetch(urlGoogle);
+        const dadosPlanilha = await resGoogle.json();
+
+        if (dadosPlanilha) {
+            // Renderiza as linhas se os containers existirem no HTML
+            if(document.getElementById('lista-veiculos')) renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+            
+            // Backup caso o Python falhe
+            const monitoradoAtual = document.getElementById('big-monitorado').innerText;
+            if (monitoradoAtual === "0" || monitoradoAtual === "--") {
+                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || "--";
+                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || "--";
+                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || "--";
+                statusCom.innerText = "Online (Nuvem)";
+            }
+        }
+
+        // Atualiza o relógio no rodapé (se o ID existir)
+        if(document.getElementById('relogio')) {
+            document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
+        }
+
+    } catch (err) {
+        console.error("Erro na sincronização:", err);
+        statusCom.innerText = "Link de Dados Offline";
+        statusCom.style.color = "#e74c3c";
+    } finally {
+        cards.forEach(c => c.style.opacity = "1");
+    }
+}
+
+function renderRows(id, itens) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
+        container.innerHTML = "<div style='color:#bdc3c7; font-size:12px;'>✅ Nenhuma ocorrência detectada.</div>";
+        return;
+    }
+    container.innerHTML = itens.map(i => `<div style='font-size:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding:5px 0;'>• ${i}</div>`).join('');
+}
+
+// Inicia e define intervalo
+updateTorre();
+setInterval(updateTorre, 60000);
+</script>
 
 </body>
 </html>
