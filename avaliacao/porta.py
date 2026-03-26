@@ -321,11 +321,10 @@ OC_PESOS = {
     "EQUIPAMENTO DESLIGADO": 5,
     "INICIO DE VIAGEM - SEM LIBERADO DA GR": 5,
     "INICIO DE VIAGEM FORA DO LOCAL DE ORIGEM": 4,
-    "INICIO DE VIAGEM NÃO INFORMADO": 4,
-    "PARADA EM LOCAL NÃO AUTORIZADO": 2,
-    "PARADA EXCEDIDA": 3
+    "INICIO DE VIAGEM NÃO INFORMADO": 4
 }
-
+# Lista oficial de eventos monitorados (base para auditoria e exibição)
+LISTA_EVENTOS_CRITICOS = list(OC_PESOS.keys())
 # ------------------------------------------------------------------------------
 # 9. LÓGICA DE PROCESSAMENTO DO MOTORISTA SELECIONADO
 # ------------------------------------------------------------------------------
@@ -374,14 +373,7 @@ if cpf_selecionado:
     nivel_serasa = classificar_motorista(score_final)
     # --- DENTRO DA SEÇÃO 9 (Lógica de Processamento) ---
 
-    # Cálculo da Matriz de Risco
-    score_risco = 0
-    resumo_oc = []
-    for oc, peso in OC_PESOS.items():
-        qtd = df_oc_mot[df_oc_mot["Descrição Ocorrência"] == oc].shape[0]
-        impacto = qtd * peso
-        score_risco += impacto
-        resumo_oc.append({"Ocorrência": oc, "Qtd": qtd, "Peso": peso, "Impacto": impacto})
+    
 
     # CRIANDO O DATAFRAME E FILTRANDO OS ZERADOS IMEDIATAMENTE
     df_resumo_oc = pd.DataFrame(resumo_oc)
@@ -459,7 +451,7 @@ if cpf_selecionado:
             """, unsafe_allow_html=True)
 
         # --- 10. SEÇÃO: AUDITORIA DE RISCO OPERACIONAL (VERSÃO FINAL) ---
-        st.markdown("<br>### 🛡️ Matriz de Risco Comportamental", unsafe_allow_html=True)
+        st.markdown("<br>🛡️ Matriz de Risco Comportamental", unsafe_allow_html=True)
         
         # LEGENDA DE CORES PARA IMPRESSÃO
         st.markdown("""
@@ -481,6 +473,29 @@ if cpf_selecionado:
                 "Impacto": "Total Pontos (Impacto)"
             })
             
+            st.markdown("#### ℹ️ Legenda de Pesos e Gravidade")
+            st.markdown("""
+            <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; background-color: #f8fafc; margin-bottom: 20px;">
+
+            | Peso | Gravidade | Exemplos de Ocorrências |
+            | :--- | :--- | :--- |
+            | **5** | 🔴 Crítica | Desvio de Rota, Acionamento Policial, Bloqueio Vandalizado |
+            | **4** | 🟠 Alta | Alertas de Porta, Início de Viagem não Informado |
+            | **3** | 🟡 Média | Parada Excedida |
+            | **2** | 🔵 Baixa | Pernoite Excedido, Parada em Local não Autorizado |
+
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Mantenha o seu Escopo da Auditoria que já existia:
+            st.markdown(f"""
+                <div class="legenda-auditoria">
+                    <span class="legenda-titulo">🔍 Escopo da Auditoria de Risco:</span>
+                    <span class="legenda-corpo">
+                        Este dossiê monitora automaticamente os seguintes eventos críticos na telemetria: {', '.join(LISTA_EVENTOS_CRITICOS)}
+                    </span>
+                </div>
+            """, unsafe_allow_html=True)
             st.dataframe(df_exibicao_oc, use_container_width=True, hide_index=True)
             
             # EXPLICAÇÃO TÉCNICA DO CÁLCULO
@@ -494,7 +509,7 @@ if cpf_selecionado:
             st.success("✅ Nenhuma ocorrência crítica detectada na telemetria recente.")
 
         # 2. DETALHAMENTO POR SM (Rastreabilidade Operacional)
-        st.markdown("#### 🛰️ Histórico de Eventos por SM")
+        st.markdown("🛰️ Histórico de Eventos por SM")
         
         lista_restrita = list(OC_PESOS.keys())
         df_detalhe_sm = df_oc_mot[df_oc_mot["Descrição Ocorrência"].isin(lista_restrita)].copy()
@@ -576,13 +591,13 @@ if cpf_selecionado:
 
         with tab_h:
             st.markdown("<br>📝 Histórico Detalhado de Avaliações", unsafe_allow_html=True)
-            st.dataframe(df_provas, use_container_width=True, hide_index=True)
-
+            st.dataframe(df_provas, use_container_width=True, hide_index=True)               
+            
         with tab_r:
             st.markdown("<br>🛡️ Análise de Ocorrências Críticas", unsafe_allow_html=True)
             
-            # --- NOVA LEGENDA DE PESOS ---
-            with st.expander("<br>ℹ️ Legenda de Pesos e Gravidade", expanded=False):
+            # Removido o IF que causava o erro e mantido o expander apenas para a tela
+            with st.expander("ℹ️ Legenda de Pesos e Gravidade", expanded=False):
                 st.markdown("""
                 | Peso | Gravidade | Exemplos de Ocorrências |
                 | :--- | :--- | :--- |
@@ -592,9 +607,10 @@ if cpf_selecionado:
                 | **2** | 🔵 Baixa | Pernoite Excedido, Parada em Local não Autorizado |
                 """)
 
-            # Exibição da tabela filtrada (apenas o que aconteceu)
+            # Segue o restante do seu código de exibição da tabela...
             if not df_resumo_oc.empty:
                 st.dataframe(df_resumo_oc, use_container_width=True, hide_index=True)
+
             else:
                 st.success("<br>✅ Nenhuma ocorrência monitorada foi registrada para este condutor.")
             
@@ -653,7 +669,81 @@ else:
             </p>
         </div>
     """, unsafe_allow_html=True)
+# ------------------------------------------------------------------------------
+# 12.5 BLOCO DE ASSINATURA (SEPARADO PARA ESTABILIDADE)
+# ------------------------------------------------------------------------------
+if modo_relatorio:
+    st.markdown("<br><br><br>", unsafe_allow_html=True) 
+    
+    # 1. BUSCA DO NOME (CRUZADA NAS DUAS URLs)
+    nome_exibicao = cpf_selecionado # Caso não ache em lugar nenhum, mantém o CPF
+    
+    try:
+        # Tenta na primeira base (df - Avaliações)
+        df_temp = df[df["CPF_LIMPO"] == cpf_selecionado].copy()
+        
+        # Se estiver vazio, tenta na segunda base (df_oc - Ocorrências)
+        if df_temp.empty:
+            df_temp = df_oc[df_oc["CPF_LIMPO"] == cpf_selecionado].copy()
+            
+        if not df_temp.empty:
+            # Limpa espaços invisíveis nos nomes das colunas de ambos os DFs
+            df_temp.columns = [c.strip() for c in df_temp.columns]
+            
+            # Lista de colunas possíveis nos dois arquivos
+            colunas_nome = ['NOME', 'Motorista', 'NOME MOTORISTA', 'Nome do Condutor', 'Condutor', 'CPF Motorista']
+            
+            for col in colunas_nome:
+                if col in df_temp.columns:
+                    # Verifica se o valor não é nulo e não é apenas o próprio CPF
+                    valor = df_temp[col].iloc[0]
+                    if pd.notna(valor) and str(valor).strip() != "" and str(valor).strip() != cpf_selecionado:
+                        nome_exibicao = str(valor).strip()
+                        break
+    except:
+        pass
 
+    # --- BLOCO 1: AS LINHAS DE ASSINATURA ---
+    # Usamos colunas nativas, mas com HTML simples dentro de cada uma
+    col_sig1, col_space, col_sig2 = st.columns([1, 0.2, 1])
+    
+    with col_sig1:
+        st.markdown("""
+            <div style="text-align: center; border-top: 1.5px solid #1e293b; padding-top: 8px;">
+                <p style="margin:0; font-weight: 800; color: #1e293b; font-size: 11px;">AUDITOR KOMANDO GR</p>
+                <p style="margin:0; color: #64748b; font-size: 10px;">Responsável pela Verificação</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col_sig2:
+        st.markdown(f"""
+            <div style="text-align: center; border-top: 1.5px solid #1e293b; padding-top: 8px;">
+                <p style="margin:0; font-weight: 800; color: #1e293b; font-size: 11px; text-transform: uppercase;">{nome_exibicao}</p>
+                <p style="margin:0; color: #64748b; font-size: 10px;">Ciente dos Indicadores de Performance</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # --- BLOCO 2: ESPAÇAMENTO ---
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # --- BLOCO 3: DATA E LOCAL (TOTALMENTE INDEPENDENTE) ---
+    meses_pt = {
+        "January": "Janeiro", "February": "Fevereiro", "March": "Março",
+        "April": "Abril", "May": "Maio", "June": "Junho",
+        "July": "Julho", "August": "Agosto", "September": "Setembro",
+        "October": "Outubro", "November": "Novembro", "December": "Dezembro"
+    }
+    mes_pt = meses_pt.get(datetime.now().strftime('%B'), "Março")
+    data_str = datetime.now().strftime(f'%d de {mes_pt} de %Y')
+
+    st.markdown(f"""
+        <div style="text-align: center; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+            <p style="margin:0; color: #475569; font-size: 12px; font-weight: 600;">
+                Campinas/SP, {data_str}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+        
 # ------------------------------------------------------------------------------
 # 13. RODAPÉ TÉCNICO E CONTROLE DE VERSÃO
 # ------------------------------------------------------------------------------

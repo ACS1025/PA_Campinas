@@ -675,16 +675,33 @@ else:
 if modo_relatorio:
     st.markdown("<br><br><br>", unsafe_allow_html=True) 
     
-    # 1. BUSCA DO NOME (SEGURA)
-    nome_exibicao = cpf_selecionado
+    # 1. BUSCA DO NOME (CRUZADA NAS DUAS URLs)
+    nome_exibicao = cpf_selecionado # Caso não ache em lugar nenhum, mantém o CPF
+    
     try:
-        df_temp = df[df["CPF_LIMPO"] == cpf_selecionado]
+        # Tenta na primeira base (df - Avaliações)
+        df_temp = df[df["CPF_LIMPO"] == cpf_selecionado].copy()
+        
+        # Se estiver vazio, tenta na segunda base (df_oc - Ocorrências)
+        if df_temp.empty:
+            df_temp = df_oc[df_oc["CPF_LIMPO"] == cpf_selecionado].copy()
+            
         if not df_temp.empty:
-            for col in ['NOME', 'Motorista', 'NOME MOTORISTA']:
+            # Limpa espaços invisíveis nos nomes das colunas de ambos os DFs
+            df_temp.columns = [c.strip() for c in df_temp.columns]
+            
+            # Lista de colunas possíveis nos dois arquivos
+            colunas_nome = ['NOME', 'Motorista', 'NOME MOTORISTA', 'Nome do Condutor', 'Condutor', 'CPF Motorista']
+            
+            for col in colunas_nome:
                 if col in df_temp.columns:
-                    nome_exibicao = df_temp[col].iloc[0]
-                    break
-    except: pass
+                    # Verifica se o valor não é nulo e não é apenas o próprio CPF
+                    valor = df_temp[col].iloc[0]
+                    if pd.notna(valor) and str(valor).strip() != "" and str(valor).strip() != cpf_selecionado:
+                        nome_exibicao = str(valor).strip()
+                        break
+    except:
+        pass
 
     # --- BLOCO 1: AS LINHAS DE ASSINATURA ---
     # Usamos colunas nativas, mas com HTML simples dentro de cada uma
