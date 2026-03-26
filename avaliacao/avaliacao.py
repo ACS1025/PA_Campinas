@@ -33,117 +33,149 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    /* Reset e Tipografia Corporativa */
+    /* 1. RESET E TIPOGRAFIA */
     html, body, [class*="st-"] { 
         font-size: 13px !important; 
         font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     }
-/* --- NOVA MARRETA PARA O BOTÃO DA SIDEBAR --- */
-    /* Localiza o botão que contém o ícone de fechar/abrir */
+
+    /* 2. ENGINE DE IMPRESSÃO */
+    @media print {
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        [data-testid="stSidebar"], .stTabs, button { display: none !important; }
+        .data-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+    }
+
+    /* 3. SIDEBAR CUSTOM (MARRETA AZUL) */
     [data-testid="collapsedControl"] {
-        background-color: #f1f5f9 !important; /* Fundo cinza bem clarinho */
-        border-radius: 0 10px 10px 0 !important; /* Arredonda só o lado direito */
-        padding: 5px !important;
-        transition: all 0.3s ease !important;
-        border: 1px solid #e2e8f0 !important;
-    }
-
-    /* Estiliza o ícone (a seta) dentro do botão */
-    [data-testid="collapsedControl"] svg {
-        fill: #2563eb !important; /* Deixa a seta azul da Komando */
-        width: 1.5rem !important;
-        height: 1.5rem !important;
-    }
-
-    /* Efeito de Hover (Passar o Mouse) */
-    [data-testid="collapsedControl"]:hover {
-        background-color: #2563eb !important; /* Fundo fica azul */
-        transform: scale(1.05); /* Dá um leve zoom */
-        box-shadow: 4px 0 10px rgba(37, 99, 235, 0.2) !important;
-    }
-
-    /* Muda a seta para branco quando o fundo fica azul */
-    [data-testid="collapsedControl"]:hover svg {
-        fill: white !important;
-    }
-    /* Cards de Informação e Containers */
-    .data-card {
-        background-color: white;
-        padding: 30px !important; /* Ajuste de espaçamento interno */
-        border-radius: 14px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        margin-bottom: 30px !important; /* Ajuste de espaçamento entre blocos */
-        border: 1px solid #eef2f6;
-    }
-    
-    /* Estilização das Abas (Tabs) */
-    button[data-baseweb="tab"] {
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        color: #64748b !important;
         background-color: #f1f5f9 !important;
-        border-radius: 10px 10px 0 0 !important;
-        margin-right: 8px !important; /* Ajuste de espaçamento entre abas */
-        padding: 12px 24px !important; /* Ajuste de padding das abas */
+        border-radius: 0 10px 10px 0 !important;
+        padding: 5px !important;
+        border: 1px solid #e2e8f0 !important;
         transition: all 0.3s ease;
     }
-
-    button[data-baseweb="tab"][aria-selected="true"] {
-        color: white !important;
-        background-color: #2563eb !important; /* Azul Principal */
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+    [data-testid="collapsedControl"] svg { fill: #2563eb !important; }
+    [data-testid="collapsedControl"]:hover {
+        background-color: #2563eb !important;
+        transform: scale(1.05);
     }
+    [data-testid="collapsedControl"]:hover svg { fill: white !important; }
 
-    div[data-baseweb="tab-highlight"] {
-        background-color: transparent !important; /* Remove a linha padrão feia */
+    /* 4. CARDS E CONTAINERS (O VISUAL ROBUSTO) */
+    .data-card {
+        background-color: white;
+        padding: 30px !important;
+        border-radius: 18px; /* Mais arredondado como no Figma */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08); /* Sombra mais presente */
+        margin-bottom: 35px !important;
+        border: 1px solid #f1f5f9;
+        transition: transform 0.3s ease;
     }
+    .data-card:hover { transform: translateY(-2px); }
 
-    /* Tabelas de Alta Densidade */
-    thead tr th {
-        background-color: #1e293b !important;
-        color: #ffffff !important;
-        text-align: left !important;
-        padding: 14px !important;
-        font-weight: 600 !important;
-    }
-
-    /* Customização do Sidebar (Navegação) */
-    section[data-testid="stSidebar"] {
-        background-color: #f8fafc;
-        border-right: 1px solid #e2e8f0;
-    }
-
-    /* Boxes de Métricas de Performance (KPIs) */
+    /* 5. KPIs E MÉTRICAS (GRADIENTES E SOMBRAS) */
     .metric-box {
         text-align: center;
-        padding: 32px !important; /* Ajuste de espaçamento interno KPIs */
-        border-radius: 18px;
+        padding: 32px !important;
+        border-radius: 20px;
         color: white;
         font-weight: 700;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         transition: all 0.3s ease;
         margin-bottom: 25px !important;
     }
     .metric-box:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.2);
     }
 
-    /* UI Clean-up */
+    /* 6. ABAS (TABS) MODERNAS */
+    button[data-baseweb="tab"] {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #64748b !important;
+        background-color: #f1f5f9 !important;
+        border-radius: 12px 12px 0 0 !important;
+        margin-right: 8px !important;
+        padding: 12px 24px !important;
+        border: none !important;
+    }
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: white !important;
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+    }
+
+    /* 7. ELEMENTOS DE AUDITORIA (BADGES E LEGENDAS) */
+    .status-badge {
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 13px;
+        background-color: #fef3c7 !important; 
+        color: #92400e !important;
+        border: 1px solid #fcd34d;
+        display: inline-block;
+        box-shadow: 0 2px 5px rgba(252, 211, 77, 0.3);
+    }
+
+    .escala-gravidade { display: flex; gap: 10px; margin: 15px 0; }
+    .item-gravidade {
+        font-size: 10px; padding: 5px 12px; border-radius: 6px; 
+        color: white; font-weight: 700; text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .legenda-auditoria {
+        background-color: #f8fafc !important;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px dashed #cbd5e1;
+        margin-top: 20px;
+        border-left: 4px solid #64748b !important; /* Detalhe de autoridade */
+    }
+
+    /* 8. TABELAS DE ALTA DENSIDADE */
+    thead tr th {
+        background-color: #1e293b !important;
+        color: #ffffff !important;
+        padding: 15px !important;
+        font-weight: 600 !important;
+    }
+
+    /* 9. UI CLEANUP */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    
-    /* Scrollbar Estilizada */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    /* Ajuste visual do botão de abrir/fechar sidebar */
-    button[title="Open sidebar"], button[title="Close sidebar"] {
-        background-color: #2563eb !important;
-        color: white !important;
-        border-radius: 50% !important;
-        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3) !important;
+    
+    /* --- BARRA DE PROGRESSO (RESTAURAÇÃO) --- */
+    .progress-container {
+        width: 100%;
+        background-color: #f1f5f9 !important; /* Fundo da barra (cinza) */
+        border-radius: 20px;
+        margin: 15px 0;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        height: 14px !important; /* Garante que ela tenha altura */
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .progress-bar {
+        height: 14px !important;
+        background: linear-gradient(90deg, #2563eb 0%, #10b981 100%) !important;
+        border-radius: 20px;
+        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Animação suave */
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    }
+
+    .progress-text {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+        display: block;
+        letter-spacing: -0.3px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -289,11 +321,10 @@ OC_PESOS = {
     "EQUIPAMENTO DESLIGADO": 5,
     "INICIO DE VIAGEM - SEM LIBERADO DA GR": 5,
     "INICIO DE VIAGEM FORA DO LOCAL DE ORIGEM": 4,
-    "INICIO DE VIAGEM NÃO INFORMADO": 4,
-    "PARADA EM LOCAL NÃO AUTORIZADO": 2,
-    "PARADA EXCEDIDA": 3
+    "INICIO DE VIAGEM NÃO INFORMADO": 4
 }
-
+# Lista oficial de eventos monitorados (base para auditoria e exibição)
+LISTA_EVENTOS_CRITICOS = list(OC_PESOS.keys())
 # ------------------------------------------------------------------------------
 # 9. LÓGICA DE PROCESSAMENTO DO MOTORISTA SELECIONADO
 # ------------------------------------------------------------------------------
@@ -342,14 +373,7 @@ if cpf_selecionado:
     nivel_serasa = classificar_motorista(score_final)
     # --- DENTRO DA SEÇÃO 9 (Lógica de Processamento) ---
 
-    # Cálculo da Matriz de Risco
-    score_risco = 0
-    resumo_oc = []
-    for oc, peso in OC_PESOS.items():
-        qtd = df_oc_mot[df_oc_mot["Descrição Ocorrência"] == oc].shape[0]
-        impacto = qtd * peso
-        score_risco += impacto
-        resumo_oc.append({"Ocorrência": oc, "Qtd": qtd, "Peso": peso, "Impacto": impacto})
+    
 
     # CRIANDO O DATAFRAME E FILTRANDO OS ZERADOS IMEDIATAMENTE
     df_resumo_oc = pd.DataFrame(resumo_oc)
@@ -385,13 +409,12 @@ if cpf_selecionado:
         # Barra de Performance Visual
         percentual_score = max(0, min(100, score_final))
         st.markdown(f"""
-            <div style="width: 100%; background-color: #e2e8f0; border-radius: 10px; margin-bottom: 25px; margin-top: 15px;">
-                <div style="width: {percentual_score}%; background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%); 
-                            height: 8px; border-radius: 10px;"></div>
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                <span class="progress-text">🎯 Progresso para Nível Diamante: {int(percentual_score)}%</span>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {percentual_score}%;"></div>
+                </div>
             </div>
-            <p style="text-align: right; font-size: 0.8rem; color: #64748b; margin-bottom: 25px;">
-                Progresso para Nível Diamante: {int(percentual_score)}%
-            </p>
         """, unsafe_allow_html=True)
 
         st.markdown("<div class='data-card'>", unsafe_allow_html=True)
@@ -401,7 +424,7 @@ if cpf_selecionado:
             st.write(f"**Identificação:** {cpf_selecionado}")
         with col_r2:
             st.write(f"**Veículo Base:** {dados['placa']}")
-            st.write(f"**Classificação Atual:** {nivel_serasa}")
+            st.markdown(f"**Classificação Atual:** <span class='status-badge'>{nivel_serasa}</span>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
         col_k1, col_k2, col_k3 = st.columns(3)
@@ -410,7 +433,7 @@ if cpf_selecionado:
         col_k3.markdown(f"<div class='metric-box' style='background:#1e293b;'>Avaliações<br><span style='font-size:40px'>{dados['qtd_avaliacoes']}</span></div>", unsafe_allow_html=True)
 
         st.markdown("---")
-        st.markdown("<br>### 📌 Detalhamento de Provas (Campo)", unsafe_allow_html=True)
+        st.markdown("<br>📌 Detalhamento de Provas", unsafe_allow_html=True)
         
         colunas_exibicao = ["Data", "Hora", "NOTA", "PLACA"]
         colunas_presentes = [c for c in colunas_exibicao if c in df_provas.columns]
@@ -427,42 +450,92 @@ if cpf_selecionado:
                 </div>
             """, unsafe_allow_html=True)
 
-        # --- SEÇÃO: AUDITORIA DE RISCO OPERACIONAL ---
-        st.markdown("<br>### 🛡️ Auditoria de Risco Operacional", unsafe_allow_html=True)
+        # --- 10. SEÇÃO: AUDITORIA DE RISCO OPERACIONAL (VERSÃO FINAL) ---
+        st.markdown("<br>🛡️ Matriz de Risco Comportamental", unsafe_allow_html=True)
         
-        # 1. Resumo de Impacto (Tabela de Totais)
+        # LEGENDA DE CORES PARA IMPRESSÃO
+        st.markdown("""
+            <div class="escala-gravidade">
+                <span class="item-gravidade" style="background:#3b82f6">1-2 Baixa</span>
+                <span class="item-gravidade" style="background:#f59e0b">3-4 Média</span>
+                <span class="item-gravidade" style="background:#ef4444">5 Crítica</span>
+            </div>
+        """, unsafe_allow_html=True)
+
         if not df_resumo_oc.empty and df_resumo_oc["Qtd"].astype(int).sum() > 0:
+            # Ponto de Atenção em Destaque
             maior_falha = df_resumo_oc.sort_values(by="Qtd", ascending=False).iloc[0]
             st.warning(f"🚨 **Ponto de Atenção:** A principal recorrência é '{maior_falha['Ocorrência']}' com {maior_falha['Qtd']} registros.")
-            st.dataframe(df_resumo_oc, use_container_width=True, hide_index=True)
+            
+            # Renomeando as colunas para o Dossiê ficar explicativo
+            df_exibicao_oc = df_resumo_oc.rename(columns={
+                "Peso": "Gravidade (Peso)",
+                "Impacto": "Total Pontos (Impacto)"
+            })
+            
+            st.markdown("#### ℹ️ Legenda de Pesos e Gravidade")
+            st.markdown("""
+            <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; background-color: #f8fafc; margin-bottom: 20px;">
+
+            | Peso | Gravidade | Exemplos de Ocorrências |
+            | :--- | :--- | :--- |
+            | **5** | 🔴 Crítica | Desvio de Rota, Acionamento Policial, Bloqueio Vandalizado |
+            | **4** | 🟠 Alta | Alertas de Porta, Início de Viagem não Informado |
+            | **3** | 🟡 Média | Parada Excedida |
+            | **2** | 🔵 Baixa | Pernoite Excedido, Parada em Local não Autorizado |
+
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Mantenha o seu Escopo da Auditoria que já existia:
+            st.markdown(f"""
+                <div class="legenda-auditoria">
+                    <span class="legenda-titulo">🔍 Escopo da Auditoria de Risco:</span>
+                    <span class="legenda-corpo">
+                        Este dossiê monitora automaticamente os seguintes eventos críticos na telemetria: {', '.join(LISTA_EVENTOS_CRITICOS)}
+                    </span>
+                </div>
+            """, unsafe_allow_html=True)
+            st.dataframe(df_exibicao_oc, use_container_width=True, hide_index=True)
+            
+            # EXPLICAÇÃO TÉCNICA DO CÁLCULO
+            st.markdown(f"""
+                <div style='padding: 12px; background: #fffbeb; border-radius: 8px; border-left: 5px solid #f59e0b; font-size: 11px; color: #854d0e;'>
+                    <strong>Nota de Auditoria:</strong> O <b>Impacto</b> é o resultado matemático da (Quantidade x Gravidade). 
+                    Este índice reflete o nível de exposição ao risco que o condutor gera para a operação.
+                </div>
+            """, unsafe_allow_html=True)
         else:
             st.success("✅ Nenhuma ocorrência crítica detectada na telemetria recente.")
 
         # 2. DETALHAMENTO POR SM (Rastreabilidade Operacional)
-        st.markdown("#### 🛰️ Histórico de Eventos por SM")
+        st.markdown("🛰️ Histórico de Eventos por SM")
         
         lista_restrita = list(OC_PESOS.keys())
         df_detalhe_sm = df_oc_mot[df_oc_mot["Descrição Ocorrência"].isin(lista_restrita)].copy()
 
         if not df_detalhe_sm.empty:
-            # Nome exato da coluna que identificamos na sua base
             col_data = "Data Inserção"
-            
-            # Montamos a visualização garantindo que a Data Inserção seja a primeira
             col_view = [col_data, "Código Rastreamento", "Descrição Ocorrência", "Placa Veículo"]
-            # Filtra apenas as que realmente existem (segurança contra mudanças no Sheets)
             col_ok = [c for c in col_view if c in df_detalhe_sm.columns]
             
             if col_ok:
                 df_f = df_detalhe_sm[col_ok].copy()
-                
-                # Tratamento de Data para ordenação (Recentes no topo)
                 if col_data in df_f.columns:
                     df_f[col_data] = pd.to_datetime(df_f[col_data], errors='ignore')
                     df_f = df_f.sort_values(by=col_data, ascending=False)
                 
                 st.dataframe(df_f, use_container_width=True, hide_index=True)
-                st.caption(f"ℹ️ Auditando: {', '.join(lista_restrita)}.")
+                
+                # --- LEGENDA FINAL DO ESCOPO ---
+                st.markdown(f"""
+                    <div class="legenda-auditoria">
+                        <span class="legenda-titulo">🔍 Escopo da Auditoria de Risco:</span>
+                        <span class="legenda-corpo">
+                            Este dossiê monitora automaticamente os seguintes eventos críticos na telemetria: {', '.join(lista_restrita)}.
+                        </span>
+                    </div>
+                """, unsafe_allow_html=True)
             else:
                 # Se a coluna sumir ou mudar de nome, o sistema avisa sem travar
                 st.warning(f"⚠️ A coluna '{col_data}' não foi encontrada. Colunas disponíveis: {list(df_detalhe_sm.columns)}")
@@ -507,7 +580,7 @@ if cpf_selecionado:
                 """, unsafe_allow_html=True)
 
             # --- GRÁFICO DE TENDÊNCIA ENCORPADO ---
-            st.markdown("<br>### 📈 Evolução das Notas de Campo", unsafe_allow_html=True)
+            st.markdown("<br>📈 Evolução das Notas de Campo", unsafe_allow_html=True)
             if not df_motorista.empty:
                 # Criamos um container para o gráfico não ficar "espremido"
                 with st.container():
@@ -517,13 +590,13 @@ if cpf_selecionado:
                 st.info("Aguardando primeiras avaliações para gerar gráfico de tendência.")
 
         with tab_h:
-            st.markdown("<br>### 📝 Histórico Detalhado de Avaliações", unsafe_allow_html=True)
-            st.dataframe(df_provas, use_container_width=True, hide_index=True)
-
-        with tab_r:
-            st.markdown("<br>### 🛡️ Análise de Ocorrências Críticas", unsafe_allow_html=True)
+            st.markdown("<br>📝 Histórico Detalhado de Avaliações", unsafe_allow_html=True)
+            st.dataframe(df_provas, use_container_width=True, hide_index=True)               
             
-            # --- NOVA LEGENDA DE PESOS ---
+        with tab_r:
+            st.markdown("<br>🛡️ Análise de Ocorrências Críticas", unsafe_allow_html=True)
+            
+            # Removido o IF que causava o erro e mantido o expander apenas para a tela
             with st.expander("ℹ️ Legenda de Pesos e Gravidade", expanded=False):
                 st.markdown("""
                 | Peso | Gravidade | Exemplos de Ocorrências |
@@ -534,13 +607,14 @@ if cpf_selecionado:
                 | **2** | 🔵 Baixa | Pernoite Excedido, Parada em Local não Autorizado |
                 """)
 
-            # Exibição da tabela filtrada (apenas o que aconteceu)
+            # Segue o restante do seu código de exibição da tabela...
             if not df_resumo_oc.empty:
                 st.dataframe(df_resumo_oc, use_container_width=True, hide_index=True)
+
             else:
-                st.success("✅ Nenhuma ocorrência monitorada foi registrada para este condutor.")
+                st.success("<br>✅ Nenhuma ocorrência monitorada foi registrada para este condutor.")
             
-            st.markdown("<br>#### 🛰️ Localização de Eventos (SM)", unsafe_allow_html=True)
+            st.markdown("<br>🛰️ Localização de Eventos (SM)", unsafe_allow_html=True)
             lista_restrita = list(OC_PESOS.keys())
             df_r_tab = df_oc_mot[df_oc_mot["Descrição Ocorrência"].isin(lista_restrita)].copy()
             
@@ -595,7 +669,64 @@ else:
             </p>
         </div>
     """, unsafe_allow_html=True)
+# ------------------------------------------------------------------------------
+# 12.5 BLOCO DE ASSINATURA (SEPARADO PARA ESTABILIDADE)
+# ------------------------------------------------------------------------------
+if modo_relatorio:
+    st.markdown("<br><br><br>", unsafe_allow_html=True) 
+    
+    # 1. BUSCA DO NOME (SEGURA)
+    nome_exibicao = cpf_selecionado
+    try:
+        df_temp = df[df["CPF_LIMPO"] == cpf_selecionado]
+        if not df_temp.empty:
+            for col in ['NOME', 'Motorista', 'NOME MOTORISTA']:
+                if col in df_temp.columns:
+                    nome_exibicao = df_temp[col].iloc[0]
+                    break
+    except: pass
 
+    # --- BLOCO 1: AS LINHAS DE ASSINATURA ---
+    # Usamos colunas nativas, mas com HTML simples dentro de cada uma
+    col_sig1, col_space, col_sig2 = st.columns([1, 0.2, 1])
+    
+    with col_sig1:
+        st.markdown("""
+            <div style="text-align: center; border-top: 1.5px solid #1e293b; padding-top: 8px;">
+                <p style="margin:0; font-weight: 800; color: #1e293b; font-size: 11px;">AUDITOR KOMANDO GR</p>
+                <p style="margin:0; color: #64748b; font-size: 10px;">Responsável pela Verificação</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col_sig2:
+        st.markdown(f"""
+            <div style="text-align: center; border-top: 1.5px solid #1e293b; padding-top: 8px;">
+                <p style="margin:0; font-weight: 800; color: #1e293b; font-size: 11px; text-transform: uppercase;">{nome_exibicao}</p>
+                <p style="margin:0; color: #64748b; font-size: 10px;">Ciente dos Indicadores de Performance</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # --- BLOCO 2: ESPAÇAMENTO ---
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # --- BLOCO 3: DATA E LOCAL (TOTALMENTE INDEPENDENTE) ---
+    meses_pt = {
+        "January": "Janeiro", "February": "Fevereiro", "March": "Março",
+        "April": "Abril", "May": "Maio", "June": "Junho",
+        "July": "Julho", "August": "Agosto", "September": "Setembro",
+        "October": "Outubro", "November": "Novembro", "December": "Dezembro"
+    }
+    mes_pt = meses_pt.get(datetime.now().strftime('%B'), "Março")
+    data_str = datetime.now().strftime(f'%d de {mes_pt} de %Y')
+
+    st.markdown(f"""
+        <div style="text-align: center; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+            <p style="margin:0; color: #475569; font-size: 12px; font-weight: 600;">
+                Campinas/SP, {data_str}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+        
 # ------------------------------------------------------------------------------
 # 13. RODAPÉ TÉCNICO E CONTROLE DE VERSÃO
 # ------------------------------------------------------------------------------
