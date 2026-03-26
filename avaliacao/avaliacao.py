@@ -487,17 +487,7 @@ if cpf_selecionado:
             </div>
             """, unsafe_allow_html=True)
 
-            # Mantenha o seu Escopo da Auditoria que já existia:
-            st.markdown(f"""
-                <div class="legenda-auditoria">
-                    <span class="legenda-titulo">🔍 Escopo da Auditoria de Risco:</span>
-                    <span class="legenda-corpo">
-                        Este dossiê monitora automaticamente os seguintes eventos críticos na telemetria: {', '.join(LISTA_EVENTOS_CRITICOS)}
-                    </span>
-                </div>
-            """, unsafe_allow_html=True)
-            st.dataframe(df_exibicao_oc, use_container_width=True, hide_index=True)
-            
+                       
             # EXPLICAÇÃO TÉCNICA DO CÁLCULO
             st.markdown(f"""
                 <div style='padding: 12px; background: #fffbeb; border-radius: 8px; border-left: 5px solid #f59e0b; font-size: 11px; color: #854d0e;'>
