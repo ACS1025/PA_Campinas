@@ -5,7 +5,8 @@ import numpy as np
 import base64
 from datetime import datetime
 from pathlib import Path
-
+if "print_trigger" not in st.session_state:
+    st.session_state.print_trigger = False
 # ------------------------------------------------------------------------------
 # 0. PROTOCOLO DE IMAGEM LOCAL (CONVERSÃO BASE64 PARA ESTABILIDADE)
 # ------------------------------------------------------------------------------
@@ -41,10 +42,86 @@ st.markdown("""
 
     /* 2. ENGINE DE IMPRESSÃO */
     @media print {
-        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-        [data-testid="stSidebar"], .stTabs, button { display: none !important; }
-        .data-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+
+    /* CONFIGURAÇÃO DA PÁGINA A4 */
+    @page {
+        size: A4;
+        margin: 18mm 12mm 18mm 12mm;
     }
+
+    html, body {
+        width: 210mm;
+        background: white !important;
+    }
+
+    /* REMOVE LIXO VISUAL */
+    [data-testid="stSidebar"],
+    .stTabs,
+    button,
+    footer,
+    #MainMenu {
+        display: none !important;
+    }
+
+    /* GARANTE CORES */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* CONTROLE DE QUEBRA */
+    .data-card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    h1, h2, h3 {
+        page-break-after: avoid;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+
+    /* HEADER FIXO */
+    .header-print {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: white;
+        border-bottom: 2px solid #1e293b;
+        padding: 10px 20px;
+        z-index: 9999;
+    }
+
+    /* CONTEÚDO DESCE PRA NÃO SOBREPOR */
+    .content-print {
+        margin-top: 90px;
+        margin-bottom: 60px;
+    }
+
+    /* RODAPÉ FIXO */
+    .footer-print {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        border-top: 1px solid #cbd5e1;
+        font-size: 10px;
+        color: #475569;
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 20px;
+        background: white;
+    }
+}
 
     /* 3. SIDEBAR CUSTOM (MARRETA AZUL) */
     [data-testid="collapsedControl"] {
@@ -176,6 +253,22 @@ st.markdown("""
         margin-bottom: 8px;
         display: block;
         letter-spacing: -0.3px;
+    }
+        
+        .data-card {
+        page-break-inside: avoid;
+    }
+
+    h2, h3 {
+        page-break-after: avoid;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -405,15 +498,7 @@ if cpf_selecionado:
             st.markdown("## 📄 Relatório Consolidado de Auditoria")
         with col_header_2:
             if st.button("🖨️ Imprimir / PDF"):
-                import streamlit.components.v1 as components
-                components.html(
-                    """
-                    <script>
-                        window.parent.print();
-                    </script>
-                    """,
-                    height=0
-                )
+                st.session_state.print_trigger = True
 
         # Barra de Performance Visual
         percentual_score = max(0, min(100, score_final))
@@ -742,7 +827,23 @@ if modo_relatorio:
             </p>
         </div>
     """, unsafe_allow_html=True)
-        
+    
+    
+    
+    import streamlit.components.v1 as components
+
+    if st.session_state.print_trigger:
+        components.html(
+            """
+            <script>
+                setTimeout(function() {
+                    window.parent.print();
+                }, 800);
+            </script>
+            """,
+            height=0
+        )
+        st.session_state.print_trigger = False    
 # ------------------------------------------------------------------------------
 # 13. RODAPÉ TÉCNICO E CONTROLE DE VERSÃO
 # ------------------------------------------------------------------------------
