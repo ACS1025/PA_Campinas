@@ -405,7 +405,15 @@ if cpf_selecionado:
             st.markdown("## 📄 Relatório Consolidado de Auditoria")
         with col_header_2:
             if st.button("🖨️ Imprimir / PDF"):
-                st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
+                import streamlit.components.v1 as components
+                components.html(
+                    """
+                    <script>
+                        window.parent.print();
+                    </script>
+                    """,
+                    height=0
+                )
 
         # Barra de Performance Visual
         percentual_score = max(0, min(100, score_final))
