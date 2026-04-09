@@ -67,11 +67,7 @@
     <h3>Enviar Briefing via WhatsApp</h3>
     <div>
       <label>Código SM *<input id="sm" name="sm" placeholder="Ex: 1175983" required/></label>
-      <label>Embarcador<input id="embarcador" name="embarcador"/></label>
-      <label>Transportador<input id="transportador" name="transportador"/></label>
-      <label>Equipamento<input id="equipamento" name="equipamento"/></label>
-
-      <div class="row">
+         <div class="row">
         <div class="col input-box">
           <label>Motorista *</label>
           <input id="motorista" name="motorista" placeholder="Digite o nome (autocomplete)" required/>
@@ -87,11 +83,7 @@
           <input id="placa_carreta" name="placa_carreta" placeholder="Ex: CWI-2880"/>
           <ul id="lista-carreta" class="autocomplete-list" style="display:none"></ul>
         </div>
-        <div class="col">
-          <label>Cliente</label>
-          <input id="cliente" name="cliente"/>
-        </div>
-      </div>
+              </div>
 
       <label>Rota<input id="rota" name="rota" placeholder="Ex: Campinas/SP X Rio de Janeiro/RJ"/></label>
 
@@ -164,49 +156,37 @@
     // ===================================================================
     function atualizarMensagem(){
       const sm = (document.getElementById('sm')?.value || '').trim();
-      const embarcador = (document.getElementById('embarcador')?.value || '').trim();
-      const transportador = (document.getElementById('transportador')?.value || '').trim();
-      const equipamento = (document.getElementById('equipamento')?.value || '').trim();
       const motorista = (document.getElementById('motorista')?.value || '').trim();
       const placaCavalo = (document.getElementById('placa_cavalo')?.value || '').trim();
       const placaCarreta = (document.getElementById('placa_carreta')?.value || '').trim();
       const rota = (document.getElementById('rota')?.value || '').trim();
-      const cliente = (document.getElementById('cliente')?.value || '').trim();
 
       let mensagem = '';
 
       if(sm) mensagem += `*SM:* ${sm}\n`;
       if(motorista) mensagem += `*Motorista:* ${motorista}\n`;
-      if(embarcador) mensagem += `*Embarcador:* ${embarcador}\n`;
-      if(transportador) mensagem += `*Transportador:* ${transportador}\n`;
-      if(equipamento) mensagem += `*Equipamento:* ${equipamento}\n`;
       if(placaCavalo) mensagem += `*Placa Cavalo:* ${placaCavalo}\n`;
       if(placaCarreta) mensagem += `*Placa Carreta:* ${placaCarreta}\n`;
-      if(cliente) mensagem += `*Cliente:* ${cliente}\n`;
       if(rota) mensagem += `*Rota:* ${rota}\n`;
 
       document.getElementById('textoPronto').value = mensagem;
-    }
+}
 
     // ===================================================================
     // MONTA PAYLOAD PARA PLANILHA
     // ===================================================================
     function montarPayloadParaPlanilha(){
-      const now = new Date();
-      return {
-        data_envio: now.toISOString(),
-        codigo_sm: (document.getElementById('sm')?.value || '').trim(),
-        embarcador: (document.getElementById('embarcador')?.value || '').trim(),
-        transportador: (document.getElementById('transportador')?.value || '').trim(),
-        equipamento: (document.getElementById('equipamento')?.value || '').trim(),
-        motorista: (document.getElementById('motorista')?.value || '').trim(),
-        placa_cavalo: (document.getElementById('placa_cavalo')?.value || '').trim(),
-        placa_carreta: (document.getElementById('placa_carreta')?.value || '').trim(),
-        rota: (document.getElementById('rota')?.value || '').trim(),
-        cliente: (document.getElementById('cliente')?.value || '').trim(),
-        texto_pronto: (document.getElementById('textoPronto')?.value || '').trim()
-      };
-    }
+  const now = new Date();
+  return {
+    data_envio: now.toISOString(),
+    codigo_sm: (document.getElementById('sm')?.value || '').trim(),
+    motorista: (document.getElementById('motorista')?.value || '').trim(),
+    placa_cavalo: (document.getElementById('placa_cavalo')?.value || '').trim(),
+    placa_carreta: (document.getElementById('placa_carreta')?.value || '').trim(),
+    rota: (document.getElementById('rota')?.value || '').trim(),
+    texto_pronto: (document.getElementById('textoPronto')?.value || '').trim()
+  };
+}
 
     // ===================================================================
     // ENVIA DADOS PARA O APPS SCRIPT (GOOGLE SHEETS) - COM FALLBACK
@@ -346,7 +326,7 @@
     }
 
     // Atualiza mensagem ao modificar campos
-    const camposAtualizaveis = ['sm', 'embarcador', 'transportador', 'equipamento', 'rota', 'cliente'];
+    const camposAtualizaveis = ['sm', 'rota'];
     camposAtualizaveis.forEach(id => {
       const el = document.getElementById(id);
       if(el) {
