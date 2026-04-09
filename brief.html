@@ -95,13 +95,14 @@
           <button type="button" class="template-btn" onclick="inserirTemplate('briefing')">📍 Briefing</button>
           <button type="button" class="template-btn" onclick="inserirTemplate('reciclagem')">♻️ Reciclagem</button>
           <button type="button" class="template-btn" onclick="inserirTemplate('fotos')">📸 Fotos</button>
+          <button type="button" class="template-btn" onclick="ativarEdicaoLivre()">✍️ Personalizado</button>
         </div>
       </div>
 
       <!-- Texto Pronto -->
       <div class="full-width">
         <label for="textoPronto">Mensagem para WhatsApp:</label>
-        <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
+        <textarea id="textoPronto" name="textoPronto" rows="6"></textarea>
       </div>
 
       <!-- Botões de Ação -->                        
@@ -126,8 +127,8 @@
       fotos: `*Confirmação de Parada/Pernoite*\n\nSr. Motorista.\n\nAo informar paradas e pernoite via macro, por favor confirme a ação em nosso WhatsApp: *(19 98103-2053)*\n\nÉ preciso que você nos envie:\n\n*→ FOTO DO BAÚ*\n*→ FOTO DOS LACRES*\n*→ FOTO DO ENGATE*\n\nEste procedimento de envio deverá ser repetido quando você reiniciar a viagem também.\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`
     };
 
-    // endpoint do Apps Script (substitua pela sua URL se necessário)
-    const endpointBase = "https://script.google.com/macros/s/AKfycbxiux1H7NSCSXlQsRIJ24QPFl_uf2bNNzEeVh4VUlC7Oe6w733uQ8YQ_v-6z2YQibJ2/exec";
+    // endpoint correto (ATUALIZADO)
+const endpointBase = "https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec";
     let listaNomes=[], listaPlacas=[], listaCarretas=[];
 
     // ===================================================================
@@ -192,44 +193,45 @@
     // ENVIA DADOS PARA O APPS SCRIPT (GOOGLE SHEETS) - COM FALLBACK
     // ===================================================================
     async function enviarParaPlanilha(payload){
-      // Tentativa 1: POST com JSON (padrão)
-      try {
-        console.log('📤 Tentativa 1: POST JSON...');
-        const resp = await fetch(endpointBase, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'save', data: payload })
-        });
-        
-        if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const json = await resp.json();
-        console.log('✅ Sucesso:', json);
-        return json;
-      } catch(err1){
-        console.warn('⚠️ JSON falhou:', err1.message);
-        
-        // Tentativa 2: Form URL-encoded (evita CORS preflight)
-        try {
-          console.log('📤 Tentativa 2: Form URL-encoded...');
-          const formData = new URLSearchParams();
-          formData.append('action', 'save');
-          formData.append('data', JSON.stringify(payload));
-          
-          const resp = await fetch(endpointBase, {
-            method: 'POST',
-            body: formData
-          });
-          
-          if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
-          const json = await resp.json();
-          console.log('✅ Sucesso com Form:', json);
-          return json;
-        } catch(err2){
-          console.error('❌ Ambas as tentativas falharam');
-          throw new Error('Erro de conexão - Apps Script pode estar offline ou URL incorreta');
-        }
-      }
+  try {
+    console.log('📤 Enviando dados...');
+    
+    const resp = await fetch(endpointBase, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload) // 🔥 sem "action"
+    });
+
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+    const json = await resp.json();
+    console.log('✅ Resposta:', json);
+
+    return json;
+
+  } catch(err1){
+    console.warn('⚠️ JSON falhou, tentando fallback...');
+
+    try {
+      const formData = new URLSearchParams();
+      formData.append('data', JSON.stringify(payload));
+
+      const resp = await fetch(endpointBase, {
+        method: 'POST',
+        body: formData
+      });
+
+      if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+      const json = await resp.json();
+      return json;
+
+    } catch(err2){
+      console.error('❌ Falha total:', err2);
+      throw new Error('Erro de conexão com Apps Script');
     }
+  }
+}
 
     // ===================================================================
     // CARREGA LISTAS DO SERVIDOR
