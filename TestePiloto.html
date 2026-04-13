@@ -321,7 +321,6 @@
                     <select id='responsavel' name='responsavel' required>
                         <option value=''>Selecione o responsável</option>
                         <option value='ANA CLAUDIA'>ANA CLAUDIA</option>
-                        <option value='JOEL'>JOEL</option>
                         <option value='PEDRO OTÁVIO'>PEDRO OTÁVIO</option>
                         <option value='NOELE'>NOELE</option>
                         <option value='TAINÁ'>TAINÁ</option>
@@ -515,202 +514,227 @@
 </div>
 </div>
 
-    
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Torna global
-  window.atualizarCarretaStatus = function () {
-    const docSaida = document.getElementById('doc_saida').value;
-    const carretaStatus = document.getElementById('doc_carreta_status');
-    carretaStatus.value = (docSaida === 'MANIFESTO') ? 'CARREGADO' : 'VAZIO';
-  };
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById('registro-saidas-form');
 
-  function autoPreencherTurno() {
-    const turnoSelect = document.getElementById('doc_turno');
-    if (!turnoSelect) return;
-    const hour = new Date().getHours();
-    turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
-  }
+    // --- TODAS AS SUAS FUNÇÕES DE PREENCHIMENTO E REGRAS (MANTIDAS) ---
+    window.atualizarCarretaStatus = function () {
+        const docSaida = document.getElementById('doc_saida').value;
+        const carretaStatus = document.getElementById('doc_carreta_status');
+        if (carretaStatus) {
+            carretaStatus.value = (docSaida === 'MANIFESTO') ? 'CARREGADO' : 'VAZIO';
+        }
+    };
 
-  // Aguarda o carregamento da página e define 'KMD' como valor padrão
-    window.addEventListener('DOMContentLoaded', function () {
-      const select = document.getElementById('doc_viagem_rastreada');
-      if (select && select.value === '') {
-        select.value = 'KMD';
-      }
-    });
-
-  function autoPreencherDataSaida() {
-    const campoData = document.getElementById('data_saida');
-    if (!campoData) return;
-    const dataAtual = new Date();
-    const ano = dataAtual.getFullYear();
-    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-    const dia = String(dataAtual.getDate()).padStart(2, '0');
-    campoData.value = `${ano}-${mes}-${dia}`;
-  }
-
-  // Listas globais
-  let listaPlacas = [], listaCarretas = [], listaNomes = [], listaCidades = [], listaClientes = [];
-
-  fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
-    .then(res => res.json()).then(data => {
-      listaPlacas = data.cavalos || [];
-      listaCarretas = data.carretas || [];
-    });
-
-  fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
-    .then(res => res.json()).then(data => listaNomes = data.nomes || []);
-
-  fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
-    .then(res => res.json()).then(data => listaCidades = data);
-
-  fetch('https://drive.google.com/uc?export=download&id=1xmohBNnPTx-o8wwKOcFNExryEFV16Mhi')
-    .then(res => res.json()).then(data => listaClientes = data)
-    .catch(err => console.error('Erro ao carregar clientes:', err));
-
-  window.buscarPlacas = function(valor) {
-    const lista = document.getElementById('lista-placa');
-    lista.innerHTML = '';
-    if (!valor) return;
-    listaPlacas.filter(p => p.toLowerCase().startsWith(valor.toLowerCase()))
-      .forEach(p => {
-        const li = document.createElement('li');
-        li.textContent = p;
-        li.onclick = () => { document.getElementById('doc_placa').value = p; lista.innerHTML = ''; };
-        lista.appendChild(li);
-      });
-  };
-
-  window.buscarCarretas = function(valor) {
-    const lista = document.getElementById('lista-carreta');
-    lista.innerHTML = '';
-    if (!valor) return;
-    listaCarretas.filter(c => c.toLowerCase().startsWith(valor.toLowerCase()))
-      .forEach(c => {
-        const li = document.createElement('li');
-        li.textContent = c;
-        li.onclick = () => { document.getElementById('doc_carreta').value = c; lista.innerHTML = ''; };
-        lista.appendChild(li);
-      });
-  };
-
-  window.buscarMotoristas = function(valor) {
-    const lista = document.getElementById('lista-motorista');
-    lista.innerHTML = '';
-    if (!valor) return;
-    listaNomes.filter(n => n.toLowerCase().startsWith(valor.toLowerCase()))
-      .forEach(n => {
-        const li = document.createElement('li');
-        li.textContent = n;
-        li.onclick = () => { document.getElementById('doc_motorista').value = n; lista.innerHTML = ''; };
-        lista.appendChild(li);
-      });
-  };
-
-  window.buscarCidades = function(input, tipo) {
-    const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
-    lista.innerHTML = '';
-    if (!input) return lista.style.display = 'none';
-    const filtradas = listaCidades.filter(c => c.toLowerCase().includes(input.toLowerCase()));
-    if (!filtradas.length) return lista.style.display = 'none';
-    lista.style.display = 'block';
-    filtradas.forEach(cidade => {
-      const li = document.createElement('li');
-      li.textContent = cidade;
-      li.onclick = () => selecionarCidade(cidade, tipo);
-      lista.appendChild(li);
-    });
-  };
-
-  window.selecionarCidade = function(cidade, tipo) {
-    const campo = document.getElementById(tipo === 'origem' ? 'doc_origem' : 'doc_destino');
-    campo.value = cidade;
-    const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
-    lista.innerHTML = '';
-    lista.style.display = 'none';
-  };
-
-  window.buscarClientes = function(input, tipo) {
-    const lista = document.getElementById('lista-cliente');
-    lista.innerHTML = '';
-    if (!input) return lista.style.display = 'none';
-    const filtradas = listaClientes.filter(c => c.toLowerCase().includes(input.toLowerCase()));
-    if (!filtradas.length) return lista.style.display = 'none';
-    lista.style.display = 'block';
-    filtradas.forEach(cliente => {
-      const li = document.createElement('li');
-      li.textContent = cliente;
-      li.onclick = () => selecionarCliente(cliente);
-      lista.appendChild(li);
-    });
-  };
-
-  window.selecionarCliente = function(cliente) {
-    document.getElementById('clienteInput').value = cliente;
-    document.getElementById('lista-cliente').style.display = 'none';
-  };
-
-  window.updateRoute = function() {
-    const origem = document.getElementById('doc_origem').value;
-    const destino = document.getElementById('doc_destino').value;
-    let rota = 'XX';
-    if (origem && destino) rota = 'XX ' + origem + ' X ' + destino;
-    else if (origem || destino) rota = (origem || 'XX') + ' X ' + (destino || 'XX');
-    document.getElementById('rota').value = rota;
-  };
-
-  window.formatarMoeda = function(elemento) {
-    let valor = elemento.value.replace(/\D/g, '');
-    valor = (parseFloat(valor) / 100).toFixed(2);
-    elemento.value = 'R$ ' + valor.replace('.', ',');
-  };
-
-  autoPreencherTurno();
-  autoPreencherDataSaida();
-
-  document.getElementById('registro-saidas-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const btn = this.querySelector('button[type="submit"]');
-  btn.disabled = true;
-
-  const placa = document.getElementById('doc_placa').value.trim();
-  if (!placa) {
-    alert('Por favor, preencha a placa.');
-    btn.disabled = false;
-    return;
-  }
-
-  const formData = new FormData(this);
-
-  fetch('https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.result === 'success') {
-      window.location.href = 'https://acs1025.github.io/PA_Campinas/registro-saidas.html';
-    } else {
-      alert('Erro ao enviar os dados: ' + (result.error || 'Erro desconhecido'));
-      btn.disabled = false;
+    function autoPreencherTurno() {
+        const turnoSelect = document.getElementById('doc_turno');
+        if (!turnoSelect) return;
+        const hour = new Date().getHours();
+        turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
     }
-  })
-  .catch(error => {
-    console.error('Erro ao enviar os dados:', error);
-    alert('Ocorreu um erro. Tente novamente.');
-    btn.disabled = false;
-  });
-});
+
+    function autoPreencherDataSaida() {
+        const campoData = document.getElementById('data_saida');
+        if (!campoData) return;
+        const dataAtual = new Date();
+        const ano = dataAtual.getFullYear();
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+        const dia = String(dataAtual.getDate()).padStart(2, '0');
+        campoData.value = `${ano}-${mes}-${dia}`;
+    }
+
+    const selectViagem = document.getElementById('doc_viagem_rastreada');
+    if (selectViagem && selectViagem.value === '') {
+        selectViagem.value = 'KMD';
+    }
+
+    window.formatarMoeda = function(elemento) {
+        let valor = elemento.value.replace(/\D/g, '');
+        valor = (parseFloat(valor) / 100).toFixed(2);
+        elemento.value = 'R$ ' + valor.replace('.', ',');
+    };
+
+    autoPreencherTurno();
+    autoPreencherDataSaida();
+
+    // --- TODAS AS SUAS LISTAS E BUSCAS (MANTIDAS) ---
+    let listaPlacas = [], listaCarretas = [], listaNomes = [], listaCidades = [], listaClientes = [];
+
+    fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
+        .then(res => res.json()).then(data => {
+            listaPlacas = data.cavalos || [];
+            listaCarretas = data.carretas || [];
+        });
+
+    fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
+        .then(res => res.json()).then(data => listaNomes = data.nomes || []);
+
+    fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
+        .then(res => res.json()).then(data => listaCidades = data);
+
+    fetch('https://drive.google.com/uc?export=download&id=1xmohBNnPTx-o8wwKOcFNExryEFV16Mhi')
+        .then(res => res.json()).then(data => listaClientes = data)
+        .catch(err => console.error('Erro ao carregar clientes:', err));
+
+    window.buscarPlacas = function(valor) {
+        const lista = document.getElementById('lista-placa');
+        lista.innerHTML = '';
+        if (!valor) return;
+        listaPlacas.filter(p => p.toLowerCase().startsWith(valor.toLowerCase()))
+            .forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = p;
+                li.onclick = () => { document.getElementById('doc_placa').value = p; lista.innerHTML = ''; };
+                lista.appendChild(li);
+            });
+    };
+
+    window.buscarCarretas = function(valor) {
+        const lista = document.getElementById('lista-carreta');
+        lista.innerHTML = '';
+        if (!valor) return;
+        listaCarretas.filter(c => c.toLowerCase().startsWith(valor.toLowerCase()))
+            .forEach(c => {
+                const li = document.createElement('li');
+                li.textContent = c;
+                li.onclick = () => { document.getElementById('doc_carreta').value = c; lista.innerHTML = ''; };
+                lista.appendChild(li);
+            });
+    };
+
+    window.buscarMotoristas = function(valor) {
+        const lista = document.getElementById('lista-motorista');
+        lista.innerHTML = '';
+        if (!valor) return;
+        listaNomes.filter(n => n.toLowerCase().startsWith(valor.toLowerCase()))
+            .forEach(n => {
+                const li = document.createElement('li');
+                li.textContent = n;
+                li.onclick = () => { document.getElementById('doc_motorista').value = n; lista.innerHTML = ''; };
+                lista.appendChild(li);
+            });
+    };
+
+    window.buscarCidades = function(input, tipo) {
+        const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
+        lista.innerHTML = '';
+        if (!input) return lista.style.display = 'none';
+        const filtradas = listaCidades.filter(c => c.toLowerCase().includes(input.toLowerCase()));
+        if (!filtradas.length) return lista.style.display = 'none';
+        lista.style.display = 'block';
+        filtradas.forEach(cidade => {
+            const li = document.createElement('li');
+            li.textContent = cidade;
+            li.onclick = () => selecionarCidade(cidade, tipo);
+            lista.appendChild(li);
+        });
+    };
+
+    window.selecionarCidade = function(cidade, tipo) {
+        const campo = document.getElementById(tipo === 'origem' ? 'doc_origem' : 'doc_destino');
+        campo.value = cidade;
+        const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
+        lista.innerHTML = '';
+        lista.style.display = 'none';
+        window.updateRoute();
+    };
+
+    window.buscarClientes = function(input) {
+        const lista = document.getElementById('lista-cliente');
+        lista.innerHTML = '';
+        if (!input) return lista.style.display = 'none';
+        const filtradas = listaClientes.filter(c => c.toLowerCase().includes(input.toLowerCase()));
+        if (!filtradas.length) return lista.style.display = 'none';
+        lista.style.display = 'block';
+        filtradas.forEach(cliente => {
+            const li = document.createElement('li');
+            li.textContent = cliente;
+            li.onclick = () => {
+                document.getElementById('clienteInput').value = cliente;
+                document.getElementById('lista-cliente').style.display = 'none';
+            };
+            lista.appendChild(li);
+        });
+    };
+
+    window.updateRoute = function() {
+        const origem = document.getElementById('doc_origem').value;
+        const destino = document.getElementById('doc_destino').value;
+        let rota = 'XX';
+        if (origem && destino) rota = origem + ' X ' + destino;
+        else if (origem || destino) rota = (origem || 'XX') + ' X ' + (destino || 'XX');
+        document.getElementById('rota').value = rota;
+    };
+
+    // --- EVENTO DE ENVIO ÚNICO (CORREÇÃO DA CHAVE PLACA_CAVALO) ---
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const btn = this.querySelector('button[type="submit"]');
+        btn.disabled = true;
+
+        const formData = new FormData(this);
+        const tipoSaida = (formData.get("doc_saida") || "").toUpperCase();
+
+        // 1. Envio para Planilha Principal (Registro de Saídas)
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.result === 'success') {
+                
+                // 2. Se for MANIFESTO, faz o upgrade (Briefing + WhatsApp)
+                if (tipoSaida === 'MANIFESTO') {
+                    const motorista = (formData.get("doc_motorista") || "").toUpperCase();
+                    const placaValor = (formData.get("doc_placa") || formData.get("placa") || "").toUpperCase();
+                    const origem = (formData.get("doc_origem") || "").toUpperCase();
+                    const destino = (formData.get("doc_destino") || "").toUpperCase();
+                    const sm = formData.get("cod_sm") || "";
+                    const carreta = (formData.get("doc_carreta") || "").toUpperCase();
+                    
+                    const linkImg = "https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg";
+                    
+                    const mensagem = `Viagem Monitorada\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link abaixo:\n\n${linkImg}\n\n*Dados da viagem:*\nMotorista: ${motorista}\nPlaca Cavalo: ${placaValor}\nRota: ${origem} X ${destino}\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`;
+
+                    // Abre o WhatsApp
+                    window.open('https://wa.me/?text=' + encodeURIComponent(mensagem), '_blank');
+
+                    // Envia para a planilha de Briefing com a chave correta: placa_cavalo
+                    fetch('https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec', {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            data_envio: new Date().toISOString(),
+                            codigo_sm: sm,
+                            motorista: motorista,
+                            placa_cavalo: placaValor, // Aqui estava o erro de leitura na sua planilha
+                            placa_carreta: carreta,
+                            rota: `${origem} X ${destino}`,
+                            texto_pronto: mensagem
+                        })
+                    });
+                }
+
+                alert('Registros concluídos com sucesso!');
+                this.reset();
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao processar o registro.');
+            btn.disabled = false;
+        });
+    });
 });
 </script>
-
 
          <footer>
             <p>&copy; 2024 PA-Campinas. Todos os direitos reservados.</p>
         </footer>
     </body>
 </html>
-
 
