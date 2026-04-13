@@ -667,7 +667,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('rota').value = rota;
     };
 
-    // --- EVENTO DE ENVIO ÚNICO (CORREÇÃO DA CHAVE PLACA_CAVALO) ---
+    // --- EVENTO DE ENVIO ÚNICO (CORRIGIDO: COM BRIEFING E PLACA_CAVALO) ---
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         const btn = this.querySelector('button[type="submit"]');
@@ -685,23 +685,22 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(result => {
             if (result.result === 'success') {
                 
-                // 2. Se for MANIFESTO, faz o upgrade (Briefing + WhatsApp)
+                // 2. Se for MANIFESTO, executa o Briefing (WhatsApp + Segunda Planilha)
                 if (tipoSaida === 'MANIFESTO') {
                     const motorista = (formData.get("doc_motorista") || "").toUpperCase();
-                    const placaValor = (formData.get("doc_placa") || formData.get("placa") || "").toUpperCase();
+                    const placaValor = (formData.get("placa") || "").toUpperCase();
                     const origem = (formData.get("doc_origem") || "").toUpperCase();
                     const destino = (formData.get("doc_destino") || "").toUpperCase();
                     const sm = formData.get("cod_sm") || "";
                     const carreta = (formData.get("doc_carreta") || "").toUpperCase();
                     
                     const linkImg = "https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg";
-                    
                     const mensagem = `Viagem Monitorada\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link abaixo:\n\n${linkImg}\n\n*Dados da viagem:*\nMotorista: ${motorista}\nPlaca Cavalo: ${placaValor}\nRota: ${origem} X ${destino}\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`;
 
                     // Abre o WhatsApp
                     window.open('https://wa.me/?text=' + encodeURIComponent(mensagem), '_blank');
 
-                    // Envia para a planilha de Briefing com a chave correta: placa_cavalo
+                    // 3. ENVIO PARA PLANILHA DE BRIEFING (EM BACKGROUND)
                     fetch('https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec', {
                         method: 'POST',
                         mode: 'no-cors',
@@ -710,17 +709,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             data_envio: new Date().toISOString(),
                             codigo_sm: sm,
                             motorista: motorista,
-                            placa_cavalo: placaValor, // Aqui estava o erro de leitura na sua planilha
+                            placa_cavalo: placaValor, 
                             placa_carreta: carreta,
                             rota: `${origem} X ${destino}`,
                             texto_pronto: mensagem
                         })
-                    });
+                    }).catch(err => console.error('Erro no briefing:', err)); // Não bloqueia o fluxo
                 }
 
                 alert('Registros concluídos com sucesso!');
-                this.reset();
+                form.reset();
                 window.location.reload();
+            } else {
+                throw new Error("Erro no retorno da planilha principal");
             }
         })
         .catch(error => {
@@ -729,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.disabled = false;
         });
     });
-});
+   });
 </script>
 
          <footer>
