@@ -517,6 +517,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById('registro-saidas-form');
+    const briefingEndpoint = 'https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec';
 
     // --- TODAS AS SUAS FUNÇÕES DE PREENCHIMENTO E REGRAS (MANTIDAS) ---
     window.atualizarCarretaStatus = function () {
@@ -672,6 +673,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const formData = new FormData(this);
         const tipoSaida = (formData.get("doc_saida") || "").toUpperCase();
+        let whatsappWindow = null;
+
+        if (tipoSaida === 'MANIFESTO') {
+            whatsappWindow = window.open('about:blank', '_blank');
+        }
 
         console.log('🚀 BLOCO 1: Enviando Registro Principal...');
 
@@ -700,31 +706,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     console.log('📱 BLOCO 2: Abrindo WhatsApp...');
 
-                    // BLOCO 2: Abre WhatsApp
-                    window.open('https://wa.me/?text=' + encodeURIComponent(mensagem), '_blank');
+                    // BLOCO 2: Abre WhatsApp usando a janela já criada no evento
+                    const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
+                    if (whatsappWindow && !whatsappWindow.closed) {
+                        whatsappWindow.location.href = whatsappUrl;
+                    } else {
+                        window.open(whatsappUrl, '_blank');
+                    }
 
                     // BLOCO 3: Aguarda e envia Briefing
                     setTimeout(() => {
-                        console.log('📋 BLOCO 3: Enviando Briefing com dados do WhatsApp...');
+                        console.log('📋 BLOCO 3: Enviando Briefing...');
 
-                        const briefingPayload = new URLSearchParams({
-                            data_envio: new Date().toLocaleString('pt-BR'),
-                            codigo_sm: sm,
-                            motorista: motorista,
-                            placa_cavalo: placaValor,
-                            placa_carreta: carreta,
-                            rota: `${origem} X ${destino}`,
-                            texto_pronto: mensagem
-                        });
+                        const briefingData = new URLSearchParams();
+                        briefingData.append('data_envio', new Date().toLocaleString('pt-BR'));
+                        briefingData.append('codigo_sm', sm);
+                        briefingData.append('motorista', motorista);
+                        briefingData.append('placa_cavalo', placaValor);
+                        briefingData.append('placa_carreta', carreta);
+                        briefingData.append('rota', `${origem} X ${destino}`);
+                        briefingData.append('texto_pronto', mensagem);
 
-                        fetch('https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec', {
+                        fetch(briefingEndpoint, {
                             method: 'POST',
                             mode: 'no-cors',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: briefingPayload.toString()
+                            body: briefingData
                         })
                         .then(() => {
-                            console.log('✅ BLOCO 3 OK: Briefing salvo');
+                            console.log('✅ BLOCO 3 OK: Briefing enviado');
                             alert('✅ Registro de Saída Salvo\n✅ WhatsApp Aberto\n✅ Briefing Enviado');
                             form.reset();
                             window.location.reload();
@@ -732,6 +741,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .catch(err => {
                             console.error('❌ BLOCO 3 ERRO:', err);
                             alert('Erro ao salvar Briefing, mas Registro e WhatsApp foram ok.');
+                            btn.disabled = false;
                         });
                     }, 2000);
                 } else {

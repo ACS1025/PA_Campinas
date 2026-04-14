@@ -517,6 +517,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById('registro-saidas-form');
+    const briefingEndpoint = 'https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec';
 
     // --- TODAS AS SUAS FUNÇÕES DE PREENCHIMENTO E REGRAS (MANTIDAS) ---
     window.atualizarCarretaStatus = function () {
@@ -538,10 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const campoData = document.getElementById('data_saida');
         if (!campoData) return;
         const dataAtual = new Date();
-        const ano = dataAtual.getFullYear();
-        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-        const dia = String(dataAtual.getDate()).padStart(2, '0');
-        campoData.value = `${ano}-${mes}-${dia}`;
+        campoData.value = dataAtual.toISOString().split('T')[0];
     }
 
     const selectViagem = document.getElementById('doc_viagem_rastreada');
@@ -667,7 +665,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('rota').value = rota;
     };
 
-    // --- EVENTO DE ENVIO ÚNICO (CORRIGIDO: COM BRIEFING E PLACA_CAVALO) ---
+    // --- EVENTO DE ENVIO POR BLOCOS SEQUENCIAIS ---
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         const btn = this.querySelector('button[type="submit"]');
@@ -675,20 +673,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const formData = new FormData(this);
         const tipoSaida = (formData.get("doc_saida") || "").toUpperCase();
+        let whatsappWindow = null;
 
-        // 1. Envio para Planilha Principal (Registro de Saídas)
+        if (tipoSaida === 'MANIFESTO') {
+            whatsappWindow = window.open('about:blank', '_blank');
+        }
+
+        console.log('🚀 BLOCO 1: Enviando Registro Principal...');
+
+        // BLOCO 1: Envio para Planilha Principal (Registro de Saídas)
         fetch(this.action, {
             method: 'POST',
             body: formData
         })
         .then(res => res.json())
         .then(result => {
+            console.log('📊 BLOCO 1 OK: Registro salvo', result);
+
             if (result.result === 'success') {
                 
-                // 2. Se for MANIFESTO, executa o Briefing (WhatsApp + Segunda Planilha)
+                // Só processa briefing se for MANIFESTO
                 if (tipoSaida === 'MANIFESTO') {
                     const motorista = (formData.get("doc_motorista") || "").toUpperCase();
-                    const placaValor = (formData.get("placa") || "").toUpperCase();
+                    const placaValor = (formData.get("placa") || formData.get("doc_placa") || "").toUpperCase();
                     const origem = (formData.get("doc_origem") || "").toUpperCase();
                     const destino = (formData.get("doc_destino") || "").toUpperCase();
                     const sm = formData.get("cod_sm") || "";
@@ -697,36 +704,59 @@ document.addEventListener("DOMContentLoaded", function () {
                     const linkImg = "https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg";
                     const mensagem = `Viagem Monitorada\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link abaixo:\n\n${linkImg}\n\n*Dados da viagem:*\nMotorista: ${motorista}\nPlaca Cavalo: ${placaValor}\nRota: ${origem} X ${destino}\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`;
 
-                    // Abre o WhatsApp
-                    window.open('https://wa.me/?text=' + encodeURIComponent(mensagem), '_blank');
+                    console.log('📱 BLOCO 2: Abrindo WhatsApp...');
 
-                    // 3. ENVIO PARA PLANILHA DE BRIEFING (EM BACKGROUND)
-                    fetch('https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec', {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            data_envio: new Date().toISOString(),
+                    // BLOCO 2: Abre WhatsApp usando a janela já criada no evento
+                    const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
+                    if (whatsappWindow && !whatsappWindow.closed) {
+                        whatsappWindow.location.href = whatsappUrl;
+                    } else {
+                        window.open(whatsappUrl, '_blank');
+                    }
+
+                    // BLOCO 3: Aguarda e envia Briefing
+                    setTimeout(() => {
+                        console.log('📋 BLOCO 3: Enviando Briefing com dados do WhatsApp...');
+
+                        const briefingPayload = new URLSearchParams({
+                            data_envio: new Date().toLocaleString('pt-BR'),
                             codigo_sm: sm,
                             motorista: motorista,
-                            placa_cavalo: placaValor, 
+                            placa_cavalo: placaValor,
                             placa_carreta: carreta,
                             rota: `${origem} X ${destino}`,
                             texto_pronto: mensagem
-                        })
-                    }).catch(err => console.error('Erro no briefing:', err)); // Não bloqueia o fluxo
-                }
+                        });
 
-                alert('Registros concluídos com sucesso!');
-                form.reset();
-                window.location.reload();
-            } else {
-                throw new Error("Erro no retorno da planilha principal");
+                        fetch(briefingEndpoint, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: briefingPayload.toString()
+                        })
+                        .then(() => {
+                            console.log('✅ BLOCO 3 OK: Briefing salvo');
+                            alert('✅ Registro de Saída Salvo\n✅ WhatsApp Aberto\n✅ Briefing Enviado');
+                            form.reset();
+                            window.location.reload();
+                        })
+                        .catch(err => {
+                            console.error('❌ BLOCO 3 ERRO:', err);
+                            alert('Erro ao salvar Briefing, mas Registro e WhatsApp foram ok.');
+                        });
+                    }, 2000);
+                } else {
+                    // Não é MANIFESTO
+                    console.log('ℹ️ Não é MANIFESTO, pulando Briefing');
+                    alert('Registro de Saída concluído!');
+                    form.reset();
+                    window.location.reload();
+                }
             }
         })
         .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao processar o registro.');
+            console.error('❌ BLOCO 1 ERRO:', error);
+            alert('Erro ao processar registro.');
             btn.disabled = false;
         });
     });
