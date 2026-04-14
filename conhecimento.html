@@ -41,7 +41,93 @@
         nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
         nav ul li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 25px; transition: 0.3s; }
         nav ul li a:hover { background-color: rgba(23, 23, 175, 0.6); }
-        button {
+
+        /* Menu Hambúrguer */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            gap: 5px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 3px;
+            transition: 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+                position: fixed;
+                right: 15px;
+                top: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: rgba(20, 20, 20, 0.98);
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                justify-content: flex-start;
+                padding: 0 !important;
+                border-radius: 0;
+                box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.5);
+            }
+
+            nav ul.active {
+                max-height: 500px;
+                padding: 15px 0 !important;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li a {
+                display: block;
+                border-radius: 0;
+                padding: 15px 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            nav ul li a:hover {
+                background-color: rgba(23, 23, 175, 0.6);
+            }
+
+            nav ul li:last-child a {
+                border-bottom: none;
+            }
+
+            .container {
+                margin-top: 80px;
+            }
+        }
             background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px;
             font-size: 14px; cursor: pointer; grid-column: span 4; transition: background-color 0.3s;
         }
@@ -49,6 +135,12 @@
     </style>
 </head>
 <body>
+    <button class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -188,6 +280,39 @@
             btn.textContent = "Enviar";
         });
     }
+
+    // Menu Hambúrguer - Responsivo
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.querySelector('nav ul');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Fecha o menu ao clicar em um link
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Fecha o menu ao clicar fora
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = navMenu.contains(event.target);
+                const isClickOnToggle = menuToggle.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnToggle && navMenu.classList.contains('active')) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>
