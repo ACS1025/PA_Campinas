@@ -409,25 +409,38 @@
 
     <div class="content">
       <div class="container">
-        <h2>Checklist de Confiabilidade CFTV</h2>
+        <h2>MAPA DE MONITORAMENTO CFTV</h2>
 
         <form id="checklistForm">
 
 <!-- 🔹 BLOCO 1 - IDENTIFICAÇÃO -->
+
+<div class='form-group'>
+    <label for='responsavel'>Responsável pelo registro:</label>
+    <select id='responsavel' name='responsavel' required>
+        <option value=''>Selecione o responsável</option>
+        <option value='ANA CLAUDIA'>Ana Claudia</option>
+        <option value='PEDRO OTÁVIO'>Pedro Otávio</option>
+        <option value='NOELE'>Noele</option>
+        <option value='TAINÁ'>Tainá</option>
+    </select>
+</div>
+
 <div class='form-group'>
     <label for='unidade'>Unidade:</label>
-    <select id='unidade' name='unidade' required>
+    <select id='unidade' name='unidade' required onchange="preencherEndereco()">
         <option value=''>Selecione a unidade</option>
-        <option value='CAMPINAS/ SP'>CAMPINAS/ SP</option>
-        <option value='MANAUS/ AM'>MANAUS/ AM</option>
+        <option value='CAMPINAS'>Campinas / SP</option>
+        <option value='MANAUS'>Manaus / AM</option>
     </select>
 </div>
 
 <div class="form-group">
-    <label>Local da Câmera</label>
-    <input type="text" id="local" required>
+    <label>Endereço</label>
+    <input type="text" id="endereco" readonly>
 </div>
 
+<!-- Campo extra escondido (só aparece se escolher "Outro") -->
 <div class="form-group">
     <label>Tipo de Equipamento</label>
     <select id="cameraType" required>
@@ -436,7 +449,6 @@
         <option value="dome">Dome Giratória</option>
     </select>
 </div>
-
 <div id="dvrSettings" class="camera-settings" style="display:none;">
     <div class="form-group">
         <label>DVR</label>
@@ -473,6 +485,26 @@
         </select>
     </div>
 </div>
+<div class="form-group" id="outroLocalDiv" style="display:none;">
+    <label>Descreva o Local</label>
+    <input type="text" id="outroLocal">
+</div>
+
+
+<div class="form-group">
+    <label>Local da Câmera</label>
+    <select id="local" required>
+        <option value="">Selecione o local</option>
+        <option value="Portaria">Portaria</option>
+        <option value="Pátio">Pátio</option>
+        <option value="Doca 1">Doca 1</option>
+        <option value="Doca 2">Doca 2</option>
+        <option value="Doca 3">Doca 3</option>
+        <option value="Outro">Outro</option>
+    </select>
+</div>
+
+
 
 <div id="domeSettings" class="camera-settings" style="display:none;">
     <div class="form-group">
@@ -487,16 +519,7 @@
 
 <input type="hidden" id="cameraId" name="cameraId">
 
-<div class='form-group'>
-    <label for='responsavel'>Responsável pelo registro:</label>
-    <select id='responsavel' name='responsavel' required>
-        <option value=''>Selecione o responsável</option>
-        <option value='ANA CLAUDIA'>ANA CLAUDIA</option>
-        <option value='PEDRO OTÁVIO'>PEDRO OTÁVIO</option>
-        <option value='NOELE'>NOELE</option>
-        <option value='TAINÁ'>TAINÁ</option>
-    </select>
-</div>
+
 
 <!-- 🔹 BLOCO 2 - CHECK RÁPIDO -->
 <h3>Check Rápido</h3>
@@ -597,6 +620,27 @@
 
 </form>
 <script>
+   function preencherEndereco() {
+    const unidade = document.getElementById("unidade").value;
+    const endereco = document.getElementById("endereco");
+
+    const enderecos = {
+        CAMPINAS: "Av. Br. Smith de Vasconcelos, 630 - Campinas/SP",
+        MANAUS: "Av. Exemplo, 123 - Manaus/AM"
+    };
+
+    endereco.value = enderecos[unidade] || "";
+}
+
+// Mostrar campo "Outro"
+document.getElementById("local").addEventListener("change", function() {
+    const outroDiv = document.getElementById("outroLocalDiv");
+    if (this.value === "Outro") {
+        outroDiv.style.display = "block";
+    } else {
+        outroDiv.style.display = "none";
+    }
+}); 
 
 const cameraType = document.getElementById("cameraType");
 const dvrSettings = document.getElementById("dvrSettings");
@@ -629,6 +673,15 @@ function avaliarChecklist() {
     }
 }
 
+// Mapeamento baseado na sua imagem do Mapa de Monitoramento CFTV - Campinas
+const mapeamentoCameras = {
+    "1": ["Corredor Central", "Manutenção carre", "Manutenção Aba", "Manutenção carreta", "Borracharia", "Rua Central", "Docas Antigas", "Portão Modular", "Portão Supersonic", "Docas Modular (escritorio)", "Cam 11", "Cam 12", "Cam 13", "Cam 14", "Cam 15", "Cam 16"],
+    "2": ["Portão Entrada", "Portão de Entrada 2", "Portaria", "Entrada de veículos (Central)", "Entrada de veículos 2 (portaria)", "Estacionamento", "Rua P3/P1 (Acesso a sala de r)", "Entrada de veículos (Eclusa s)", "Entrada de Pedestre (estacio)", "Entrada de Pedestre (interio)", "Portaria interna (Acesso ped)", "Acesso sala de monitoramen", "Acesso sala de monitoramen", "Eclusa (Sala de espera monit", "Sala de monitoramento", "Cerca Speed Rite (Entrada)"],
+    "3": ["Fundos P2 (Portaria/Entrada)", "Fundos P2.2 (Estaciona ADM)", "Placa (Sala Fábio)", "Sala P1 (Pé de amora)", "P1 (Docas carregamento)", "Docas P1", "Docas P1.2", "Cam 8 (corredor fundos)", "P1 Interno (", "P1 Interno 2", "Sala do (Docas fundos)", "Sala Fabio (Docas)", "Pé de amora (sala transport)", "Lateral refeitório (", "Estacionamento", "Portaria (lateral refeitório)"],
+    "4": ["Speed 01 (Barracão)", "Speed 02 (Deposito)", "Deposito (ADM antigo)", "Servidor", "Administrativo (Speed 1)", "Porta galpão", "Deposito 01 (sala de monitor", "Cam 8 (gaiolas)", "Cam 9", "Cam 10", "Cam 11", "Cam 12", "Cam 13", "Cam 14", "Cam 15", "Cam 16"],
+    "5": ["Cam 1 (Bandag)", "Cam 2 (Bandag)", "Cam 3(Bandag)", "Cam 4 (Deposito)", "Cam 5 (Deposito)", "Cam 6 (Docas fundos)", "Cam 7", "Cam 8", "Cam 9", "Cam 10 (Deposito)", "Cam 11 (Deposito)", "Cam 12 (Deposito)", "Cam 13", "Cam 14", "Cam 15", "Cam 16"]
+};
+
 function atualizarCameraSettings() {
     if (cameraType.value === "dvr") {
         dvrSettings.style.display = "grid";
@@ -645,11 +698,30 @@ function atualizarCameraSettings() {
 
 function atualizarCameraId() {
     let cameraId = "";
+    
+    // Lógica para DVR: Busca o nome no mapa e preenche o local automaticamente
     if (cameraType.value === "dvr" && dvrUnit.value && dvrCamera.value) {
-        cameraId = `DVR ${dvrUnit.value} - Câmera ${dvrCamera.value}`;
+        const dvrNum = dvrUnit.value;
+        const camIndex = parseInt(dvrCamera.value) - 1; // Array começa em 0
+        
+        // Busca o nome amigável do mapeamento
+        const nomeLocal = (mapeamentoCameras[dvrNum] && mapeamentoCameras[dvrNum][camIndex]) 
+                          ? mapeamentoCameras[dvrNum][camIndex] 
+                          : "Câmera " + dvrCamera.value;
+
+        cameraId = `DVR ${dvrNum} - Câmera ${dvrCamera.value}`;
+
+        // Preenchimento automático:
+        document.getElementById("local").value = "Outro"; // Seleciona "Outro" no dropdown
+        document.getElementById("outroLocalDiv").style.display = "block"; // Mostra o campo de texto
+        document.getElementById("outroLocal").value = nomeLocal; // Insere o nome (ex: Borracharia)
+
     } else if (cameraType.value === "dome" && domeUnit.value) {
         cameraId = `Dome ${domeUnit.value}`;
+        // Limpa o preenchimento automático se mudar para Dome
+        document.getElementById("outroLocal").value = "";
     }
+    
     document.getElementById("cameraId").value = cameraId;
 }
 
@@ -678,9 +750,15 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 
 // 📌 Salvar rascunho no localStorage
 function salvarRascunho() {
+    // Captura o valor do Local (considerando se é o select ou o campo manual "Outro")
+    const localValor = document.getElementById('local').value;
+    const outroLocalValor = document.getElementById('outroLocal') ? document.getElementById('outroLocal').value : "";
+
     const dados = {
         unidade: document.getElementById('unidade').value,
-        local: document.getElementById('local').value,
+        endereco: document.getElementById('endereco').value, // Novo campo necessário
+        local: localValor,
+        outroLocal: outroLocalValor, // Salva o texto digitado se for "Outro"
         cameraType: cameraType.value,
         dvrUnit: dvrUnit.value,
         dvrCamera: dvrCamera.value,
@@ -689,6 +767,7 @@ function salvarRascunho() {
         funcionando: funcionando.value,
         imagem: imagem.value,
         gravando: gravando.value,
+        criticidade: document.getElementById('criticidade').value, // Adicionado
         fixacao: document.getElementById('fixacao').value,
         cabeamento: document.getElementById('cabeamento').value,
         qualidade: document.getElementById('qualidade').value,
@@ -742,76 +821,32 @@ function converterImagemBase64(file) {
 // 📌 Enviar dados para Google Sheets via Apps Script
 async function enviarParaPlanilha(dados) {
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwUFUyUZOfjDs_PkJNNjP_qfzRtSyE038beyBcay5cdM_Myc7hDwEb8gPJz9JtL3Pkj/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyGOVkrh2TT-m2nzq8l5-piHJuuHeRyXk8jkqgr-ikg9OAKEovZpzFMXnIOJ1gmy2o0/exec';
 
     try {
         const response = await fetch(scriptURL, {
             method: 'POST',
+            mode: 'no-cors', // 🔥 EVITA BLOQUEIO
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(dados)
         });
 
-        const result = await response.json();
+        // ⚠️ NÃO tenta mais ler JSON (no-cors não permite)
+        console.log("✅ Enviado (modo silencioso)");
 
-        if (result.status === "success") {
-            console.log("✅ Enviado para planilha com sucesso!");
-            return true;
-        } else {
-            throw new Error("Erro ao salvar na planilha: " + JSON.stringify(result));
-        }
+        return true;
 
     } catch (error) {
-        console.error("❌ Falha na comunicação com a planilha:", error);
-        throw error; // Re-lançar para que o try/catch do event listener capture
+        console.error("❌ Falha real:", error);
+        throw error;
     }
 }
 
 // 📌 Gerar PDF do relatório
+
 async function gerarPDF(dados) {
-
-    const conteudo = `
-        <div style="font-family: Arial; padding:20px;">
-            <h2>Relatório Checklist CFTV</h2>
-            <p><strong>Unidade:</strong> ${dados.unidade}</p>
-            <p><strong>Local:</strong> ${dados.local}</p>
-            <p><strong>Câmera:</strong> ${dados.cameraId}</p>
-            <p><strong>Responsável:</strong> ${dados.responsavel}</p>
-
-            <hr>
-
-            <p><strong>Funcionando:</strong> ${dados.funcionando}</p>
-            <p><strong>Imagem:</strong> ${dados.imagem}</p>
-            <p><strong>Gravando:</strong> ${dados.gravando}</p>
-
-            <hr>
-
-            <p><strong>Criticidade:</strong> ${dados.criticidade}</p>
-            <p><strong>Ação:</strong> ${dados.acao}</p>
-
-            ${dados.imagemBase64 ? `<img src="${dados.imagemBase64}" style="width:300px;margin-top:10px;">` : ""}
-        </div>
-    `;
-
-    const element = document.createElement("div");
-    element.innerHTML = conteudo;
-
-    await html2pdf().from(element).save("relatorio_checklist.pdf");
-
-    const options = {
-        margin: 1,
-        filename: `Checklist_CFTV_${dados.unidade.replace(/\//g, '_')}_${Date.now()}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-
-    const pdfBlob = await html2pdf().set(options).from(element).outputPdf('blob');
-    document.body.removeChild(element);
-    
-    return pdfBlob;
-}async function gerarPDF(dados) {
 
     const conteudo = `
         <div style="font-family: Arial; padding:20px;">
@@ -888,85 +923,62 @@ Checklist Automático CFTV
 document.getElementById("checklistForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    // Feedback visual de carregamento
     const btn = this.querySelector("button");
     const originalText = btn.innerText;
     btn.innerText = "Enviando...";
     btn.disabled = true;
 
     try {
+        // 📸 RECONHECIMENTO DA IMAGEM
         let imagemBase64 = "";
-        if (foto.files && foto.files.length > 0) {
-            imagemBase64 = await converterImagemBase64(foto.files[0]);
+        const campoFoto = document.getElementById('foto'); // Certifique-se que o ID no HTML é 'foto'
+        
+        if (campoFoto.files && campoFoto.files.length > 0) {
+            console.log("📸 Imagem detectada, convertendo...");
+            const base64Completo = await converterImagemBase64(campoFoto.files[0]);
+imagemBase64 = base64Completo.split(",")[1]; // REMOVE prefixo "data:image/jpeg;base64,"
+            console.log("✅ Imagem convertida para Base64!");   
         }
 
-        // Montagem minuciosa seguindo sua lista de colunas
+        const localAmigavel = document.getElementById('local').value === "Outro" 
+            ? document.getElementById('outroLocal').value 
+            : document.getElementById('local').value;
+
         const dados = {
+            data: new Date().toLocaleString("pt-BR"),
             unidade: document.getElementById('unidade').value,
-            local: document.getElementById('local').value,
+            endereco: document.getElementById('endereco').value,
+            local: localAmigavel,
             cameraId: document.getElementById('cameraId').value,
             responsavel: document.getElementById('responsavel').value,
-            
-            // Status do Check Rápido
             funcionando: document.getElementById('funcionando').value,
             imagem: document.getElementById('imagem').value,
             gravando: document.getElementById('gravando').value,
             criticidade: document.getElementById('criticidade').value,
-
-            // Detalhamento Técnico (Mesmo se estiver display:none, pegamos o valor)
-            fixacao: document.getElementById('fixacao').value || "N/A",
-            cabeamento: document.getElementById('cabeamento').value || "N/A",
-            qualidade: document.getElementById('qualidade').value || "N/A",
-            dvr: document.getElementById('dvr').value || "N/A",
-            
+            fixacao: document.getElementById('fixacao').value || "",
+            cabeamento: document.getElementById('cabeamento').value || "",
+            qualidade: document.getElementById('qualidade').value || "",
+            dvr_status: document.getElementById('dvr').value || "",
             acao: document.getElementById('acao').value,
-            foto: imagemBase64 
+            foto: imagemBase64 || ""
         };
 
-        console.log("📤 Enviando todos os dados para a planilha...");
-
-        // Chamada da função com tratamento de CORS
         const sucesso = await enviarParaPlanilha(dados);
 
         if (sucesso) {
-            alert("✅ Checklist enviado com sucesso!");
-            localStorage.removeItem('checklistRascunho');
+            alert("✅ Checklist e Foto enviados!");
             this.reset();
-            detalhado.style.display = "none";
-            criticidade.value = "";
         }
 
     } catch (error) {
-        console.error("ERRO DETALHADO:", error);
-        alert("❌ Erro ao enviar checklist. Verifique o console.");
+        console.error("Erro no envio:", error);
+        alert("❌ Erro ao processar imagem ou enviar dados.");
     } finally {
         btn.innerText = originalText;
         btn.disabled = false;
     }
 });
 
-async function enviarParaPlanilha(dados) {
-    // O seu link real extraído do meio do código:
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwUFUyUZOfjDs_PkJNNjP_qfzRtSyE038beyBcay5cdM_Myc7hDwEb8gPJz9JtL3Pkj/exec'; 
-
-    try {
-        await fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors', // Modo necessário para Apps Script
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        });
-        
-        // No modo 'no-cors', se não der erro no fetch, consideramos sucesso.
-        console.log("✅ Dados enviados!");
-        return true; 
-    } catch (error) {
-        console.error("❌ Erro no Fetch:", error);
-        throw error;
-    }
-}
 
 </script>
 </body>
