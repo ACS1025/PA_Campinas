@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Funções CFTV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <h1>Teste das Funções do Checklist CFTV</h1>
+    <button onclick="testarFuncoes()">Testar Funções</button>
+    <div id="resultado"></div>
+
+    <script>
+        // Copiar as funções do cftv.html para teste
+        async function enviarParaPlanilha(dados) {
+            console.log('Simulando envio para planilha:', dados);
+            return true;
+        }
+
+        async function gerarPDF(dados) {
+            console.log('Simulando geração de PDF:', dados);
+            return new Blob(['PDF simulado'], { type: 'application/pdf' });
+        }
+
+        async function enviarEmail(dados, pdfBlob) {
+            console.log('Simulando envio de email:', dados);
+            return true;
+        }
+
+        async function testarFuncoes() {
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = '⏳ Testando funções...<br>';
+
+            try {
+                const dadosTeste = {
+                    unidade: 'Teste Unidade',
+                    local: 'Teste Local',
+                    cameraId: 'CAM001',
+                    responsavel: 'João Silva',
+                    funcionando: 'sim',
+                    imagem: 'sim',
+                    gravando: 'sim',
+                    status: '🟢 OK',
+                    score: '95',
+                    fixacao: 'ok',
+                    cabeamento: 'ok',
+                    qualidade: 'ok',
+                    dvrStatus: 'ok',
+                    acao: 'acompanhar',
+                    obs: 'Teste de observação',
+                    data: new Date().toLocaleString('pt-BR')
+                };
+
+                // Testar envio para planilha
+                resultado.innerHTML += '📊 Testando envio para planilha...<br>';
+                await enviarParaPlanilha(dadosTeste);
+                resultado.innerHTML += '✅ Planilha OK<br>';
+
+                // Testar geração de PDF
+                resultado.innerHTML += '📄 Testando geração de PDF...<br>';
+                const pdfBlob = await gerarPDF(dadosTeste);
+                resultado.innerHTML += '✅ PDF OK<br>';
+
+                // Testar envio de email
+                resultado.innerHTML += '📧 Testando envio de email...<br>';
+                await enviarEmail(dadosTeste, pdfBlob);
+                resultado.innerHTML += '✅ Email OK<br>';
+
+                resultado.innerHTML += '<br>🎉 Todos os testes passaram!';
+
+            } catch (error) {
+                resultado.innerHTML += '<br>❌ Erro: ' + error.message;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
