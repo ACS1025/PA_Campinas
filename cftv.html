@@ -75,6 +75,7 @@
         th { padding: 12px; background: #f1f5f9; font-size: 11px; text-transform: uppercase; color: #475569; }
         td { padding: 10px; border-bottom: 1px solid #f1f5f9; text-align: center; font-size: 13px; }
 
+        /* Estilos das cores nos Selects */
         .status-select { 
             padding: 6px 12px; border-radius: 6px; font-weight: bold; border: 2px solid #d1d5db; cursor: pointer;
         }
@@ -87,26 +88,12 @@
             cursor: pointer; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
             transition: 0.3s opacity;
         }
-        .btn-submit:active { opacity: 0.8; }
+        .footer-actions { display: flex; gap: 15px; margin-top: 20px; }
+        .footer-actions .btn-submit { flex: 1; margin-top: 0; }
 
-        @media (max-width: 600px) { .dashboard, .meta-grid, .dvr-stats-bar { grid-template-columns: 1fr; display: grid; } }
-                /* Container para alinhar os botões lado a lado */
-        .footer-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .footer-actions .btn-submit {
-            flex: 1; /* Faz os botões terem o mesmo tamanho */
-            margin-top: 0; /* Remove a margem superior antiga para alinhar */
-        }
-
-        /* Ajuste para telas pequenas (celulares) */
-        @media (max-width: 600px) {
-            .footer-actions {
-                flex-direction: column; /* Botões um em cima do outro no celular */
-            }
+        @media (max-width: 600px) { 
+            .dashboard, .meta-grid, .footer-actions { grid-template-columns: 1fr; display: grid; } 
+            .footer-actions { flex-direction: column; }
         }
     </style>
 </head>
@@ -129,8 +116,11 @@
                 <label>Responsável</label>
                 <select id="responsavel" required>
                     <option value="">Selecione...</option>
-                    <option>ANA CLAUDIA</option>
-                    <option>PEDRO OTÁVIO</option>
+                    <option>Ana Claudia</option>
+                    <option>Daysi Nascimento</option>
+                    <option>Noele Oliveira</option>
+                    <option>Pedro Otávio</option>
+                    <option>Tainá Moraes</option>
                 </select>
             </div>
             <div>
@@ -144,14 +134,11 @@
         <div id="dvrs-container"></div>
 
         <div class="footer-actions">
-    <button type="submit" form="checklistForm" class="btn-submit">
-        ADICIONAR CHECKLIST AO LOTE
-    </button>
-    
-    <button type="button" onclick="enviarLote()" class="btn-submit" style="background:#1e3a8a">
-        ENVIAR FECHAMENTO DO DIA
-    </button>
-</div>
+            <button type="submit" class="btn-submit">ADICIONAR AO LOTE</button>
+            <button type="button" onclick="enviarLote()" class="btn-submit" style="background:#1e3a8a">ENVIAR FECHAMENTO</button>
+            <button type="button" onclick="irParaRelatorio()" class="btn-submit" style="background-color: #f59e0b;">📧 RELATÓRIO PDF</button>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -183,9 +170,9 @@
                         if(idx === 1) i++;
                         if(idx === 2) g++;
                         rowFail = true;
-                        sel.className = 'status-select error';
+                        sel.className = 'status-select error'; // Fica Vermelho
                     } else {
-                        sel.className = 'status-select ok';
+                        sel.className = 'status-select ok'; // Fica Verde
                     }
                 });
                 if(rowFail) gFail++;
@@ -204,9 +191,8 @@
     function render() {
         const container = document.getElementById('dvrs-container');
         Object.keys(mapeamento).forEach(key => {
-            const numCams = mapeamento[key].length;
             container.innerHTML += `
-            <details ${key.includes('DOME') ? 'open style="border-left: 6px solid var(--warning)"' : ''}>
+            <details>
                 <summary>
                     <div class="dvr-info">📼 ${key}</div>
                     <div class="dvr-stats-bar">
@@ -214,7 +200,7 @@
                         <span>I: <b class="s-i">0</b></span>
                         <span>G: <b class="s-g">0</b></span>
                     </div>
-                    <span>${numCams} CAMS</span>
+                    <span>${mapeamento[key].length} CAMS</span>
                 </summary>
                 <div class="table-wrapper">
                     <table>
@@ -234,80 +220,31 @@
         updateDash();
     }
 
-    window.onload = render;
-
-    function coletarDadosChecklist() {
-    const responsavel = document.getElementById("responsavel").value;
-    const unidade = document.getElementById("unidade").value;
-    const dados = [];
-
-    document.querySelectorAll("details").forEach(section => {
-        const dvr = section.querySelector(".dvr-info").textContent.replace('📼', '').trim();
-
-        section.querySelectorAll(".cam-row").forEach(row => {
-            // textContent garante que pegamos o texto mesmo dentro do <strong>
-            const nomeCam = row.cells[0].textContent.replace(/\s+/g, ' ').trim(); 
-            const selects = row.querySelectorAll("select");
-
-            dados.push({
-                data: new Date().toLocaleString('pt-BR'),
-                responsavel: responsavel,
-                unidade: unidade,
-                dvr: dvr,
-                camera: nomeCam, // Esta chave casa com o item.camera do Script
-                funcionamento: selects[0].value,
-                imagem: selects[1].value,
-                gravacao: selects[2].value
-            });
+    function irParaRelatorio() {
+        const falhas = [];
+        document.querySelectorAll('.cam-row').forEach(row => {
+            const status = row.querySelectorAll('select')[0].value;
+            if (status === 'N') {
+                const dvr = row.closest('details').querySelector('.dvr-info').textContent.replace('📼', '').trim();
+                const cam = row.cells[0].textContent.split('-')[1].trim();
+                falhas.push({ dvr: dvr, cam: cam });
+            }
         });
-    });
-    return dados;
-}
 
-    let loteDia = JSON.parse(localStorage.getItem("loteCFTV")) || [];
-
-    document.getElementById("checklistForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        const novosDados = coletarDadosChecklist();
-        loteDia = loteDia.concat(novosDados);
-        localStorage.setItem("loteCFTV", JSON.stringify(loteDia));
+        const dadosRelatorio = {
+            responsavel: document.getElementById("responsavel").value || "ANA CLAUDIA",
+            unidade: document.getElementById("unidade").value,
+            total: document.getElementById("count-total").innerText,
+            ok: document.getElementById("count-ok").innerText,
+            fail: document.getElementById("count-fail").innerText,
+            listaFalhas: falhas
+        };
         
-        const btn = e.submitter;
-        const originalText = btn.innerText;
-        btn.innerText = "✓ ADICIONADO AO LOTE!";
-        btn.style.background = "#059669";
-        
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.style.background = "";
-        }, 2000);
-    });
-
-    function enviarLote() {
-        if (loteDia.length === 0) {
-            alert("Não há dados acumulados para enviar!");
-            return;
-        }
-
-        if(!confirm(`Deseja enviar o fechamento de ${loteDia.length} registros agora?`)) return;
-
-        fetch("https://script.google.com/macros/s/AKfycbz7eTTA55Ww-QyBlfG7GhPUyY0P1jKgRZGng-zI9hThVt8G6l0M0ebuzlh7IXTrQVqM/exec", {
-            method: "POST",
-            body: JSON.stringify({ lote: loteDia }),
-            mode: 'no-cors', // Adicione se houver erro de CORS no Apps Script
-            headers: { "Content-Type": "application/json" }
-        })
-        .then(() => {
-            alert("Dados enviados com sucesso!");
-            localStorage.removeItem("loteCFTV");
-            loteDia = [];
-            location.reload(); // Limpa o formulário após o fechamento
-        })
-        .catch(err => {
-            alert("Erro na conexão. Verifique a URL do Script.");
-            console.error(err);
-        });
+        localStorage.setItem("dadosAuditoria", JSON.stringify(dadosRelatorio));
+        window.open('cftv-email.html', '_blank');
     }
+
+    window.onload = render;
 </script>
 </body>
 </html>
