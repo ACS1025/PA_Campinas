@@ -1,105 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Assinatura de E-mail</title>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Estilos da assinatura */
-        .email-signature {
-            font-family: Arial, sans-serif;
-            width: 100%;
-            max-width: 600px;
-            border-collapse: collapse;
-            border: 1px solid #ddd;
-        }
-        .email-signature td {
-            padding: 10px;
-        }
+<table style="font-family: Arial, sans-serif; width: 600px; border-collapse: collapse;">
 
-        .contact-info i {
-            margin-right: 8px; /* Espaço entre o ícone e o texto */
-            font-size: 18px; /* Tamanho do ícone */
-            color: #58502c; /* Cor do ícone (azul, por exemplo) */
-        }
-        
-        .logo img {
-            width: 100px;
-            height: auto;
-        }
-        .info p {
-            margin: 0;
-            color: #555;
-        }
-        .info p.name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-        .info p.job-title {
-            font-size: 14px;
-        }
-        .contact-info a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .social-icons a {
-            margin: 0 10px;
-        }
-        .social-icons img {
-            width: 30px;
-            height: 30px;
-            transition: transform 0.2s;
-        }
-        .social-icons img:hover {
-            transform: scale(1.1);
-        }
-        .footer {
-            padding: 10px;
-            font-size: 12px;
-            text-align: center;
-            color: #01070e;
-            background-color: #c2defa;
-        }
-    </style>
-</head>
-<body>
-    <table class="email-signature">
-        <tr>
-            <!-- Coluna do logotipo -->
-            <td class="logo" style="width: 120px; text-align: left; vertical-align: middle;">
-                <img src="https://i.imgur.com/tXTTc2i.jpeg" alt="Logo ACS Consult">
-            </td>
-            <!-- Coluna com as informações -->
-            <td class="info">
-                <p class="name">Ana Claudia de Souza</p>
-                <p class="job-title">Consultora em Gestão de Inovação e Dados</p>
-                <p class="contact-info">
-                    <i class="fas fa-phone-alt"></i> <strong>(11) 9 9623-2846</strong><br>
-                    <i class="fas fa-envelope"></i> <a href="mailto:acs.consult25@gmail.com">acs.consult25@gmail.com</a><br>
-                    <i class="fas fa-laptop"></i> <a href="https://acs1025.github.io/ACS/index.html">https://acs1025.github.io/ACS/index.html</a>
-                </p>
-            </td>
-        <tr>
-            <!-- Linha com redes sociais -->
-            <td colspan="2" class="social-icons" style="text-align: center; background-color: #f8f9fa;">
-                <a href="https://www.linkedin.com/in/acs-ana-claudia" style="margin: 0 10px;">
-                    <i class="fab fa-linkedin" style="font-size: 24px; color: #0077b5;"></i>
-                </a>
-                <a href="https://www.instagram.com/acs_consult" style="margin: 0 10px;">
-                    <i class="fab fa-instagram" style="font-size: 24px; color: #e1306c;"></i>
-                </a>
-                <a href="https://www.whatsapp.com/send?phone=+5511996232846" style="margin: 0 10px;">
-                    <i class="fab fa-whatsapp" style="font-size: 24px; color: #25d366;"></i>
-                </a>
-            </td>
-        </tr>
-            <!-- Mensagem de responsabilidade ambiental -->
-            <td colspan="2" class="footer">
-                "Antes de imprimir, pense na sua responsabilidade com o meio ambiente."
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+  <!-- TOPO COM IDENTIDADE -->
+  <tr>
+    <td style="background:#2ca0c3; padding:15px; color:white;">
+      <span style="font-size:16px; font-weight:bold;">ACS CONSULTORIA</span><br>
+      <span style="font-size:12px;">Gestão • Inovação • Dados</span>
+    </td>
+
+    <td style="background:#f4f4f4; text-align:center; padding:10px;">
+      <!-- QR CODE -->
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://acs1025.github.io/ACS_CONSULTORIA/#home" width="90" style="display:block;">
+    </td>
+  </tr>
+
+  <!-- DADOS PRINCIPAIS -->
+  <tr>
+    <td colspan="2" style="padding:15px; background:#ffffff;">
+
+      <p style="margin:0; font-size:18px; font-weight:bold; color:#222;">
+        Ana Claudia de Souza
+      </p>
+
+      <p style="margin:2px 0 10px 0; font-size:13px; color:#777;">
+        Consultora em Gestão de Inovação e Dados
+      </p>
+
+      <p style="margin:0; font-size:13px; color:#333; line-height:1.6;">
+        📱 <strong>
+          <a href="https://wa.me/5511996232846" style="color:#2ca0c3; text-decoration:none;">
+            (11) 9 9623-2846
+          </a>
+        </strong><br>
+
+        ✉️ 
+        <a href="mailto:acs.consult25@gmail.com" style="color:#2ca0c3; text-decoration:none;">
+          acs.consult25@gmail.com
+        </a>
+      </p>
+
+      <!-- BOTÃO -->
+      <div style="margin-top:12px;">
+        <a href="https://acs1025.github.io/ACS_CONSULTORIA/#home"
+           style="background:#2ca0c3; color:white; padding:8px 14px; text-decoration:none; font-size:13px; border-radius:4px; display:inline-block;">
+          Acessar Portfólio
+        </a>
+      </div>
+
+    </td>
+  </tr>
+
+  <!-- REDES SOCIAIS -->
+  <tr>
+    <td colspan="2" style="padding:10px; text-align:center; background:#f8f9fa;">
+
+      <a href="https://www.linkedin.com/in/acs-ana-claudia" style="margin:0 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20">
+      </a>
+
+      <a href="https://www.instagram.com/acs_consult" style="margin:0 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="20">
+      </a>
+
+      <a href="https://wa.me/5511996232846" style="margin:0 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="20">
+      </a>
+
+    </td>
+  </tr>
+
+  <!-- RODAPÉ -->
+  <tr>
+    <td colspan="2" style="background:#4a4a4a; color:white; font-size:11px; padding:8px; text-align:center;">
+      Antes de imprimir, pense na sua responsabilidade com o meio ambiente.
+    </td>
+  </tr>
+
+</table>
+
