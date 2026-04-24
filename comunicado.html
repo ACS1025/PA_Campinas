@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Comunicação Operacional</title>
+
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #25D366;
+            --dark: #333;
+            --gray-light: #f9f9f9;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('src/img/Registro de Saidas.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #eceff1;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: var(--dark);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .navbar a {
+            color: white;
+            padding: 16px 24px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover { background: #444; }
+
+        /* CONTEÚDO */
+        .content {
+            display: flex;
+            justify-content: center;
+            padding: 100px 20px 40px;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 600px 1fr;
+            max-width: 1600px;
+            width: 100%;
+            gap: 25px;
+            align-items: start;
+        }
+
+        @media (max-width: 1200px) { .layout-grid { grid-template-columns: 1fr; } }
+
+        /* CONTAINERS */
+        .container, .log-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-top: 0;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-box { display: flex; flex-direction: column; }
+        .full-width { grid-column: span 2; }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        select, input, textarea {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--gray-light);
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--primary);
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        textarea { height: 110px; resize: none; line-height: 1.5; font-size: 13px; }
+
+        /* BOTÕES */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-gerar { background: var(--primary); color: white; }
+        .btn-whatsapp { background: var(--secondary); color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* LOG TABLE */
+        .log-container { max-height: 800px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        
+        th {
+            background: #f8f9fa;
+            color: #666;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 12px;
+            border-bottom: 2px solid #eee;
+            position: sticky;
+            top: 0;
+        }
+
+        td { padding: 12px; font-size: 13px; border-bottom: 1px solid #f0f0f0; text-align: center; }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            background: #eee;
+            display: inline-block;
+        }
+        .badge-liberacao { background: #e3f2fd; color: #1976d2; }
+        .badge-chegada { background: #f1f8e9; color: #388e3c; }
+        .badge-coleta { background: #fff3e0; color: #f57c00; }
+        .badge-info { background: #f3e5f5; color: #7b1fa2; }
+        /* Menu Hambúrguer */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    gap: 5px;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    border-radius: 3px;
+    transition: 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+        position: fixed;
+        right: 15px;
+        top: 15px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: rgba(20, 20, 20, 0.98);
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        justify-content: flex-start;
+        padding: 0 !important;
+        border-radius: 0;
+        box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar.active {
+        max-height: 500px;
+        padding: 15px 0 !important;
+    }
+
+    .navbar a {
+        display: block;
+        border-radius: 0;
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .navbar a:hover {
+        background-color: rgba(23, 23, 175, 0.6) !important;
+    }
+
+    .navbar a:last-child {
+        border-bottom: none !important;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+    <button class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="navbar">
+        <a href='index.html'>Home</a>
+        <a href='registro-saidas.html'>Registro de Saídas</a>
+        <a href='solicitacao-escolta.html'>Solicitação de Escolta</a>
+        <a href='conhecimento.html'>Para conhecimento</a>
+        <a href='convite.html'>Convite Motorista</a>
+        <a href="videos.html">Galeria de Vídeos</a>
+        <a href="brief.html">Briefing</a>
+        <a href="posicao.html">Posição escolta</a>
+        <a href="comunicado.html">Comunicado</a>
+    </div>
+
+    <div class="content">
+        <div class="layout-grid">
+
+            <div class="container">
+                <h2>Gerador Operacional</h2>
+
+                <div class="form-grid">
+                    <div class="input-box">
+                        <label>Responsável Contato</label>
+                        <select id="responsavel">
+                            <option value="">Selecione</option>
+                            <option>Ana Claudia</option>
+                            <option>Joel</option>
+                            <option>Pedro Otávio</option>
+                            <option>Noele</option>
+                            <option>Tainá</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Turno</label>
+                        <select id="turno">
+                            <option value='T1'>T1 - Manhã</option>
+                            <option value='T2'>T2 - Tarde/Noite</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Tipo de Evento</label>
+                        <select id="tipo_evento">
+                            <option>COLETAS SP</option>
+                            <option>LIBERAÇÃO</option>
+                            <option>CHEGADA</option>
+                            <option>COLETAS CPQ</option>
+                            <option>INFORMAÇÃO</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Operação SS</label>
+                        <select id="doc_responsavel_ssonic">
+                            <option value="">Selecione o contato</option>
+                            <option>Angélica</option>
+                            <option>Adrian</option>
+                            <option>Douglas</option>
+                            <option>Edson Souza</option>
+                            <option>Elizeu</option>
+                            <option>Fabio Antonio</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Valor Mínimo</label>
+                        <input type="text" id="valor" value="100.000,00">
+                    </div>
+
+                    <div class="input-box">
+                        <label>Base Supersonic</label>
+                        <select id="base">
+                            <option>Campinas / SP</option>
+                            <option>São Paulo / SP</option>
+                            <option>Belém / PA</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box full-width">
+                        <label>Mensagem para Envio</label>
+                        <textarea id="mensagem" readonly placeholder="Aguardando geração..."></textarea>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-gerar" onclick="gerarMensagem()">⚙️ Gerar Mensagem</button>
+                    <button class="btn-whatsapp" id="btnWhatsapp" onclick="enviarWhatsApp()">📱 Enviar WhatsApp</button>
+                </div>
+            </div>
+
+            <div class="log-container">
+                <h3>Log (Últimas 24h)</h3>
+                <table id="logTable">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Responsável</th>
+                            <th>Operação</th>
+                            <th>Evento</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Carregar logs locais ao abrir a página
+        window.onload = carregarLogs;
+
+        function obterSaudacao() {
+            const hora = new Date().getHours();
+            if (hora >= 5 && hora < 12) return "Bom dia";
+            if (hora >= 12 && hora < 18) return "Boa tarde";
+            return "Boa noite";
+        }
+
+        function gerarMensagem() {
+            const resp = document.getElementById("responsavel").value;
+            const oper = document.getElementById("doc_responsavel_ssonic").value;
+            const val = document.getElementById("valor").value;
+            const bse = document.getElementById("base").value;
+            const tipo = document.getElementById("tipo_evento").value;
+
+            if (!resp || !oper) {
+                alert("Selecione os responsáveis antes de gerar.");
+                return;
+            }
+
+            const saudacao = obterSaudacao();
+            const texto = `${saudacao} ${oper},
+
+Aqui é ${resp} da GR Komando, tudo bem?
+
+Por favor, peço que nos informe as coletas do dia e quais os motoristas.
+
+As viagens com valor acima de R$ ${val} devem ser monitoradas por esta GR. Para isto, preciso que seja criada a Solicitação de Monitoramento (SM) em nossa plataforma.
+
+Caso tenha alguma dúvida, o pessoal do GR daqui de ${bse} pode te auxiliar.
+
+Agradeço a atenção e me coloco à disposição.`;
+
+            document.getElementById("mensagem").value = texto;
+            
+            // Registra no Log visual (Local Storage)
+            salvarERegistrarLog(resp, oper, tipo);
+        }
+
+        function salvarERegistrarLog(resp, oper, tipo) {
+            const agora = new Date();
+            const logEntry = {
+                timestamp: agora.getTime(),
+                hora: agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                resp: resp,
+                oper: oper,
+                tipo: tipo
+            };
+
+            let logs = JSON.parse(localStorage.getItem('gr_logs') || '[]');
+            logs.unshift(logEntry);
+            localStorage.setItem('gr_logs', JSON.stringify(logs));
+
+            renderizarTabela();
+        }
+
+        function renderizarTabela() {
+            const tbody = document.querySelector("#logTable tbody");
+            tbody.innerHTML = "";
+            
+            let logs = JSON.parse(localStorage.getItem('gr_logs') || '[]');
+            const vinteQuatroHoras = 24 * 60 * 60 * 1000;
+            const agora = new Date().getTime();
+
+            logs = logs.filter(log => (agora - log.timestamp) < vinteQuatroHoras);
+            localStorage.setItem('gr_logs', JSON.stringify(logs));
+
+            logs.forEach(log => {
+                let badgeClass = "";
+                const tipoUpper = (log.tipo || "").toUpperCase();
+                if (tipoUpper.includes("LIBERA")) badgeClass = "badge-liberacao";
+                else if (tipoUpper.includes("CHEGAD")) badgeClass = "badge-chegada";
+                else if (tipoUpper.includes("COLET")) badgeClass = "badge-coleta";
+                else if (tipoUpper.includes("INFORMA")) badgeClass = "badge-info";
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="color:#888; font-weight:bold;">${log.hora}</td>
+                    <td>${log.resp}</td>
+                    <td style="font-weight:500;">${log.oper}</td>
+                    <td><span class="badge ${badgeClass}">${log.tipo}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function carregarLogs() {
+            renderizarTabela();
+            // Limpa campos sensíveis ao carregar/recarregar a página
+            document.getElementById("doc_responsavel_ssonic").value = "";
+            document.getElementById("mensagem").value = "";
+        }
+
+        // FUNÇÃO UNIFICADA: Envia para o WhatsApp, Planilha e LIMPA campos
+        async function enviarWhatsApp() {
+            const msg = document.getElementById("mensagem").value;
+            const btn = document.getElementById("btnWhatsapp");
+
+            if (!msg) {
+                alert("⚠️ Gere a mensagem primeiro antes de enviar!");
+                return;
+            }
+
+            // Inicia gravação na planilha de forma "silenciosa"
+            await enviarParaPlanilha();
+
+            // Abre o WhatsApp
+            window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+
+            // LIMPEZA APÓS ENVIO:
+            // Mantemos Responsável e Turno, mas limpamos o contato específico e a msg
+            document.getElementById("doc_responsavel_ssonic").value = "";
+            document.getElementById("mensagem").value = "";
+        }
+
+        async function enviarParaPlanilha() {
+            const btn = document.getElementById("btnWhatsapp");
+            const originalText = btn.innerHTML;
+
+            const dados = {
+                hora_log: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                responsavel: document.getElementById("responsavel").value,
+                turno: document.getElementById("turno").value,
+                tipo_evento: document.getElementById("tipo_evento").value,
+                operacao_ss: document.getElementById("doc_responsavel_ssonic").value,
+                valor_minimo: document.getElementById("valor").value,
+                base: document.getElementById("base").value,
+                mensagem: document.getElementById("mensagem").value
+            };
+
+            btn.innerHTML = "⏳ Gravando na Planilha...";
+            btn.disabled = true;
+
+            const url = "https://script.google.com/macros/s/AKfycbxJ9UnKOL0T0CT2dmlN0Cf4OS4NWTL0aNFTZjitjxrUFr6CpKflrIMx3SgFTylWJPax_g/exec"; 
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+            } catch (error) {
+                console.error("Erro ao enviar para planilha:", error);
+            } finally {
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 1000);
+            }
+        }
+    </script>
+    
+</body>
+</html>

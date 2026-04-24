@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Operação CFTV</title>
+    <style>
+        body { background-color: #f4f7f9; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .no-print-area { text-align: center; margin-bottom: 20px; }
+        .btn-print { 
+            background-color: #1e3a8a; color: white; border: none; padding: 12px 25px; 
+            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;
+        }
+        @media print {
+            .no-print-area { display: none; }
+            body { background-color: white; padding: 0; }
+            #relatorio-final { border: none; box-shadow: none; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-area">
+    <button class="btn-print" onclick="window.print()">📄 GERAR PDF / IMPRIMIR RELATÓRIO</button>
+</div>
+
+<div id="relatorio-final" style="font-family: 'Segoe UI', Arial, sans-serif; color: #333; max-width: 650px; border: 1px solid #cfd8dc; padding: 25px; background-color: #ffffff; border-radius: 8px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #1e3a8a; padding-bottom: 20px;">
+        <img src="src/img/LogoKMD.png" alt="Logo Komando" style="max-height: 60px; margin-bottom: 15px;">
+        <h2 style="color: #1e3a8a; margin: 10px 0 0 0; font-size: 24px; letter-spacing: 1px; text-transform: uppercase;">
+            Checklist de Operação CFTV
+        </h2>
+    </div>
+
+    <div id="saudacao-texto" style="margin-bottom: 15px; font-weight: bold; color: #1e3a8a;"></div>
+
+    <div style="margin-bottom: 20px; font-size: 14px; color: #455a64; display: flex; justify-content: space-between;">
+        <div>
+            <p style="margin: 2px 0;"><strong>Unidade:</strong> <span id="view-unidade">CAMPINAS / SP</span></p>
+            <p style="margin: 2px 0;"><strong>Responsável:</strong> <span id="view-responsavel">ANA CLAUDIA</span></p>
+        </div>
+        <div style="text-align: right;">
+            <p style="margin: 2px 0;"><strong>Data:</strong> <span id="view-data"></span></p>
+            <p style="margin: 2px 0;"><strong>Hora:</strong> <span id="view-hora"></span></p>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+        <div style="flex: 1; background-color: #f1f5f9; padding: 12px; border-radius: 6px; text-align: center; border: 1px solid #e2e8f0;">
+            <span style="display: block; font-size: 11px; color: #000307; text-transform: uppercase; font-weight: bold;">Total Ativos</span>
+            <strong id="view-total" style="font-size: 20px; color: #1e3a8a;">98</strong>
+        </div>
+        <div style="flex: 1; background-color: #ecfdf5; padding: 12px; border-radius: 6px; text-align: center; border: 1px solid #d1fae5;">
+            <span style="display: block; font-size: 11px; color: #059669; text-transform: uppercase; font-weight: bold;">Operacionais</span>
+            <strong id="view-ok" style="font-size: 20px; color: #059669;">0</strong>
+        </div>
+        <div style="flex: 1; background-color: #fef2f2; padding: 12px; border-radius: 6px; text-align: center; border: 1px solid #fee2e2;">
+            <span style="display: block; font-size: 11px; color: #dc2626; text-transform: uppercase; font-weight: bold;">Com Falha</span>
+            <strong id="view-fail" style="font-size: 20px; color: #dc2626;">0</strong>
+        </div>
+    </div>
+
+    <h3 style="font-size: 16px; color: #1e3a8a; margin-bottom: 12px; border-left: 4px solid #1e3a8a; padding-left: 10px;">
+        Ocorrências Detectadas por Grupo
+    </h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0;">
+        <thead>
+            <tr style="background-color: #1e3a8a; color: white;">
+                <th style="padding: 12px; text-align: left; width: 25%;">DVR / Grupo</th>
+                <th style="padding: 12px; text-align: left;">Equipamentos (Status: NÃO)</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-corpo"></tbody>
+    </table>
+
+    <div style="margin-top: 25px; padding: 15px; background-color: #fdfdfd; border: 1px solid #eee; font-size: 12px; color: #000609; line-height: 1.6; border-radius: 4px;">
+        <strong>Nota Técnica:</strong> O mapeamento acima identifica apenas os ativos com irregularidades funcionais. Equipamentos não listados encontram-se 100% operacionais.
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        // Busca os dados enviados pelo checklist principal
+        const dados = JSON.parse(localStorage.getItem("dadosAuditoria"));
+        
+        // Data e Hora sempre atuais
+        document.getElementById('view-data').innerText = new Date().toLocaleDateString('pt-BR');
+        document.getElementById('view-hora').innerText = new Date().toLocaleTimeString('pt-BR');
+
+        if (dados) {
+            // Preenche Unidade e Responsável se existirem nos dados
+            if(dados.unidade) document.getElementById('view-unidade').innerText = dados.unidade;
+            if(dados.responsavel) document.getElementById('view-responsavel').innerText = dados.responsavel;
+            
+            // PREENCHE O TOTAL (Se no checklist estiver 98, aqui aparece 98)
+            document.getElementById('view-total').innerText = dados.total || "98";
+            document.getElementById('view-ok').innerText = dados.ok || "0";
+            document.getElementById('view-fail').innerText = dados.fail || "0";
+
+            const corpo = document.getElementById('tabela-corpo');
+            if (!dados.listaFalhas || dados.listaFalhas.length === 0) {
+                corpo.innerHTML = '<tr><td colspan="2" style="padding: 20px; text-align: center; color: #059669; font-weight: bold;">✅ Sistema 100% Operacional</td></tr>';
+            } else {
+                const agrupado = {};
+                dados.listaFalhas.forEach(item => {
+                    if (!agrupado[item.dvr]) agrupado[item.dvr] = [];
+                    agrupado[item.dvr].push(item.cam);
+                });
+
+                for (const dvr in agrupado) {
+                    const tr = document.createElement('tr');
+                    const qtdFalhas = agrupado[dvr].length;
+                    const critico = dvr.includes("04") || qtdFalhas > 4;
+
+                    tr.innerHTML = `
+                        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; background-color: ${critico ? '#fff1f0' : '#f8fafc'}; color: ${critico ? '#cf1322' : '#333'}">
+                            ${dvr} ${critico ? '(Crítico)' : ''}
+                        </td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; color: ${critico ? '#cf1322' : '#333'}">
+                            ${agrupado[dvr].join(", ")}
+                        </td>
+                    `;
+                    corpo.appendChild(tr);
+                }
+            }
+        }
+    };
+</script>
+</body>
+</html>

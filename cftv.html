@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang='pt-BR'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Operação CFTV</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0; padding: 0;
+            background: url('src/img/Registro de Saidas.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #374151;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            color: white; padding: 15px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .container { padding: 20px; max-width: 1100px; margin: 0 auto; }
+
+        .dashboard {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px; border-radius: 12px; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 4px solid #ddd;
+        }
+
+        .stat-card.total { border-color: var(--accent); }
+        .stat-card.ok { border-color: var(--success); }
+        .stat-card.fail { border-color: var(--danger); }
+
+        .stat-value { font-size: 32px; font-weight: 800; display: block; }
+        .stat-label { font-size: 11px; text-transform: uppercase; color: #6b7280; font-weight: bold; letter-spacing: 1px; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 12px; padding: 20px; margin-bottom: 20px;
+        }
+
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        label { font-weight: 700; font-size: 12px; color: var(--primary); margin-bottom: 5px; display: block; text-transform: uppercase; }
+        select, input { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
+
+        details { background: white; border-radius: 10px; margin-bottom: 8px; border: 1px solid #e5e7eb; overflow: hidden; }
+        summary { 
+            padding: 15px; cursor: pointer; font-weight: bold; background: #f8fafc; color: var(--primary); 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+
+        .dvr-info { display: flex; align-items: center; gap: 10px; flex-grow: 1; }
+        .dvr-stats-bar { 
+            display: flex; gap: 15px; margin: 0 20px; font-size: 10px; color: var(--danger);
+            text-transform: uppercase;
+        }
+        .dvr-stats-bar b { font-size: 14px; margin-right: 2px; }
+
+        .table-wrapper { overflow-x: auto; padding: 10px; }
+        table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        th { padding: 12px; background: #f1f5f9; font-size: 11px; text-transform: uppercase; color: #475569; }
+        td { padding: 10px; border-bottom: 1px solid #f1f5f9; text-align: center; font-size: 13px; }
+
+        /* Estilos das cores nos Selects */
+        .status-select { 
+            padding: 6px 12px; border-radius: 6px; font-weight: bold; border: 2px solid #d1d5db; cursor: pointer;
+        }
+        .status-select.ok { border-color: var(--success); color: var(--success); background: #f0fdf4; }
+        .status-select.error { border-color: var(--danger); color: var(--danger); background: #fef2f2; }
+
+        .btn-submit {
+            background: var(--success); color: white; border: none; padding: 20px;
+            width: 100%; border-radius: 10px; font-size: 16px; font-weight: bold;
+            cursor: pointer; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s opacity;
+        }
+        .footer-actions { display: flex; gap: 15px; margin-top: 20px; }
+        .footer-actions .btn-submit { flex: 1; margin-top: 0; }
+
+        @media (max-width: 600px) { 
+            .dashboard, .meta-grid, .footer-actions { grid-template-columns: 1fr; display: grid; } 
+            .footer-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1 style="margin:0; font-size: 20px;">CHECKLIST DE OPERAÇÃO CFTV</h1>
+</div>
+
+<div class="container">
+    <div class="dashboard">
+        <div class="stat-card total"><span class="stat-value" id="count-total">0</span><span class="stat-label">Total Dispositivos</span></div>
+        <div class="stat-card ok"><span class="stat-value" id="count-ok" style="color: var(--success)">0</span><span class="stat-label">Operacionais</span></div>
+        <div class="stat-card fail"><span class="stat-value" id="count-fail" style="color: var(--danger)">0</span><span class="stat-label">Com Falha</span></div>
+    </div>
+
+    <form id="checklistForm">
+        <div class="card meta-grid">
+            <div>
+                <label>Responsável</label>
+                <select id="responsavel" required>
+                    <option value="">Selecione...</option>
+                    <option>Ana Claudia</option>
+                    <option>Daysi Nascimento</option>
+                    <option>Noele Oliveira</option>
+                    <option>Pedro Otávio</option>
+                    <option>Tainá Moraes</option>
+                </select>
+            </div>
+            <div>
+                <label>Unidade</label>
+                <select id="unidade" required>
+                    <option>CAMPINAS / SP</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="dvrs-container"></div>
+
+        <div class="footer-actions">
+            <button type="submit" class="btn-submit">ADICIONAR AO LOTE</button>
+            <button type="button" onclick="enviarLote()" class="btn-submit" style="background:#1e3a8a">ENVIAR FECHAMENTO</button>
+            <button type="button" onclick="irParaRelatorio()" class="btn-submit" style="background-color: #f59e0b;">📧 RELATÓRIO PDF</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const mapeamento = {
+        "DOME SPEED": ["Speed 01 (Barracão)", "Speed 02 (Depósito)"],
+        "DVR 01": ["Corredor Central", "Manutenção carre", "Manutenção Aba", "Manutenção carreta", "Borracharia", "Rua Central", "Docas Antigas", "Portão Modular", "Portão Supersonic", "Docas Modular", "Cam 11", "Cam 12", "Cam 13", "Cam 14", "Cam 15", "Cam 16"],
+        "DVR 02": ["Portão Entrada", "Portão Entrada 2", "Portaria", "Veículos Central", "Veículos Portaria", "Estacionamento", "Rua P3/P1", "Eclusa Monit.", "Pedestre Estac.", "Pedestre Portaria", "Portaria Interna", "Acesso Monit.", "Corredor Monit.", "Eclusa Espera", "Sala Monit.", "Cerca Speed"],
+        "DVR 03": ["Fundos P2", "Fundos P2.2", "Placa Sala Fábio", "Sala P1", "P1 Docas", "Docas P1", "Docas P1.2", "Corredor Fundos", "P1 Interno", "P1 Interno 2", "Sala Docas", "Sala Fabio", "Pé de Amora", "Refeitório", "Estacionamento", "Portaria Lateral"],
+        "DVR 04": ["Depósito ADM", "Servidor", "Administrativo", "Porta Galpão", "Depósito 01", "Cam 6", "Cam 7", "Cam 8", "Cam 9", "Cam 10", "Cam 11", "Cam 12", "Cam 13", "Cam 14", "Cam 15", "Cam 16"],
+        "DVR 05": ["Bandag 1", "Bandag 2", "Bandag 3", "Depósito 4", "Depósito 5", "Docas Fundos", "Cam 7", "Cam 8", "Cam 9", "Depósito 10", "Depósito 11", "Depósito 12", "Cam 13", "Cam 14", "Cam 15", "Cam 16"],
+        "DVR 06": ["Acesso Externo 1", "Acesso Externo 2", "Docas Leste", "Docas Oeste", "Refeitório Ext.", "Área Descanso", "Estoque 02", "Estoque 03", "Carga e Descarga", "Portão 04", "Lateral 02", "Fundo Galpão", "Cam 13", "Cam 14", "Cam 15", "Cam 16"]
+    };
+
+    function updateDash() {
+        let gTotal = 0, gFail = 0;
+
+        document.querySelectorAll('details').forEach(section => {
+            let f = 0, i = 0, g = 0;
+            const rows = section.querySelectorAll('.cam-row');
+
+            rows.forEach(row => {
+                gTotal++;
+                const sels = row.querySelectorAll('select');
+                let rowFail = false;
+
+                sels.forEach((sel, idx) => {
+                    if(sel.value === 'N') {
+                        if(idx === 0) f++;
+                        if(idx === 1) i++;
+                        if(idx === 2) g++;
+                        rowFail = true;
+                        sel.className = 'status-select error'; // Fica Vermelho
+                    } else {
+                        sel.className = 'status-select ok'; // Fica Verde
+                    }
+                });
+                if(rowFail) gFail++;
+            });
+
+            section.querySelector('.s-f').innerText = f;
+            section.querySelector('.s-i').innerText = i;
+            section.querySelector('.s-g').innerText = g;
+        });
+
+        document.getElementById('count-total').innerText = gTotal;
+        document.getElementById('count-ok').innerText = gTotal - gFail;
+        document.getElementById('count-fail').innerText = gFail;
+    }
+
+    function render() {
+        const container = document.getElementById('dvrs-container');
+        Object.keys(mapeamento).forEach(key => {
+            container.innerHTML += `
+            <details>
+                <summary>
+                    <div class="dvr-info">📼 ${key}</div>
+                    <div class="dvr-stats-bar">
+                        <span>F: <b class="s-f">0</b></span>
+                        <span>I: <b class="s-i">0</b></span>
+                        <span>G: <b class="s-g">0</b></span>
+                    </div>
+                    <span>${mapeamento[key].length} CAMS</span>
+                </summary>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th align="left">Equipamento</th><th>Func.</th><th>Img.</th><th>Grav.</th></tr></thead>
+                        <tbody>${mapeamento[key].map((loc, idx) => `
+                            <tr class="cam-row">
+                                <td align="left"><strong>${(idx+1).toString().padStart(2, '0')}</strong> - ${loc}</td>
+                                <td><select class="status-select ok" onchange="updateDash()"><option value="S">SIM</option><option value="N">NÃO</option></select></td>
+                                <td><select class="status-select ok" onchange="updateDash()"><option value="S">SIM</option><option value="N">NÃO</option></select></td>
+                                <td><select class="status-select ok" onchange="updateDash()"><option value="S">SIM</option><option value="N">NÃO</option></select></td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </details>`;
+        });
+        updateDash();
+    }
+
+    function irParaRelatorio() {
+        const falhas = [];
+        document.querySelectorAll('.cam-row').forEach(row => {
+            const status = row.querySelectorAll('select')[0].value;
+            if (status === 'N') {
+                const dvr = row.closest('details').querySelector('.dvr-info').textContent.replace('📼', '').trim();
+                const cam = row.cells[0].textContent.split('-')[1].trim();
+                falhas.push({ dvr: dvr, cam: cam });
+            }
+        });
+
+        const dadosRelatorio = {
+            responsavel: document.getElementById("responsavel").value || "ANA CLAUDIA",
+            unidade: document.getElementById("unidade").value,
+            total: document.getElementById("count-total").innerText,
+            ok: document.getElementById("count-ok").innerText,
+            fail: document.getElementById("count-fail").innerText,
+            listaFalhas: falhas
+        };
+        
+        localStorage.setItem("dadosAuditoria", JSON.stringify(dadosRelatorio));
+        window.open('cftv-email.html', '_blank');
+    }
+
+    window.onload = render;
+
+    // 1. Função para coletar os dados formatados para a planilha
+    function coletarDadosChecklist() {
+        const responsavel = document.getElementById("responsavel").value;
+        const unidade = document.getElementById("unidade").value;
+        const dados = [];
+
+        document.querySelectorAll("details").forEach(section => {
+            const dvr = section.querySelector(".dvr-info").textContent.replace('📼', '').trim();
+
+            section.querySelectorAll(".cam-row").forEach(row => {
+                const nomeCam = row.cells[0].textContent.replace(/\s+/g, ' ').trim(); 
+                const selects = row.querySelectorAll("select");
+
+                dados.push({
+                    data: new Date().toLocaleString('pt-BR'),
+                    responsavel: responsavel,
+                    unidade: unidade,
+                    dvr: dvr,
+                    camera: nomeCam,
+                    funcionamento: selects[0].value,
+                    imagem: selects[1].value,
+                    gravacao: selects[2].value
+                });
+            });
+        });
+        return dados;
+    }
+
+    // 2. Lógica para o botão "ADICIONAR AO LOTE"
+    let loteDia = JSON.parse(localStorage.getItem("loteCFTV")) || [];
+
+    document.getElementById("checklistForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const novosDados = coletarDadosChecklist();
+        loteDia = loteDia.concat(novosDados);
+        localStorage.setItem("loteCFTV", JSON.stringify(loteDia));
+        
+        const btn = e.submitter;
+        const originalText = btn.innerText;
+        btn.innerText = "✓ ADICIONADO!";
+        btn.style.background = "#059669";
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.background = "";
+        }, 2000);
+    });
+
+    // 3. Função para o botão "ENVIAR FECHAMENTO" (O que manda para a planilha)
+    function enviarLote() {
+        if (loteDia.length === 0) {
+            alert("Não há dados acumulados! Clique em 'ADICIONAR AO LOTE' primeiro.");
+            return;
+        }
+
+        if(!confirm(`Deseja enviar o fechamento de ${loteDia.length} registros para a planilha?`)) return;
+
+        // URL do seu Google Apps Script
+        const scriptURL = "https://script.google.com/macros/s/AKfycbw0gTJyk3qnG_HwicDX36Ncc_MJbJIXWz4iirof7jcMAfldOKWgzKp54JIzeC80G1I1/exec";
+
+        fetch(scriptURL, {
+            method: "POST",
+            body: JSON.stringify({ lote: loteDia }),
+            mode: 'no-cors', 
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(() => {
+            alert("Dados enviados com sucesso para a planilha!");
+            localStorage.removeItem("loteCFTV");
+            loteDia = [];
+            location.reload(); 
+        })
+        .catch(err => {
+            alert("Erro ao enviar. Verifique a internet.");
+            console.error(err);
+        });
+    }
+
+    // 4. Função para o botão "RELATÓRIO PDF" (O que abre a nova página)
+    function irParaRelatorio() {
+        const falhas = [];
+        document.querySelectorAll('.cam-row').forEach(row => {
+            if (row.querySelectorAll('select')[0].value === 'N') {
+                const dvr = row.closest('details').querySelector('.dvr-info').textContent.replace('📼', '').trim();
+                const cam = row.cells[0].textContent.split('-')[1].trim();
+                falhas.push({ dvr: dvr, cam: cam });
+            }
+        });
+
+        const dadosRelatorio = {
+            responsavel: document.getElementById("responsavel").value || "ANA CLAUDIA",
+            unidade: document.getElementById("unidade").value,
+            total: document.getElementById("count-total").innerText,
+            ok: document.getElementById("count-ok").innerText,
+            fail: document.getElementById("count-fail").innerText,
+            listaFalhas: falhas
+        };
+        
+        localStorage.setItem("dadosAuditoria", JSON.stringify(dadosRelatorio));
+        window.open('cftv-email.html', '_blank');
+    }
+</script>
+</body>
+</html>
