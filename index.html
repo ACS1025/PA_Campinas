@@ -4,488 +4,453 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
-    <title>Home - PA-Campinas</title>
+    <title>Home - PA-Campinas | Monitoramento</title>
     <style>
-    /* Estilos principais */
+    /* Estilos Base */
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background-image: url('src/img/Registro\ de\ Saidas.png');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0; padding: 0; box-sizing: border-box;
+        background-image: url('src/img/Registro%20de%20Saidas.png');
+        background-size: cover; background-position: center;
+        background-attachment: fixed; color: white;
     }
 
-    .container {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        max-width: 1200px;
-        margin: auto;
-        background-color: transparent;
-        border-radius: 10px;
-    }
-
-    .content {
-        flex: 2;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .sidebar {
-        width: 200px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .icon-link {
-        margin-right: 20px; /* Espaço à direita entre os divs */
-    }
-    
-    .icon-link:last-child {
-        margin-right: 0; /* Remove o espaço extra no último item */
-    }
-
-    .icon-link {
-        margin: 10px 0;
-        text-align: center;
-        background-color: transparent; /* Remove qualquer fundo da div */
-        list-style-type: none; /* Remove o marcador do <li> */
-    }
-
-    .icon-link img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        background-color: transparent; /* Remove o fundo branco da imagem */
-    }
-
-    .icon-link li {
-        display: inline-block; /* Mantém o <li> inline, mas tratado como bloco */
-        background-color: transparent;
-    }
-    .icon-link a.pdf:hover {
-        background-color: red; /* Fundo vermelho ao passar o mouse */
-        border-radius: 50%; /* Mantém o formato redondo */
-        padding: 10px; /* Espaço ao redor do ícone */
-        transition: background-color 0.3s ease; /* Transição suave */
-    }
-    .icon-link a.pdf img {
-        border: none; /* Remove qualquer borda ao redor da imagem */
-        background-color: transparent; /* Remove qualquer fundo que a imagem possa ter */
-        padding: 0; /* Remove qualquer preenchimento ao redor da imagem */
-        box-shadow: none; /* Remove qualquer sombra */
-        outline: none; /* Remove qualquer outline ao focar */
-    }
-    .icon-link img {
-        width: 80px; /* Aumente se necessário */
-        height: 80px;
-        margin-bottom: 5px; /* Espaço entre a imagem e o texto */
-}
-
-    .dashboard {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 80px;
-    }
-
-   
-    .dashboard-card {
-        max-height: 150px; /* Define uma altura fixa */
-        overflow-y: auto;  /* Adiciona a barra de rolagem vertical quando o conteúdo exceder a altura */
-    }
-
-    .dashboard-card table {
-     width: 100%; /* Define a largura da tabela */
-     border-collapse: collapse; /* Remove espaços entre as bordas */
-    }
-
-    .dashboard-card th {
-        background-color: #f2f2f2; /* Cor de fundo dos cabeçalhos */
-        font-size: 1.2em; /* Tamanho da fonte dos cabeçalhos */
-    }
-
-    .dashboard-card td {
-        font-size: 1em; /* Tamanho da fonte das células */
-    }
-
-    /* Para ajustar o tamanho da fonte dos veículos */
-    .dashboard-card h5 {
-        font-size: 0.9em; /* Ajuste o tamanho conforme necessário */
-        margin: 0; /* Remove margens */
-    }
-
-    .dashboard-card:hover {
-        transform: translateY(-5px);
-    }
-
-    #solicitacao-card {
-        background-color: #FFF4E5; /* Um leve fundo laranja */
-    }
-
-    #distancia-card {
-        background-color: #E5F5FF; /* Um leve fundo azul */
-    }
-
-    h3 {
-        margin-bottom: 15px;
-        color: #333;
-    }
-
-    .dashboard {
-        transition: transform 0.3s ease; /* Para uma transição suave */
-        cursor: pointer; /* Indica que o item é clicável */
-      }
-      
-    .dashboard:hover {
-        transform: scale(1.1); /* Aumenta o tamanho em 10% ao passar o mouse */
-      }
-      
-    .dashboard-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-    
-    .dashboard {
-        width: 100%;
-        height: 300px;
-        border: 1px solid #ddd;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
-    
-    .dashboard:hover {
-        transform: scale(1.05); /* Zoom de 5% */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-    
-    .dashboard-title {
-        position: center;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        background-color: rgba(92, 9, 9, 0.7);
-        color: #fff;
-        text-align: ;
-        z-index: 10;
-    }
-    
-    
-    .dashboard iframe {
-        border: none;
-        width: 100%;
-        height: calc(100% - 30px); /* Ajuste para acomodar o link */
-    }
-    
-    iframe {
-        border: none;
-        width: 100%;
-        height: 100%;
-        display: block;
-    }
-    
-
-                 
-    @media (max-width: 768px) {
-        .dashboard-card {
-            flex: 1 1 calc(50% - 40px);
-        }
-    }
-
-    @media (max-width: 480px) {
-        .dashboard-card {
-            flex: 1 1 100%;
-        }
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        margin-bottom: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f1f1f1;
-    }
-
-    .header {
-        text-align: center;
-        padding: 60px;
-        background-color: A5896;
-        color: white;
-    }
-
-   
-    /* Navbar */
     nav {
-        width: 100%;
-        background-color: transparent;
-        padding: 15px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-    }
-    nav ul {
-        list-style: none;
-        padding: 0;
-        text-align: center;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-    }
-    nav ul li {
-        display: inline-block;
-    }
-    nav ul li a {
-        color: rgb(27, 27, 29);
-        text-decoration: none;
-        font-size: 16px;
-        padding: 10px 18px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-    nav ul li a:hover {
-        background-color: #1717af70;
+        width: 100%; background-color: rgba(30, 30, 30, 0.9);
+        backdrop-filter: blur(10px); padding: 15px 0;
+        position: fixed; top: 0; left: 0; z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
     }
 
-    /* Ajuste responsivo para a navbar em telas menores */
+    nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    nav ul li a { color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 25px; transition: 0.3s; }
+    nav ul li a:hover { background-color: rgba(23, 23, 175, 0.6); }
+
+    .header { text-align: center; padding: 120px 20px 20px; }
+    .header h1 { margin: 0; font-size: 32px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); }
+
+    /* NOVOS ESTILOS KPI TORRE (GRID INTEGRADO) */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        padding: 0 40px;
+        margin-bottom: 25px;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .kpi-card-full {
+        background: rgba(0, 42, 139, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border-top: 4px solid #3498db;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        position: relative;
+    }
+
+    .label-sub { display: block; font-size: 11px; text-transform: uppercase; color: #bdc3c7; margin-bottom: 5px; }
+    .valor-big { font-size: 32px; font-weight: bold; display: block; }
+
+    /* Cores de Status da Torre */
+    .card-transito { border-top-color: #2ecc71; }
+    .card-aguardando { border-top-color: #f1c40f; }
+    .card-atraso { border-top-color: #e74c3c; }
+    #big-atraso { color: #ff6b6b; }
+
+    /* Botão Torre */
+    .btn-torre-box { text-align: center; margin-bottom: 30px; }
+    .btn-torre {
+        display: inline-block;
+        background: rgba(23, 23, 175, 0.8);
+        padding: 10px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        color: white;
+        border: 1px solid #f1c40f;
+        transition: 0.3s;
+    }
+    .btn-torre:hover { transform: scale(1.05); background: #1717af; }
+
+    /* Layout Central e Sidebars */
+    .container { display: flex; justify-content: center; padding: 20px; max-width: 1500px; margin: auto; gap: 20px; }
+    .sidebar { width: 220px; display: flex; flex-direction: column; gap: 15px; }
+    .icon-link { text-align: center; background: rgba(0, 0, 0, 0.6); padding: 15px; border-radius: 15px; transition: 0.3s; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .icon-link:hover { background: rgba(0, 0, 0, 0.8); transform: translateY(-3px); }
+    .icon-link img { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px; }
+    .icon-link p { margin: 0; font-size: 12px; font-weight: 600; color: #fff; }
+
+    .main-content { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .action-box { background: rgba(0, 0, 0, 0.75); border-radius: 20px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; justify-content: space-between; }
+    .btn-action { background: #3498db; color: white; text-decoration: none; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+    .notice-board { background: rgba(0, 0, 0, 0.8); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .notice-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .notice-item:last-child { border-bottom: none; }
+    .tag {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    footer { text-align: center; padding: 30px; color: #bbb; font-size: 12px; }
+
+    /* Menu Hambúrguer */
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px 15px;
+        gap: 5px;
+        z-index: 1001;
+    }
+
+    .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #ffffff;
+        border-radius: 3px;
+        transition: 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
+
     @media (max-width: 768px) {
+        .menu-toggle {
+            display: flex;
+            position: fixed;
+            right: 15px;
+            top: 15px;
+        }
+
         nav ul {
             flex-direction: column;
-            gap: 10px;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background-color: rgba(20, 20, 20, 0.98);
+            gap: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            justify-content: flex-start;
+            padding: 0 !important;
+            border-radius: 0;
+            box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        nav ul.active {
+            max-height: 500px;
+            padding: 15px 0 !important;
+        }
+
+        nav ul li {
+            width: 100%;
+            text-align: center;
+        }
+
+        nav ul li a {
+            display: block;
+            border-radius: 0;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(23, 23, 175, 0.6);
+        }
+
+        nav ul li:last-child a {
+            border-bottom: none;
         }
     }
-    @media (max-width: 480px) {
-        .sidebar {
-            display: flex;
-            flex-direction: row; /* Ícones lado a lado */
-            overflow-x: auto; /* Adiciona barra de rolagem horizontal */
-        }
-        .icon-link {
-            margin: 0 5px;
-        }
-    }
-    /* Adicionando um espaçamento superior ao conteúdo para não ficar embaixo da navbar fixa */
-    .content {
-        padding-top: 60px;
-    }
 
-   
-    .content {
-        padding-top: 60px;
+    @media (max-width: 1024px) {
+        .container { flex-direction: column; }
+        .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+        .action-grid { grid-template-columns: 1fr; }
     }
-
-    .icon-link {
-        display: inline-block; /* Faz com que o link trate o espaço como um bloco */
-        text-align: center;   /* Centraliza o conteúdo do link */
-        text-decoration: none; /* Remove sublinhado dos links */
-    }
-
-    .icon-link a:hover {
-        background-color: white; /* Cor de fundo ao passar o mouse */
-        border-radius: 50%; /* Mantém o formato redondo ao redor do ícone */
-        padding: 10px; /* Adiciona um pequeno espaço ao redor do ícone */
-        transition: background-color 0.3s ease; /* Transição suave */
-    }
-
-    .filters {
-        margin-bottom: 15px;
-        margin-left: 30px; /* Ajuste conforme desejado */
-        padding: 10px; /* Adiciona um pouco de espaço interno */
-        background-color: rgb(42, 78, 158); /* Fundo branco para destacar a sombra */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
-        border-radius: 5px; /* Bordas arredondadas (opcional) */
-    }
-
-    footer {
-        text-align: center;
-        padding: 10px;
-        background-color: transparent;
-        color: grey;
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-    }
-</style>
-
+    </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav>
+
+<button class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<nav>
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="registro-saidas.html">Registro de Saídas</a></li>
         <li><a href="solicitacao-escolta.html">Solicitação de Escolta</a></li>
         <li><a href="conhecimento.html">Para conhecimento</a></li>
-        <li><a href="convite.html" class="active">Convite Motorista</a></li>
+        <li><a href="convite.html">Convite Motorista</a></li>
         <li><a href="videos.html">Galeria de Vídeos</a></li>
+        <li><a href="brief.html">Briefing</a></li>
+        <li><a href="posicao.html">Posição escolta</a></li>
+        <li><a href="comunicado.html">Comunicado</a></li>
     </ul>
 </nav>
 
-<!-- Cabeçalho com título principal -->
 <header class="header">
-    <h1>- MONITORAMENTO - <br>PA-Campinas</h1>
+    <h1>CENTRAL DE OPERAÇÕES<br>PA-Campinas</h1>
+    <p id="status-com" style="font-size: 12px; font-weight: bold;">Iniciando Sincronização...</p>
 </header>
 
-    <div class="container">
-        <!-- Coluna esquerda -->
-        <div class="sidebar">
-            <div class="icon-link">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiODRmOTc2NDgtMTA3ZS00ODVmLTk0ZTEtYWU4YTQ1NzY4NjMyIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank" rel="noopener noreferrer">
-                    <img src="src/img/KMDPbix.gif" alt="PA Campinas">
-                </a>
-                <p>PA Campinas</p>
-            </div>
-            
-            <div class="icon-link">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank" rel="noopener noreferrer">                 
-                    <img src="src/img/KMDPbix.gif" alt="Coletas">
-                </a>
-                <p>Coletas SSonic</p>
-            </div>
-            
-            <div class="icon-link">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiY2MyZmJiOTMtMzQyNy00MmJkLWJlNTgtYzYyODM5MmU0MTY3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9"target="_blank" rel="noopener norferrer">
-                    <img src="src/img/KMDPbix.gif" alt="Relatorio"></a>
-                <p>Relatório</p>
-            </div>
-            <div class="icon-link">
-                <a href="https://sites.google.com/view/pacampinas"target="_blank" rel="noopener norferrer"><img src="src/img/KMDPbix.gif" alt="PA Campinas"></a>
-                <p>PA Campinas</p>
-            </div>
-            <div class="icon-link">
-                <a href="briefing.html"><img src="src/img/KMDPbix.gif" alt="briefing"></a>
-                <p>Briefing de Viagem</p>
-            </div>
-        </div>
+<div class="grid-container">
+    <div class="kpi-card-full">
+        <span class="label-sub">Monitorados</span>
+        <span id="big-monitorado" class="valor-big">--</span>
+    </div>
 
-<!-- Conteúdo central -->
-<div class="dashboard-container">
-    <!-- Primeiro Dashboard -->
-    <a href="https://app.powerbi.com/view?r=eyJrIjoiY2MyZmJiOTMtMzQyNy00MmJkLWJlNTgtYzYyODM5MmU0MTY3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=0cbf69e80d9189c50699" target="_blank">
-        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
-            <div class="dashboard-title">Acompanhamento Carreta Solar</div>
-            <iframe 
-                width="100%" 
-                height="100%" 
-                src="https://app.powerbi.com/view?r=eyJrIjoiY2MyZmJiOTMtMzQyNy00MmJkLWJlNTgtYzYyODM5MmU0MTY3IiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9&pageName=0cbf69e80d9189c50699" 
-                frameborder="0" 
-                allowFullScreen="true">
-            </iframe>
-        </div>
-    </a>
+    <div class="kpi-card-full">
+        <span class="label-sub">Nova Solicitação</span>
+        <span id="big-nova" class="valor-big">--</span>
+    </div>
 
-    <!-- Segundo Dashboard -->
-    <a href="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" target="_blank">
-        <div class="dashboard powerbi-embed" onclick="toggleFullscreen(this)">
-            <div class="dashboard-title">Acompanhamento Coleta SSonic</div>
-            <iframe 
-                width="100%" 
-                height="100%" 
-                src="https://app.powerbi.com/view?r=eyJrIjoiODE1Zjc1ZmYtMTg5MS00ODZlLTgwZDAtMmQ1MDAzNzI0MzRkIiwidCI6IjRmMjQ2YWRiLTcwMDYtNGE4Yi04YTdiLWQyYjQzNWE2NWFhYSJ9" 
-                frameborder="0" 
-                allowFullScreen="true">
-            </iframe>
-        </div>
-    </a>
+    <div class="kpi-card-full card-transito">
+        <span class="label-sub">Em Trânsito</span>
+        <span id="big-transito" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-aguardando">
+        <span class="label-sub">Aguardando Início</span>
+        <span id="big-aguardando" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card-full card-atraso">
+        <span class="label-sub">Início em Atraso</span>
+        <span id="big-atraso" class="valor-big">--</span>
+    </div>
 </div>
-        <!-- Coluna direita -->
-        <div class="sidebar">
-            <!-- Novos Ícones GIF -->
-            <div class="icon-link">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeEGaGLqegml3MhhjjD_LOrn6SecC0tYEJ9I9wNq8OjACgXww/viewform?embedded=true" target="_blank">
-                    <img src="src/img/checklist.gif" alt="Icon 1">
-                </a>
-                <p>Checklist presencial</p>
-            </div>
 
-            <div class="icon-link">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc3SvaWWqrfbBmxj6TdLDr5AbkuF6QD0Fm9kGrwQ0mracRxqw/viewform?embedded=true" target="_blank">
-                    <img src="src/img/briefing.gif" alt="Icon 2">
-                </a>
-                <p>Briefing digital</p>
-            </div>
+<div class="btn-torre-box">
+    <a href="torre.html" class="btn-torre">📡 Acessar Torre de Controle Completa</a>
+</div>
+<div class="container">
+    <div class="sidebar">
+        <a href="https://sites.google.com/view/pacampinas/apresenta%C3%A7%C3%A3o" target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="PA">
+            <p>PA Campinas</p>
+        </a>
+        <a href="https://sites.google.com/view/pacampinas/posi%C3%A7%C3%B5es/coletas" target="_blank" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Coletas">
+            <p>Coletas SSonic</p>
+        </a>
+        <a href="brief.html" class="icon-link">
+            <img src="src/img/KMDPbix.gif" alt="Briefing">
+            <p>Briefing de Viagem</p>
+        </a>
+    </div>
 
-            <div class="icon-link">
-                <a href="https://docs.google.com/presentation/d/e/2PACX-1vRA6jDzcE_wYCi9tPomaGZol04jb6UspexRU1P_5cBtywUg4frobdVOWUj0bAr8l-B-F2lx4sF8aTsI/pub?start=false&loop=false&delayms=3000" target="_blank">
-                    <img src="src/img/treinamento.gif" alt="Icon 3">
-                </a>
-                <p>Treinamento motorista</p>
-            </div>
-
-            <div class="icon-link">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIvZGFCID_1TmfICBGlqWn1AZXAZu-9WIjuBCw3RRxU98F9g/viewform?embedded=true" target="_blank">
-                    <img src="src/img/dica.gif" alt="Icon 4">
-                </a>
-                <p>Dica</p>
-            </div>
-
-            <div class="icon-link">
-                <li>
-                    <a href="src/pdf/Checklist Presencial - Modelo.pdf" target="_blank" class="pdf">
-                        <img src="src/img/dica.gif" alt="Icon 4">
-                    </a>
-                </li>
-                <p>Checklist presencial</p>
+    <div class="main-content">
+        <div class="action-grid">
+            <div class="action-box">
+                <div>
+                    <h2>Gerador Operacional</h2>
+                    <p>Envio de mensagens rápidas e padronizadas para a operação Supersonic via WhatsApp.</p>
+                    <ul>
+                        <li>Registro automático no Log</li>
+                        <li>Modelos pré-configurados</li>
+                    </ul>
                 </div>
+                <a href="comunicado.html" class="btn-action">Abrir Gerador</a>
+            </div>
+            
+            <div class="action-box">
+                <div>
+                    <h2>Posição de Escolta</h2>
+                    <p>Atualize o status da viagem para o grupo de escolta nos marcos obrigatórios:</p>
+                    <ul>
+                        <li>Início de viagem</li>
+                        <li>Check-point diário</li>
+                        <li>Proximidade (500km e 250km)</li>
+                    </ul>
+                </div>
+                <a href="posicao.html" class="btn-action" style="background: #27ae60;">Informar Posição</a>
+            </div>
+        </div>
+
+        <div class="notice-board">
+            <h3 style="margin-top:0; font-size: 16px; color: #f1c40f;">📌 Quadro de Avisos / Links Rápidos</h3>
+            <div class="notice-item">
+                <span>CFTV-Checklist de Câmeras</span>
+                <span class="tag">Importante</span>
+                <a href="cftv.html" target="_blank" class="icon-link">Abrir</a>
+            </div>
+            <div class="notice-item">
+                <span>Avaliação pós treinamento</span>
+                <span class="tag">Importante</span>
+                <a href="Treinamento_Komando_Completo.html" target="_blank" class="icon-link">Abrir</a>
+            </div>
+            <div class="notice-item">
+                <span>Escala do Turno Atual - T1/T2</span>
+                <span class="tag" style="background: #3498db;">Operacional</span>
+            </div>
+            <div class="notice-item">
+                <span>Contatos de Emergência Bases Belém/SP</span>
+                <span class="tag" style="background: #27ae60;">Suporte</span>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 PA-Campinas. Todos os direitos reservados. by ACS</p>
-    </footer>
-</body>
-</html>
+    <div class="sidebar">
+        <a href="https://drive.google.com/file/d/1LDve3eJIQUz4MXpsrRje3ot80WOvRvoN/view?usp=sharing" target="_blank" class="icon-link">
+    <img src="src/img/checklist.gif" alt="Checklist">
+    <p>Checklist presencial</p>
+</a>
+        <a href="https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg" target="_blank" class="icon-link">
+    <img src="src/img/briefing.gif" alt="Digital">
+    <p>Briefing digital</p>
+</a>
+        <a href="https://docs.google.com/presentation/d/1RRDgPSzhzji4DX_4uzWF5hZpzl1D9r4pU68Kpp3SR_o/edit?usp=sharing" target="_blank" class="icon-link">
+            <img src="src/img/treinamento.gif" alt="Treinamento">
+            <p>Treinamento motorista</p>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 PA-Campinas. Todos os direitos reservados. by ACS</p>
+</footer>
 
 <script>
-    function filterTable() {
-        const filter = document.getElementById("statusFilter").value;
-        const table = document.getElementById("escoltasTable");
-        const rows = table.getElementsByTagName("tr");
-        
-        for (let i = 1; i < rows.length; i++) { // Começa de 1 para ignorar o cabeçalho
-            const statusCell = rows[i].getElementsByTagName("td")[1]; // Coluna do Status
-            if (statusCell) {
-                const statusText = statusCell.textContent || statusCell.innerText;
-                if (filter === "all" || statusText === filter) {
-                    rows[i].style.display = ""; // Mostra a linha
-                } else {
-                    rows[i].style.display = "none"; // Esconde a linha
-                }
+// Menu Hambúrguer - Responsivo
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.querySelector('nav ul');
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Fecha o menu ao clicar em um link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Fecha o menu ao clicar fora
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideNav && !isClickOnToggle && navMenu.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
             }
-        }
+        });
     }
-      
-    </script>
+});
+
+// URLs de Configuração - AGORA ONLINE VIA TÚNEL
+const urlPython = "https://tyson-uncausative-deniably.ngrok-free.dev/dados";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
+
+async function updateTorre() {
+    // Seleciona os cards para o efeito visual de atualização
+    const cards = document.querySelectorAll('.kpi-card-full');
+    cards.forEach(c => c.style.opacity = "0.7");
     
-    <script>
-        // Função para alternar tela cheia
-        function toggleFullscreen(element) {
-            if (!document.fullscreenElement) {
-                element.requestFullscreen().catch(err => {
-                    console.error(`Erro ao entrar em tela cheia: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
+    const statusCom = document.getElementById('status-com');
+    statusCom.innerText = "Sincronizando...";
+
+    try {
+        // 1. Busca dados do Robô Local (Python/Ngrok)
+        const resPython = await fetch(urlPython, {
+            headers: { 'ngrok-skip-browser-warning': 'true' }
+        });
+        const dadosRobo = await resPython.json();
+        
+        if (dadosRobo.monitorados > 0) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
+            
+            statusCom.innerText = "Online (Robô Local)";
+            statusCom.style.color = "#2ecc71";
+        }
+
+        // 2. Busca dados de Backup/Ocorrências (Google Sheets)
+        const resGoogle = await fetch(urlGoogle);
+        const dadosPlanilha = await resGoogle.json();
+
+        if (dadosPlanilha) {
+            // Renderiza as linhas se os containers existirem no HTML
+            if(document.getElementById('lista-veiculos')) renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+            
+            // Backup caso o Python falhe
+            const monitoradoAtual = document.getElementById('big-monitorado').innerText;
+            if (monitoradoAtual === "0" || monitoradoAtual === "--") {
+                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || "--";
+                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || "--";
+                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || "--";
+                statusCom.innerText = "Online (Nuvem)";
             }
         }
-    </script>
+
+        // Atualiza o relógio no rodapé (se o ID existir)
+        if(document.getElementById('relogio')) {
+            document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
+        }
+
+    } catch (err) {
+        console.error("Erro na sincronização:", err);
+        statusCom.innerText = "Link de Dados Offline";
+        statusCom.style.color = "#e74c3c";
+    } finally {
+        cards.forEach(c => c.style.opacity = "1");
+    }
+}
+
+function renderRows(id, itens) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
+        container.innerHTML = "<div style='color:#bdc3c7; font-size:12px;'>✅ Nenhuma ocorrência detectada.</div>";
+        return;
+    }
+    container.innerHTML = itens.map(i => `<div style='font-size:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding:5px 0;'>• ${i}</div>`).join('');
+}
+
+// Inicia e define intervalo
+updateTorre();
+setInterval(updateTorre, 60000);
+</script>
+
+</body>
+</html>
