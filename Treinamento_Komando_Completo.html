@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Treinamento Komando 2026</title>
+    <style>
+        :root {
+            --primary-color: #004a99;
+            --secondary-color: #FFFFFF;
+            --accent-color: #ffc107;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --text-color: #333333;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-image: url('src/img/Registro\ de\ Saidas.png');
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f0f2f5;
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        .quiz-container { 
+            background: white; 
+            padding: 0; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            width: 100%; 
+            max-width: 500px; 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 600px) {
+            .quiz-container {
+                border-radius: 12px;
+                min-height: auto;
+                margin: 20px auto;
+            }
+            body { padding: 20px; }
+        }
+
+        .header {
+            background-color: white;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .logo-placeholder {
+            width: auto;
+            height: 60px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        .header h1, label, .question-text, h2 {
+            color: var(--primary-color) !important;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px 20px;
+            background-color: white;
+            color: var(--text-color);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .option { 
+            background: var(--secondary-color); 
+            color: var(--text-color);
+            margin: 10px 0; 
+            padding: 18px 15px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            border: 2px solid #dee2e6; 
+            transition: all 0.2s;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background-color: #f8fbff;
+        }
+
+        .option.correct {
+            background-color: #d4edda !important;
+            border-color: var(--success-color) !important;
+            color: #155724 !important;
+            font-weight: bold;
+        }
+
+        .option.wrong {
+            background-color: #f8d7da !important;
+            border-color: var(--error-color) !important;
+            color: #721c24 !important;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 16px; 
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .rationale {
+            background-color: #fff8e1;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none; 
+        }
+
+        .btn { 
+            background: var(--primary-color); 
+            color: white !important;
+            border: none; 
+            padding: 18px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            font-size: 1.1rem;
+        }
+
+        .progress-bar { background: #eee; height: 8px; width: 100%; }
+        .progress-fill { background: var(--accent-color); height: 100%; width: 0%; transition: width 0.3s; }
+        
+        .score-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50%;
+            font-size: 2rem;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .support-box { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin: 20px 0; }
+        .whatsapp-btn { text-decoration: none; background-color: #25d366; color: white !important; padding: 12px 20px; border-radius: 50px; display: inline-flex; align-items: center; font-weight: bold; gap: 8px; margin-top: 10px; }
+        .review-box { text-align: left; margin-top: 25px; border-top: 2px solid #eee; padding-top: 20px; }
+        .error-item { background: #fdfdfd; border-left: 4px solid var(--error-color); padding: 15px; margin-bottom: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .txt-err { color: var(--error-color); font-weight: bold; }
+        .txt-cor { color: var(--success-color); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="header">
+        <img src="src/img/LogoKMD.png" alt="Komando Gerenciamento de Riscos" class="logo-placeholder">
+        <h1>Avaliação do Treinamento</h1>
+    </div>
+    
+    <div class="progress-container" id="progress-area" style="display:none; margin-top: 0;">
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+    </div>
+
+    <div class="content">
+        <div id="setup-screen">
+            <div class="form-group">
+                <label>Nome Completo:</label>
+                <input type="text" id="nome" placeholder="Ex: João Silva">
+            </div>
+            <div class="form-group">
+                <label>CPF:</label>
+                <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+            </div>
+            <div class="form-group">
+                <label>Placa do Veículo:</label>
+                <input type="text" id="placa" placeholder="ABC1D23" maxlength="8" oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <button class="btn" onclick="startQuiz()">INICIAR AVALIAÇÃO</button>
+        </div>
+
+        <div id="quiz-screen" style="display:none;">
+            <div id="question-container"></div>
+            <div id="rat-container" class="rationale"></div>
+            <button id="nextBtn" class="btn" onclick="nextQuestion()" style="display:none; margin-top: 20px;">PRÓXIMA QUESTÃO</button>
+        </div>
+
+        <div id="result-screen" style="display:none; text-align:center;">
+            <h2>Avaliação Concluída!</h2>
+            <span class="score-badge" id="score-num">0</span>
+            <p id="score-text" style="font-size: 1.1rem;"></p>
+            <div id="loading" style="display:none; color: var(--primary-color); margin: 20px 0;">
+                <strong>Salvando resultados...</strong>
+            </div>
+            <div id="final-msg"></div>
+
+            <div class="support-box">
+                <p style="margin: 0; font-weight: bold; color: var(--primary-color);">Dúvidas ou Suporte?</p>
+                <a id="link-whats" href="#" target="_blank" class="whatsapp-btn">
+                    <span>💬 Central: (19) 98126-0767</span>
+                </a>
+            </div>
+
+            <div id="review-area" class="review-box" style="display:none;">
+                <h3 style="color: var(--error-color);">🔍 Itens para Atenção:</h3>
+                <div id="errors-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function mascaraCPF(i) {
+    let v = i.value;
+    v = v.replace(/\D/g, ""); 
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    i.value = v;
+}
+
+const allQuestions = [
+    { 
+        q: "Para que serve o Gerenciamento de Riscos?", 
+        options: ["Para multar motorista", "Para garantir que o procedimento de viagem seja seguido assim como proteger motorista, veículo e carga", "Para controlar combustível", "Para aumentar velocidade"], 
+        correct: 1, 
+        rationale: "O gerenciamento de riscos existe para aumentar a segurança de toda a operação." 
+    },
+    { 
+        q: "O que o motorista deve fazer durante a viagem?", 
+        options: ["Fazer o que quiser", "Seguir os procedimentos e regras", "Ignorar a central", "Mudar a rota sozinho"], 
+        correct: 1, 
+        rationale: "Seguir os procedimentos é o que garante segurança na operação." 
+    },
+    { 
+        q: "Para que servem as macros?", 
+        options: ["Para conversar com outros motoristas", "Para enviar mensagens padronizadas para a central", "Para ouvir música", "Para desligar o rastreador"], 
+        correct: 1, 
+        rationale: "As macros padronizam a comunicação com a central e evitam erros." 
+    },
+    { 
+        q: "O que fazer antes de parar o veículo?", 
+        options: ["Parar direto", "Avisar a central usando macro", "Desligar o rastreador", "Abrir o baú"], 
+        correct: 1, 
+        rationale: "Toda parada deve ser informada para garantir segurança." 
+    },
+    { 
+        q: "Após uma parada, o que é obrigatório fazer?", 
+        options: ["Nada", "Mandar macro de reinício de viagem", "Ligar o rádio", "Trocar de rota"], 
+        correct: 1, 
+        rationale: "O reinício ativa novamente a segurança do sistema." 
+    },
+    { 
+        q: "Quando pode abrir o baú ou desengatar a carreta?", 
+        options: ["Quando quiser", "Somente com autorização da central", "Durante a viagem", "Em qualquer parada"], 
+        correct: 1, 
+        rationale: "Essa é uma operação de alto risco e precisa de autorização." 
+    },
+    { 
+        q: "O que fazer se precisar mudar a rota?", 
+        options: ["Mudar sozinho", "Avisar a central antes", "Ignorar o sistema", "Desligar o GPS"], 
+        correct: 1, 
+        rationale: "Toda mudança de rota deve ser autorizada para evitar riscos." 
+    },
+    { 
+        q: "O que fazer em caso de abordagem suspeita?", 
+        options: ["Reagir", "Discutir", "Manter a calma e não reagir", "Tentar fugir"], 
+        correct: 2, 
+        rationale: "A prioridade é sempre preservar a vida do motorista." 
+    },
+    { 
+        q: "O que é o jammer?", 
+        options: ["Um tipo de carga", "Um bloqueador de sinal", "Um sensor de porta", "Um tipo de pneu"], 
+        correct: 1, 
+        rationale: "O jammer bloqueia o sinal e pode indicar tentativa de roubo." 
+    },
+    { 
+        q: "Quando enviar a macro de fim de viagem?", 
+        options: ["Ao chegar no cliente", "Depois que descarregar tudo", "Antes de descarregar", "No meio da viagem"], 
+        correct: 1, 
+        rationale: "A viagem só termina após a entrega completa da carga." 
+    },
+    { 
+        q: "Por que o pernoite na região de Itumbiara/GO e Jaraguá/GO não é recomendado?", 
+        options: ["O risco de roubo é alto", "Porque não tem posto de combustível", "É permitido, mas não recomendado", "Sempre é recomendado pernoitar nesses locais"], 
+        correct: 0, 
+        rationale: "Essa região tem alto risco de roubo, por isso o pernoite deve ser evitado." 
+    },
+    { q: "O que acontece se o motorista não enviar macro?", options: ["Nada", "A central perde o controle da viagem", "Ganha bônus", "A viagem termina"], correct: 1, rationale: "Sem macro, a central não sabe o que está acontecendo." },
+    { q: "Quem é responsável pela segurança da operação?", options: ["Somente a empresa", "Somente a central", "O motorista", "Ninguém"], correct: 2, rationale: "O motorista é peça principal na segurança." },
+    { q: "Pode dar carona durante a viagem?", options: ["Sim", "Não", "Só se for conhecido", "Só em emergência"], correct: 1, rationale: "É proibido levar pessoas não autorizadas." },
+    { q: "Pode parar em qualquer lugar?", options: ["Sim", "Não", "Só se quiser", "Depende do dia"], correct: 1, rationale: "Paradas devem ser seguras e informadas." },
+    { q: "O que fazer ao chegar no cliente?", options: ["Descarregar direto", "Avisar a central", "Ir embora", "Dormir"], correct: 1, rationale: "A central precisa autorizar as ações." },
+    { q: "Pode abrir o baú sem avisar?", options: ["Sim", "Não", "Só rápido", "Só de dia"], correct: 1, rationale: "Sempre precisa de autorização." },
+    { q: "Para que serve o rastreamento?", options: ["Espionar", "Controlar a viagem", "Gastar bateria", "Multar"], correct: 1, rationale: "Permite monitoramento em tempo real." },
+    { q: "O que fazer se perder comunicação?", options: ["Ignorar", "Seguir viagem", "Tentar contato com a central", "Desligar tudo"], correct: 2, rationale: "A comunicação é essencial." },
+    { q: "Desviar da rota sem avisar pode causar?", options: ["Nada", "Bloqueio do veículo", "Mais velocidade", "Economia"], correct: 1, rationale: "Desvio gera alerta de risco." },
+    { q: "Pode ajudar outro veículo sem avisar?", options: ["Sim", "Não", "Só se quiser", "Só de noite"], correct: 1, rationale: "Sempre avisar a central antes." },
+    { q: "O que fazer ao abastecer?", options: ["Nada", "Usar macro de parada", "Desligar rastreador", "Trocar rota"], correct: 1, rationale: "Toda parada deve ser registrada." },
+    { q: "Pode desligar o rastreador?", options: ["Sim", "Não", "Só em descanso", "Só com autorização própria"], correct: 1, rationale: "Nunca deve ser desligado." },
+    { q: "O que fazer ao reiniciar viagem?", options: ["Nada", "Enviar macro", "Acelerar", "Trocar rota"], correct: 1, rationale: "Reinício é obrigatório." },
+    { q: "O que significa fuga de rota?", options: ["Caminho correto", "Desvio não autorizado", "Atalho permitido", "Erro do GPS"], correct: 1, rationale: "É sair da rota planejada." },
+    { q: "O que fazer se o sistema alertar risco?", options: ["Ignorar", "Continuar normal", "Seguir orientação da central", "Desligar sistema"], correct: 2, rationale: "A central orienta a ação correta." },
+    { q: "Pode mexer na carga durante viagem?", options: ["Sim", "Não", "Só se quiser", "Só em emergência"], correct: 1, rationale: "É proibido durante a viagem." },
+    { q: "O que garante uma viagem segura?", options: ["Sorte", "Velocidade", "Seguir procedimentos", "Atalho"], correct: 2, rationale: "Procedimento é segurança." },
+    { q: "O que fazer antes do pernoite?", options: ["Dormir direto", "Avisar a central", "Desligar tudo", "Ir embora"], correct: 1, rationale: "Pernoite precisa ser informado." },
+    { q: "Pode pernoitar em qualquer lugar?", options: ["Sim", "Não", "Só se quiser", "Depende do clima"], correct: 1, rationale: "Somente locais autorizados." },
+    { q: "O que fazer ao ver situação suspeita?", options: ["Ignorar", "Observar e avisar", "Parar", "Fugir sem avisar"], correct: 1, rationale: "Sempre comunicar a central." },
+    { q: "Pode compartilhar informação da carga?", options: ["Sim", "Não", "Só com amigos", "Só no posto"], correct: 1, rationale: "Informação é sigilosa." },
+    { q: "O que acontece se abrir porta após início?", options: ["Nada", "Alerta e risco", "Ganho de tempo", "Melhora viagem"], correct: 1, rationale: "Gera alerta de segurança." },
+    { q: "O que fazer ao terminar descarga?", options: ["Ir embora", "Enviar macro fim", "Dormir", "Desligar rastreador"], correct: 1, rationale: "Finalização correta é obrigatória." },
+    { q: "Pode dirigir sem comunicar?", options: ["Sim", "Não", "Só de noite", "Só em cidade"], correct: 1, rationale: "Comunicação é obrigatória." },
+    { q: "O que é comunicação correta?", options: ["Longa", "Confusa", "Clara e rápida", "Gritando"], correct: 2, rationale: "Clareza evita erros." },
+    { q: "O que fazer em emergência?", options: ["Ignorar", "Avisar a central", "Fugir", "Parar sem avisar"], correct: 1, rationale: "Central deve ser informada." },
+    { q: "Pode sair da rota para economizar tempo?", options: ["Sim", "Não", "Só se quiser", "Só com pressa"], correct: 1, rationale: "Rota deve ser seguida." },
+    { q: "O que fazer ao chegar em parada longa?", options: ["Nada", "Registrar pernoite", "Ir embora", "Desligar sistema"], correct: 1, rationale: "Parada longa precisa ser registrada." },
+    { q: "O que acontece sem rastreamento?", options: ["Nada", "Perda de controle", "Mais segurança", "Mais rápido"], correct: 1, rationale: "Sem rastreamento não há controle." },
+    { q: "Pode ignorar a central?", options: ["Sim", "Não", "Só às vezes", "Só de noite"], correct: 1, rationale: "Central faz parte da segurança." },
+    { q: "O que fazer ao iniciar viagem?", options: ["Nada", "Enviar macro início", "Acelerar", "Mudar rota"], correct: 1, rationale: "Início ativa o sistema." },
+    { q: "O que evita roubos?", options: ["Sorte", "Procedimento correto", "Velocidade", "Atalho"], correct: 1, rationale: "Procedimento reduz risco." },
+    { q: "Pode abrir baú em trânsito?", options: ["Sim", "Não", "Só rápido", "Só com pressa"], correct: 1, rationale: "É proibido." },
+    { q: "O que fazer se atrasar?", options: ["Ignorar", "Avisar a central", "Correr mais", "Mudar rota"], correct: 1, rationale: "Comunicação evita problemas." },
+    { q: "O que é operação segura?", options: ["Rápida", "Sem regras", "Com procedimento", "Sem controle"], correct: 2, rationale: "Segurança vem do padrão." },
+    { q: "Pode desengatar sem avisar?", options: ["Sim", "Não", "Só rápido", "Só de dia"], correct: 1, rationale: "Nunca sem autorização." },
+    { q: "O que fazer ao parar em risco?", options: ["Ficar parado", "Avisar a central", "Dormir", "Ignorar"], correct: 1, rationale: "Central precisa agir." },
+    { q: "O que fazer com dúvida?", options: ["Ignorar", "Perguntar à central", "Decidir sozinho", "Parar viagem"], correct: 1, rationale: "Central orienta corretamente." },
+    { q: "O que é mais importante?", options: ["Carga", "Tempo", "Segurança", "Velocidade"], correct: 2, rationale: "Vida vem primeiro." },
+    { q: "O que fazer ao ver risco?", options: ["Ignorar", "Comunicar", "Acelerar", "Parar"], correct: 1, rationale: "Comunicação salva." },
+    { q: "O que nunca deve parar?", options: ["Veículo", "Comunicação", "Rádio", "Motor"], correct: 1, rationale: "Contato com central é essencial." },
+    { q: "Pode agir sem autorização?", options: ["Sim", "Não", "Só às vezes", "Só em emergência"], correct: 1, rationale: "Seguir padrão evita erro." },
+    { q: "O que fazer sempre?", options: ["Improvisar", "Seguir padrão", "Correr", "Ignorar"], correct: 1, rationale: "Disciplina operacional salva vidas." }
+];
+
+let questions = [];
+let currentQ = 0, score = 0, userData = {}, userErrors = [];
+
+function getRandomQuestions(qtd = 10) {
+    return [...allQuestions]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, qtd);
+}
+
+function startQuiz() {
+    userData.nome = document.getElementById('nome').value;
+    userData.cpf = document.getElementById('cpf').value;
+    userData.placa = document.getElementById('placa').value;
+    userData.data = new Date().toLocaleString('pt-BR');
+
+    if(userData.nome.length < 3 || userData.cpf.length < 14 || !userData.placa) {
+        alert("Preencha seus dados corretamente antes de começar.");
+        return;
+    }
+
+    // Sorteia as questões
+    questions = getRandomQuestions(10);
+
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('progress-area').style.display = 'block';
+    document.getElementById('quiz-screen').style.display = 'block';
+    showQuestion();
+}
+
+function showQuestion() {
+    const q = questions[currentQ];
+    const container = document.getElementById('question-container');
+    document.getElementById('progress-fill').style.width = `${((currentQ) / questions.length) * 100}%`;
+    
+    container.innerHTML = `
+        <div class="question-text">${q.q}</div>
+        <div id="options-list">
+            ${q.options.map((opt, i) => `<div class="option" onclick="checkAnswer(${i}, this)">${opt}</div>`).join('')}
+        </div>
+    `;
+}
+
+function checkAnswer(idx, element) {
+    const q = questions[currentQ];
+    if (document.getElementById('nextBtn').style.display === 'block') return;
+
+    const options = document.querySelectorAll('.option');
+    
+    if (idx === q.correct) {
+        element.classList.add('correct');
+        score++;
+    } else {
+        element.classList.add('wrong');
+        options[q.correct].classList.add('correct');
+        userErrors.push({
+            pergunta: q.q,
+            escolhida: q.options[idx],
+            correta: q.options[q.correct]
+        });
+    }
+
+    const rat = document.getElementById('rat-container');
+    rat.innerHTML = `<strong>💡 Por que isso?</strong><br>${q.rationale}`;
+    rat.style.display = 'block';
+    document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentQ++;
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('rat-container').style.display = 'none';
+    currentQ < questions.length ? showQuestion() : finishQuiz();
+}
+
+function finishQuiz() {
+    document.getElementById('progress-fill').style.width = `100%`;
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('score-num').innerText = score;
+    document.getElementById('score-text').innerText = `Você acertou ${score} de ${questions.length} questões.`;
+    
+    const hora = new Date().getHours();
+    const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
+    
+    let textoWhats = `${saudacao}. Sou o motorista ${userData.nome}, realizei o treinamento e tive dúvidas nas seguintes questões:\n\n`;
+    
+    if(userErrors.length > 0) {
+        userErrors.forEach((err, index) => {
+            textoWhats += `*${index + 1}. ${err.pergunta}*\nMinha resposta: ${err.escolhida}\nResposta correta: ${err.correta}\n\n`;
+        });
+    } else {
+        textoWhats = `${saudacao}. Sou o motorista ${userData.nome}, concluí o treinamento com 100% de aproveitamento!`;
+    }
+
+    const linkFinal = `https://wa.me/5519981260767?text=${encodeURIComponent(textoWhats)}`;
+    document.getElementById('link-whats').href = linkFinal;
+
+    if(userErrors.length > 0) {
+        const list = document.getElementById('errors-list');
+        list.innerHTML = userErrors.map(err => `
+            <div class="error-item">
+                <p style="margin:5px 0;"><strong>Questão:</strong> ${err.pergunta}</p>
+                <p style="margin:5px 0;">Sua resposta: <span class="txt-err">${err.escolhida}</span></p>
+                <p style="margin:5px 0;">Correta: <span class="txt-cor">${err.correta}</span></p>
+            </div>
+        `).join('');
+        document.getElementById('review-area').style.display = 'block';
+    }
+
+    sendData();
+}
+
+function sendData() {
+    document.getElementById('loading').style.display = 'block';
+    const url = "https://script.google.com/macros/s/AKfycbzaNwivA32PcJyEKkhLaj7geQN6wBRoSmFcz_gbfmgcLeK763ibQMilUOqi7SFyhbgX/exec"; 
+    const finalData = { ...userData, nota: score };
+
+    fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(finalData)
+    }).then(() => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('final-msg').innerHTML = "<h3 style='color: var(--success-color);'>✅ Resultados salvos com sucesso!</h3><p>Pode fechar esta página ou falar com a central abaixo.</p>";
+    }).catch(() => {
+        document.getElementById('loading').style.display = 'none';
+        alert("Erro ao enviar dados. Por favor, tire um print desta tela.");
+    });
+}
+</script>
+</body>
+</html>

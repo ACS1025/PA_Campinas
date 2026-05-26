@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Veículos</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #fafafa;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tabela"></div>
+
+    <script>
+        async function carregarCSV() {
+            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJmWx2vRWfkLgc2z4mdbsGkXA3Y5F2dViZffq4mvEwP1q7MBXPvp7Wg2TZU8Wrng/pub?output=csv"; // Substitua pelo seu link correto
+
+            try {
+                const resposta = await fetch(url);
+                const texto = await resposta.text();
+
+                // Verifica se o CSV foi carregado corretamente
+                if (!texto) {
+                    console.error("Erro: CSV vazio ou não carregado corretamente.");
+                    return;
+                }
+
+                // Divide o CSV em linhas e colunas
+                const linhas = texto.trim().split("\n").map(linha => linha.split(","));
+
+                let tabelaHTML = "<table><tr>";
+
+                // Criar cabeçalhos
+                linhas[0].forEach(coluna => tabelaHTML += `<th>${coluna.trim()}</th>`);
+                tabelaHTML += "</tr>";
+
+                // Criar linhas de dados
+                for (let i = 1; i < linhas.length; i++) {
+                    tabelaHTML += "<tr>";
+                    linhas[i].forEach(celula => {
+                        let conteudo = celula.trim(); // Remove espaços extras
+
+                        // Verifica se o conteúdo parece ser uma data
+                        if (/^\d{1,2}\s+de\s+[a-zA-Z]+\s+de\s+\d{4}$/.test(conteudo)) {
+                            conteudo = converterData(conteudo);
+                        }
+
+                        tabelaHTML += `<td>${conteudo}</td>`;
+                    });
+                    tabelaHTML += "</tr>";
+                }
+
+                tabelaHTML += "</table>";
+                document.getElementById("tabela").innerHTML = tabelaHTML;
+            } catch (erro) {
+                console.error("Erro ao carregar CSV:", erro);
+            }
+        }
+
+        function converterData(dataString) {
+            const meses = {
+                "janeiro": "01", "fevereiro": "02", "março": "03", "abril": "04", "maio": "05", "junho": "06",
+                "julho": "07", "agosto": "08", "setembro": "09", "outubro": "10", "novembro": "11", "dezembro": "12"
+            };
+        
+            const regex = /^\s*(\d{1,2})\s+de\s+([a-zA-Z]+)\s+de\s+(\d{4})\s*$/;
+            const match = dataString.match(regex);
+        
+            if (match) {
+                let dia = match[1].padStart(2, '0'); // Garante que o dia sempre tenha dois dígitos
+                let mes = meses[match[2].toLowerCase().trim()]; // Converte o mês por extenso para número
+                let ano = match[3];
+        
+                return mes ? `${dia}/${mes}/${ano}` : dataString;
+            }
+        
+            return dataString; // Se não for reconhecido como data, retorna o valor original
+        }
+
+        // Carregar os dados ao abrir a página
+        carregarCSV();
+    </script>
+
+</body>
+</html>
