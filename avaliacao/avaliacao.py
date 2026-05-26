@@ -851,7 +851,7 @@ st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.divider()
 col_f1, col_f2 = st.columns([2,1])
 with col_f1:
-    st.caption(f"© 2026 ACS| Tecnologia de Monitoramento Komando")
+    st.caption(f"© 2026| Tecnologia de Monitoramento Komando")
 with col_f2:
     st.caption(f"Atualizado em: {datetime.now().strftime('%d/%m/%Y %H:%M')} | v4.2.0")
 
